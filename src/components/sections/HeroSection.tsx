@@ -3,25 +3,26 @@
 import dynamic from 'next/dynamic';
 import { motion } from 'framer-motion';
 import CanvasLoader from '@/components/3d/CanvasLoader';
+import Pterodactyls from '@/components/dino/Pterodactyls';
 
-const FossilHeroScene = dynamic(() => import('@/components/3d/FossilHeroScene'), {
+const HeroTRex3D = dynamic(() => import('@/components/dino/HeroTRex3D'), {
   ssr: false,
-  loading: () => <CanvasLoader label="Desenterrando espécimen…" />,
+  loading: () => <CanvasLoader label="Despertando al T-Rex…" />,
 });
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 /**
  * Hero editorial: titular, filosofía, CTAs y vitrina 3D
- * con cráneo fósil interactivo (rotación 360° + parallax de cursor).
+ * con T-Rex con gafas de desarrollador (mirada al cursor + rugido al clic).
  */
 export default function HeroSection() {
   return (
     <section id="inicio" className="relative flex min-h-[100svh] items-center overflow-hidden pb-16 pt-32 sm:pt-36">
-      {/* --- Fondo: resplandor ámbar y estratos --- */}
+      {/* --- Fondo: resplandor morado y estratos --- */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -right-40 top-1/4 h-[540px] w-[540px] rounded-full bg-[radial-gradient(circle,rgba(102,87,226,0.14),transparent_65%)] blur-2xl"
+        className="pointer-events-none absolute -right-40 top-1/4 h-[540px] w-[540px] rounded-full bg-[radial-gradient(circle,rgba(106,77,171,0.16),transparent_65%)] blur-2xl"
       />
       <div
         aria-hidden
@@ -44,8 +45,11 @@ export default function HeroSection() {
         className="absolute left-5 top-1/2 hidden -translate-y-1/2 rotate-180 font-mono text-[10px] uppercase tracking-[0.5em] text-meso-mist/50 xl:block"
         style={{ writingMode: 'vertical-rl' }}
       >
-        Era Mesozoica · Portafolio 2026
+        Multiverso Jurásico · Portafolio 2026
       </span>
+
+      {/* Pterodáctilos volando en parallax (fondo ambiental) */}
+      <Pterodactyls />
 
       {/* Dinosaurios cruzando corriendo al fondo */}
       <div
@@ -86,7 +90,7 @@ export default function HeroSection() {
             className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.28em] text-meso-amber"
           >
             <span aria-hidden className="h-px w-10 bg-meso-amber/60" />
-            Portafolio · Fósil minimalista
+            El Multiverso Jurásico del Código
           </motion.p>
 
           <motion.h1
@@ -106,9 +110,9 @@ export default function HeroSection() {
             transition={{ duration: 0.8, delay: 0.18, ease: EASE }}
             className="mt-6 max-w-xl font-mono text-[13px] uppercase leading-relaxed tracking-[0.14em] text-meso-mist sm:text-sm"
           >
-            Full Stack &amp; 3D Web Developer
+            Desarrolladora de Software Full-Stack
             <span className="mx-2 text-meso-amber">|</span>
-            Creadora de Videojuegos (Indie &amp; AAA)
+            Backend &amp; Mobile
           </motion.p>
 
           <motion.p
@@ -153,11 +157,11 @@ export default function HeroSection() {
             transition={{ duration: 1, delay: 0.6 }}
             className="mt-12 flex items-center gap-4 font-mono text-[10px] uppercase tracking-[0.24em] text-meso-mist/60"
           >
-            <span className="text-[#9C6B3F]">Triásico</span>
+            <span className="text-[#A98FD6]">Backend</span>
             <span aria-hidden className="h-px w-6 bg-meso-rock" />
-            <span className="text-[#22774F]">Jurásico</span>
+            <span className="text-[#6FCF97]">Frontend</span>
             <span aria-hidden className="h-px w-6 bg-meso-rock" />
-            <span className="text-meso-amber">Cretácico</span>
+            <span className="text-meso-moss">Mobile</span>
           </motion.div>
         </div>
 
@@ -169,9 +173,9 @@ export default function HeroSection() {
           className="relative"
         >
           <div className="glass relative aspect-[4/5] w-full overflow-hidden rounded-3xl border border-meso-rock/80 shadow-card sm:aspect-square lg:aspect-[4/5]">
-            {/* Canvas del cráneo */}
+            {/* Canvas del T-Rex */}
             <div className="absolute inset-0">
-              <FossilHeroScene />
+              <HeroTRex3D />
             </div>
 
             {/* Esquinas de vitrina (brackets HUD) */}
@@ -202,13 +206,13 @@ export default function HeroSection() {
                     Espécimen 001
                   </p>
                   <p className="mt-1 font-display text-sm text-meso-limestone/90">
-                    Cráneo fósil · Rotación 360°
+                    T-Rex dev · Gafas &amp; rotación 360°
                   </p>
                 </div>
                 <p className="hidden text-right font-mono text-[9px] uppercase leading-relaxed tracking-[0.18em] text-meso-mist/70 sm:block">
                   Mueve el cursor
                   <br />
-                  para excavar
+                  · clic para rugir
                 </p>
               </div>
             </div>

@@ -2,13 +2,16 @@ export interface ProjectTech {
   label: string;
 }
 
+/** Tipo de desarrollo: administración PYMES, tienda virtual, API, web. */
+export type ProjectCategory = 'pyme' | 'tienda' | 'api' | 'web';
+
 export interface Project {
   id: string;
   title: string;
   subtitle: string;
   description: string;
-  /** Era geológica asociada (para el badge temático) */
-  era: 'triassic' | 'jurassic' | 'cretaceous';
+  /** Categoría del desarrollo (para el badge temático) */
+  category: ProjectCategory;
   status: 'destacado' | 'en-excavacion' | 'fosilizado';
   year: string;
   stack: string[];
@@ -18,4 +21,6 @@ export interface Project {
   repoUrl?: string;
   liveUrl?: string;
   emoji?: string;
+  /** Marcado en true cuando la ficha es una plantilla pendiente de rellenar */
+  isPlaceholder?: boolean;
 }

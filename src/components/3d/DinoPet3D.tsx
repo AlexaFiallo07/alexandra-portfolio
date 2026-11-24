@@ -155,8 +155,8 @@ function Dino({ active = false }: DinoPet3DProps) {
       {/* Luces de vivarium */}
       <ambientLight intensity={0.55} color="#FFFFFF" />
       <directionalLight position={[3, 4, 3]} intensity={1.4} color="#FFFDF8" />
-      <pointLight position={[-2.5, 1.5, -2]} intensity={14} color="#8577F0" distance={10} />
-      <pointLight position={[2.5, 1, 2]} intensity={7} color="#2E8B62" distance={10} />
+      <pointLight position={[-2.5, 1.5, -2]} intensity={14} color="#A98FD6" distance={10} />
+      <pointLight position={[2.5, 1, 2]} intensity={7} color="#C4A35A" distance={10} />
 
       <group
         ref={root}
@@ -253,8 +253,8 @@ function Dino({ active = false }: DinoPet3DProps) {
                 <mesh>
                   <sphereGeometry args={[0.055, 14, 14]} />
                   <meshStandardMaterial
-                    color={hovered ? '#6657E2' : EYE}
-                    emissive={hovered ? '#8577F0' : '#000000'}
+                    color={hovered ? '#6A4DAB' : EYE}
+                    emissive={hovered ? '#A98FD6' : '#000000'}
                     emissiveIntensity={hovered ? 0.8 : 0}
                     roughness={0.3}
                   />
@@ -336,14 +336,14 @@ function Dino({ active = false }: DinoPet3DProps) {
         </group>
       </group>
 
-      {/* Suelo del vivarium (piedra clara) */}
+      {/* Suelo del vivarium (piedra oscura museística) */}
       <mesh position={[0, -0.02, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <circleGeometry args={[3, 48]} />
-        <meshStandardMaterial color="#EDEBE5" roughness={1} />
+        <meshStandardMaterial color="#1F1433" roughness={1} />
       </mesh>
       <mesh position={[0, -0.01, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <ringGeometry args={[2.3, 2.36, 64]} />
-        <meshBasicMaterial color="#6657E2" transparent opacity={0.5} toneMapped={false} />
+        <meshBasicMaterial color="#C4A35A" transparent opacity={0.5} toneMapped={false} />
       </mesh>
 
       {/* Polvo levantado al correr */}
@@ -355,7 +355,7 @@ function Dino({ active = false }: DinoPet3DProps) {
           size={2.4}
           speed={1.4}
           opacity={0.55}
-          color="#B7AE9B"
+          color="#C4A35A"
         />
       )}
 
@@ -365,7 +365,7 @@ function Dino({ active = false }: DinoPet3DProps) {
         scale={7}
         blur={2.6}
         far={2}
-        color="#3A3F38"
+        color="#0B0712"
       />
     </>
   );

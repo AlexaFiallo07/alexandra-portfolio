@@ -45,7 +45,7 @@ export default function AmberCard({
           className="pointer-events-none absolute -inset-px opacity-0 transition-opacity duration-500 group-hover:opacity-100"
           style={{
             background:
-              'radial-gradient(500px circle at var(--x,50%) var(--y,0%), rgba(102,87,226,0.10), transparent 65%)',
+              'radial-gradient(500px circle at var(--x,50%) var(--y,0%), rgba(106,77,171,0.12), transparent 65%)',
           }}
         />
       )}

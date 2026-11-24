@@ -1,2 +1,2 @@
-export type { Skill, EraGroup, Era } from './skill';
-export type { Project, ProjectTech } from './project';
+export type { Skill, SkillGroup, StackCategory, FossilKind } from './skill';
+export type { Project, ProjectTech, ProjectCategory } from './project';

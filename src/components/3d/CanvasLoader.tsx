@@ -32,7 +32,7 @@ export default function CanvasLoader({
         />
         <span
           aria-hidden
-          className="absolute left-1/2 top-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-meso-ember shadow-[0_0_12px_2px_rgba(102,87,226,0.6)]"
+          className="absolute left-1/2 top-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-meso-ember shadow-[0_0_12px_2px_rgba(106,77,171,0.6)]"
         />
       </div>
       <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-meso-mist">

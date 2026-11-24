@@ -7,7 +7,7 @@ export const PROJECTS: Project[] = [
     subtitle: 'Gestión de Inventario Inteligente en Tiempo Real',
     description:
       'Proyecto de grado: sistema web de control de inventarios automatizado con kardex, pedidos, facturación y reportes, integrado con EFFI — un asistente de IA (Google Gemini) para la toma estratégica de decisiones. Incluye versión portada a Node.js + MongoDB.',
-    era: 'cretaceous',
+    category: 'pyme',
     status: 'destacado',
     year: '2025',
     stack: [
@@ -62,43 +62,77 @@ export const PROJECTS: Project[] = [
     emoji: '🦴',
   },
   {
-    id: 'terra-run',
-    title: 'Terra Run',
-    subtitle: 'Videojuego indie de plataformas generativo',
+    id: 'multiverso',
+    title: 'Multiverso Jurásico',
+    subtitle: 'Portafolio inmersivo con dinosaurios 3D',
     description:
-      'Metroidvania 2D con niveles generados proceduralmente, física jugable y arte pixel-art. Proyecto en excavación.',
-    era: 'cretaceous',
-    status: 'en-excavacion',
+      'Este mismo sitio: una experiencia de portafolio donde un cráneo fósil 3D rota 360°, pterodáctilos vuelan en parallax y un terópodo corre mientras lees. Construido con Next.js, Three.js y animaciones a 60fps.',
+    category: 'web',
+    status: 'destacado',
     year: '2026',
-    stack: ['Godot', 'GDScript', 'Aseprite', 'FMOD'],
-    highlights: ['Generación procedural de biomas', 'Sistema de guardado incremental', 'Jefes con patrones aprendidos'],
-    emoji: '🌋',
+    stack: ['Next.js 15', 'TypeScript', 'Tailwind CSS', 'Three.js / R3F', 'Framer Motion'],
+    highlights: [
+      'Escena 3D en tiempo real con React Three Fiber y luces de vitrina de museo',
+      'Elenco multi-estilo: siluetas corriendo, pterodáctilos en parallax y dino en vivo',
+      'IntersectionObserver + animaciones solo con transform/opacity (60fps)',
+      'Formulario de contacto con API route y validación serverless',
+    ],
+    architecture: [
+      {
+        layer: 'Cliente',
+        detail:
+          'Next.js 15 (App Router) con React, Tailwind CSS y Framer Motion. Secciones hidratadas solo cuando entran en pantalla.',
+      },
+      {
+        layer: '3D',
+        detail:
+          'Three.js vía React Three Fiber: cráneo fósil construido con geometría procedural, rotación 360°, parallax de cursor y pterodáctilos animados con useFrame.',
+      },
+      {
+        layer: 'Animación',
+        detail:
+          'Keyframes CSS para el elenco (correr, volar, bailar, flotar) + framer-motion para entradas escalonadas; todo limitado a transform y opacity.',
+      },
+      {
+        layer: 'Servidor',
+        detail: 'API route /api/contact en Next.js con validación, honeypot y rate-limit básico.',
+      },
+    ],
+    emoji: '🌌',
   },
   {
-    id: 'strata-ui',
-    title: 'Strata UI',
-    subtitle: 'Design system editorial para la web',
+    id: 'tienda-virtual',
+    title: 'Tienda Virtual',
+    subtitle: 'Espacio reservado para tu próximo e-commerce',
     description:
-      'Biblioteca de componentes con temática fósil minimalista, tokens de diseño y documentación viva. Proyecto en excavación.',
-    era: 'jurassic',
+      'Ficha plantilla lista para alojar tu desarrollo real de tienda virtual: sustituye este texto por el resumen verdadero del proyecto y añade los enlaces a GitHub y a la demo en vivo.',
+    category: 'tienda',
     status: 'en-excavacion',
     year: '2026',
-    stack: ['React', 'TypeScript', 'Storybook', 'Tailwind CSS'],
-    highlights: ['Tokens semánticos multi-tema', 'Accesibilidad AA verificada', 'Storybook con tests visuales'],
-    emoji: '🧱',
+    stack: ['Carrito', 'Catálogo', 'Pagos', 'Panel de pedidos'],
+    highlights: [
+      'Plantilla pendiente: describe aquí las pantallas y flujos que sí construiste',
+      'Añade repoUrl y liveUrl para que el botón lleve a GitHub y a la demo',
+    ],
+    emoji: '🛒',
+    isPlaceholder: true,
   },
   {
-    id: 'amber-notes',
-    title: 'Amber Notes',
-    subtitle: 'App móvil de notas con captura inteligente',
+    id: 'api-rest',
+    title: 'API REST',
+    subtitle: 'Espacio reservado para tu próximo servicio',
     description:
-      'Notas con reconocimiento de voz y etiquetado automático. Fosilizada en fase de investigación.',
-    era: 'triassic',
-    status: 'fosilizado',
-    year: '2024',
-    stack: ['Flutter', 'Dart', 'SQLite', 'ML Kit'],
-    highlights: ['Dictado sin conexión', 'Etiquetado automático por IA'],
-    emoji: '🪨',
+      'Ficha plantilla lista para alojar una de tus APIs REST: documenta endpoints, autenticación y despliegue reales, y enlaza el repositorio de GitHub con la documentación viva.',
+    category: 'api',
+    status: 'en-excavacion',
+    year: '2026',
+    stack: ['Endpoints', 'JWT', 'Validación', 'Documentación'],
+    highlights: [
+      'Plantilla pendiente: lista los módulos y verbos que sí implementaste',
+      'Añade repoUrl y liveUrl (docs Swagger/Postman, por ejemplo)',
+    ],
+    emoji: '🔌',
+    isPlaceholder: true,
   },
 ];
 

@@ -3,10 +3,11 @@
 import { useEffect, useState } from 'react';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import PixelRaptor from '@/components/dino/PixelRaptor';
 
 const LINKS = [
   { id: 'sobre-mi', label: 'Sobre mí' },
-  { id: 'eras', label: 'Eras' },
+  { id: 'stack', label: 'Stack' },
   { id: 'proyectos', label: 'Proyectos' },
 ];
 
@@ -46,6 +47,9 @@ export default function Navbar() {
 
   return (
     <>
+      {/* Velociraptor pixel-art sincronizado con el scroll */}
+      <PixelRaptor />
+
       {/* Barra de progreso de excavación */}
       <motion.div
         aria-hidden

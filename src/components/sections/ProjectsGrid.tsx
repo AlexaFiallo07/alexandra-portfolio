@@ -4,8 +4,10 @@ import { useRef, useState, type PointerEvent as ReactPointerEvent } from 'react'
 import { motion } from 'framer-motion';
 import { FEATURED_PROJECT, PROJECTS } from '@/data/projectsData';
 import AmberCard from '@/components/ui/AmberCard';
-import EraBadge from '@/components/ui/EraBadge';
+import CategoryBadge from '@/components/ui/CategoryBadge';
 import ProjectModal from '@/components/ui/ProjectModal';
+import StegoProgrammer from '@/components/dino/StegoProgrammer';
+import ChibiDancer from '@/components/dino/ChibiDancer';
 import type { Project } from '@/types';
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -14,87 +16,32 @@ const STATUS_META: Record<Project['status'], { label: string; className: string 
   destacado: { label: 'Destacado', className: 'border-meso-amber/60 bg-meso-amber/10 text-meso-amber' },
   'en-excavacion': {
     label: 'En excavación',
-    className: 'border-meso-moss/70 bg-meso-moss/15 text-[#22774F]',
+    className: 'border-meso-moss/70 bg-meso-moss/15 text-[#6FCF97]',
   },
   fosilizado: { label: 'Fosilizado', className: 'border-meso-rock bg-meso-night text-meso-mist' },
 };
 
 /* ------------------------------------------------------------------ */
-/*  Escáner hologrático 3D del proyecto destacado                      */
+/*  Stegosaurus programador (proyecto destacado)                        */
 /* ------------------------------------------------------------------ */
 
-const CUBE_FACES = [
-  { text: 'EFFI', cls: '[transform:translateZ(58px)]' },
-  { text: 'ADMI', cls: '[transform:rotateY(180deg)_translateZ(58px)]' },
-  { text: 'IA', cls: '[transform:rotateY(90deg)_translateZ(58px)]' },
-  { text: '2025', cls: '[transform:rotateY(-90deg)_translateZ(58px)]' },
-  { text: 'STOCK', cls: '[transform:rotateX(90deg)_translateZ(58px)]' },
-  { text: 'TIEMPO REAL', cls: '[transform:rotateX(-90deg)_translateZ(58px)]' },
-];
-
-function HologramScanner() {
+function StegoPanel() {
   return (
-    <div className="relative flex h-full min-h-[300px] w-full items-center justify-center overflow-hidden rounded-2xl border border-meso-amber/30 bg-[radial-gradient(ellipse_at_center,rgba(102,87,226,0.10),rgba(255,255,255,0.92)_72%)]">
-      {/* Suelo de rejilla en perspectiva */}
+    <div className="relative flex h-full min-h-[300px] w-full flex-col items-center justify-center overflow-hidden rounded-2xl border border-meso-moss/30 bg-[radial-gradient(ellipse_at_center,rgba(196,163,90,0.10),rgba(31,20,51,0.85)_75%)] p-4">
+      {/* Rejilla de fondo sutil */}
       <div
         aria-hidden
-        className="holo-floor absolute inset-x-[-50%] bottom-[-38%] h-[70%] opacity-70 [-webkit-mask-image:linear-gradient(to_top,black,transparent)] [mask-image:linear-gradient(to_top,black,transparent)] [transform:perspective(320px)_rotateX(58deg)]"
+        className="holo-floor absolute inset-x-[-50%] bottom-[-38%] h-[60%] opacity-40 [-webkit-mask-image:linear-gradient(to_top,black,transparent)] [mask-image:linear-gradient(to_top,black,transparent)] [transform:perspective(320px)_rotateX(58deg)]"
       />
 
-      {/* Anillos orbitales */}
-      <span
-        aria-hidden
-        className="absolute h-44 w-44 animate-spin rounded-full border border-dashed border-meso-amber/45"
-        style={{ animationDuration: '9s' }}
-      />
-      <span
-        aria-hidden
-        className="absolute h-56 w-56 animate-spin rounded-full border border-meso-amber/20"
-        style={{ animationDuration: '14s', animationDirection: 'reverse' }}
-      />
-
-      {/* Cubo de datos holográfico */}
-      <div className="relative h-[116px] w-[116px] [perspective:600px]">
-        <div className="holo-cube relative h-full w-full">
-          {CUBE_FACES.map((face) => (
-            <span
-              key={face.text}
-              className={`absolute inset-0 grid place-items-center border border-meso-amber/60 bg-meso-amber/[0.07] font-mono text-[10px] tracking-[0.2em] text-meso-amber backdrop-blur-[2px] ${face.cls}`}
-            >
-              {face.text}
-            </span>
-          ))}
-        </div>
+      <div className="relative w-full max-w-[320px]">
+        <StegoProgrammer className="w-full" />
       </div>
-
-      {/* Línea de escaneo */}
-      <span
-        aria-hidden
-        className="animate-scan-line absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-transparent via-meso-amber/25 to-transparent"
-      />
-
-      {/* Marcas HUD */}
-      {[
-        'left-3 top-3 border-l border-t',
-        'right-3 top-3 border-r border-t',
-        'left-3 bottom-3 border-b border-l',
-        'right-3 bottom-3 border-b border-r',
-      ].map((pos) => (
-        <span key={pos} aria-hidden className={`absolute h-5 w-5 border-meso-amber/70 ${pos}`} />
-      ))}
-
-      {/* Etiquetas de datos */}
-      <span className="absolute left-5 top-14 font-mono text-[9px] tracking-[0.16em] text-meso-amber/80">
-        SKU-1042
-      </span>
-      <span className="absolute bottom-14 right-5 font-mono text-[9px] tracking-[0.16em] text-[#22774F]/90">
-        SYNC ● LIVE
-      </span>
 
       {/* Leyenda */}
       <p className="absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-2 whitespace-nowrap font-mono text-[9px] uppercase tracking-[0.24em] text-meso-mist">
-        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-meso-amber" />
-        Escáner holográfico · Activo
+        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-meso-moss" />
+        Stego compilando · 60 fps
       </p>
     </div>
   );
@@ -123,7 +70,7 @@ export default function ProjectsGrid() {
     <section id="proyectos" className="relative py-24 sm:py-32">
       <div
         aria-hidden
-        className="pointer-events-none absolute right-0 top-1/4 h-[420px] w-[420px] rounded-full bg-[radial-gradient(circle,rgba(102,87,226,0.10),transparent_65%)] blur-2xl"
+        className="pointer-events-none absolute right-0 top-1/4 h-[420px] w-[420px] rounded-full bg-[radial-gradient(circle,rgba(106,77,171,0.12),transparent_65%)] blur-2xl"
       />
 
       <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
@@ -181,7 +128,7 @@ export default function ProjectsGrid() {
               {/* Contenido */}
               <div className="flex flex-col">
                 <div className="flex flex-wrap items-center gap-3">
-                  <EraBadge era={FEATURED_PROJECT.era} />
+                  <CategoryBadge category={FEATURED_PROJECT.category} />
                   <span className="rounded-full border border-meso-amber/60 bg-meso-amber/10 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.18em] text-meso-amber">
                     Proyecto de grado
                   </span>
@@ -220,18 +167,36 @@ export default function ProjectsGrid() {
                   ))}
                 </div>
 
-                <button
-                  onClick={() => setActive(FEATURED_PROJECT)}
-                  className="mt-8 inline-flex items-center justify-center gap-2 self-start rounded-full bg-meso-amber px-7 py-3.5 text-sm font-semibold text-meso-night shadow-amber transition-all hover:-translate-y-0.5 hover:bg-meso-ember hover:shadow-amber-lg lg:mt-auto"
-                >
-                  Abrir ficha técnica
-                  <span aria-hidden>→</span>
-                </button>
+                <div className="mt-8 flex flex-wrap items-center gap-3 lg:mt-auto">
+                  <button
+                    onClick={() => setActive(FEATURED_PROJECT)}
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-meso-amber px-7 py-3.5 text-sm font-semibold text-meso-night shadow-amber transition-all hover:-translate-y-0.5 hover:bg-meso-ember hover:shadow-amber-lg"
+                  >
+                    Abrir ficha técnica
+                    <span aria-hidden>→</span>
+                  </button>
+
+                  {/* Chibi bailarín al hacer hover sobre el botón de código */}
+                  {FEATURED_PROJECT.repoUrl && (
+                    <a
+                      href={FEATURED_PROJECT.repoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group/gh relative inline-flex items-center gap-2 rounded-full border border-meso-rock px-6 py-3.5 text-sm text-meso-limestone transition-all hover:-translate-y-0.5 hover:border-meso-moss/60 hover:text-meso-moss"
+                    >
+                      <span className="absolute -top-9 right-0 opacity-0 transition-opacity duration-200 group-hover/gh:opacity-100">
+                        <ChibiDancer dancing className="h-10 w-10 drop-shadow-[0_0_8px_rgba(111,207,151,0.5)]" />
+                      </span>
+                      Código en GitHub
+                      <span aria-hidden>↗</span>
+                    </a>
+                  )}
+                </div>
               </div>
 
-              {/* Escáner holográfico */}
+              {/* Stegosaurus programador */}
               <div className="flex items-center">
-                <HologramScanner />
+                <StegoPanel />
               </div>
             </div>
           </AmberCard>
@@ -270,7 +235,7 @@ export default function ProjectsGrid() {
                   </div>
 
                   <div className="mt-5 flex items-center gap-3">
-                    <EraBadge era={project.era} />
+                    <CategoryBadge category={project.category} />
                     <span className="font-mono text-[10px] tracking-[0.16em] text-meso-mist">
                       {project.year}
                     </span>
@@ -300,7 +265,12 @@ export default function ProjectsGrid() {
                     )}
                   </div>
 
-                  <span className="mt-5 inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.16em] text-meso-mist transition-colors group-hover:text-meso-amber">
+                  {/* Chibi que baila al pasar el cursor por la tarjeta */}
+                  <span className="mt-5 flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.16em] text-meso-mist transition-colors group-hover:text-meso-amber">
+                    <ChibiDancer
+                      dancing
+                      className="h-7 w-7 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+                    />
                     Ver ficha
                     <span aria-hidden className="transition-transform group-hover:translate-x-1">
                       →

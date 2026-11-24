@@ -1,20 +1,15 @@
 import type { Metadata, Viewport } from 'next';
-import { Fraunces, Inter, JetBrains_Mono } from 'next/font/google';
+import { Poppins, Fira_Code } from 'next/font/google';
 import './globals.css';
 
-const display = Fraunces({
+const sans = Poppins({
   subsets: ['latin'],
-  variable: '--font-display',
-  display: 'swap',
-});
-
-const sans = Inter({
-  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
   variable: '--font-sans',
   display: 'swap',
 });
 
-const mono = JetBrains_Mono({
+const mono = Fira_Code({
   subsets: ['latin'],
   variable: '--font-mono',
   display: 'swap',
@@ -22,36 +17,36 @@ const mono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Alexandra Fiallo — Full Stack & 3D Web Developer',
+    default: 'Alexandra Fiallo — El Multiverso Jurásico del Código',
     template: '%s · Alexandra Fiallo',
   },
   description:
-    'Portafolio de Alexandra Fiallo: Full Stack & 3D Web Developer y creadora de videojuegos (Indie & AAA). Software útil, experiencias interactivas y mundos en 3D con temática de la Era Mesozoica.',
+    'Portafolio de Alexandra Fiallo: Desarrolladora de Software Full-Stack / Backend & Mobile. Una experiencia inmersiva donde dinosaurios de estilos artísticos coexisten con código de verdad.',
   keywords: [
     'Alexandra Fiallo',
     'Full Stack Developer',
-    '3D Web Developer',
-    'React Three Fiber',
-    'Next.js',
-    'Videojuegos',
-    'Game Developer',
+    'Backend Developer',
+    'Mobile Developer',
+    'Django',
+    'Node.js',
+    'React',
     'Portafolio',
+    'Multiverso Jurásico',
   ],
   authors: [{ name: 'Alexandra Fiallo' }],
   creator: 'Alexandra Fiallo',
   openGraph: {
     type: 'website',
     locale: 'es_ES',
-    siteName: 'Alexandra Fiallo — Portafolio',
-    title: 'Alexandra Fiallo — Full Stack & 3D Web Developer',
+    siteName: 'Alexandra Fiallo — Multiverso Jurásico del Código',
+    title: 'Alexandra Fiallo — El Multiverso Jurásico del Código',
     description:
-      'Software útil, experiencias interactivas y videojuegos impactantes. Explora mi stack organizado en tres eras geológicas.',
+      'Software útil, eficiente y con personalidad. Explora mi stack entre dinosaurios de todo tipo de estilo.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Alexandra Fiallo — Full Stack & 3D Web Developer',
-    description:
-      'Software útil, experiencias interactivas y videojuegos impactantes. Era Mesozoica edition.',
+    title: 'Alexandra Fiallo — El Multiverso Jurásico del Código',
+    description: 'Full-Stack / Backend & Mobile. Dinosaurios + código.',
   },
   robots: { index: true, follow: true },
 };
@@ -59,15 +54,15 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#FAFAF7',
+  themeColor: '#120D1D',
 };
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="es" className={`${display.variable} ${sans.variable} ${mono.variable}`}>
-      <body className="grain font-sans antialiased selection:bg-meso-amber/30">
+    <html lang="es" className={`${sans.variable} ${mono.variable}`}>
+      <body className="grain font-sans antialiased selection:bg-meso-amber/30 selection:text-meso-night">
         {children}
       </body>
     </html>

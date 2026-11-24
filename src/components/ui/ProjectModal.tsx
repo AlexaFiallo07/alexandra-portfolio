@@ -3,7 +3,8 @@
 import { useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import type { Project } from '@/types';
-import EraBadge from '@/components/ui/EraBadge';
+import CategoryBadge from '@/components/ui/CategoryBadge';
+import ChibiDancer from '@/components/dino/ChibiDancer';
 import { cn } from '@/lib/utils';
 
 interface ProjectModalProps {
@@ -65,14 +66,14 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
             <div className="p-6 sm:p-9">
               {/* Encabezado */}
               <div className="flex flex-wrap items-center gap-3">
-                <EraBadge era={project.era} />
+                <CategoryBadge category={project.category} />
                 <span
                   className={cn(
                     'font-mono text-[11px] uppercase tracking-[0.18em]',
                     project.status === 'destacado'
                       ? 'text-meso-amber'
                       : project.status === 'en-excavacion'
-                        ? 'text-[#22774F]'
+                        ? 'text-[#6FCF97]'
                         : 'text-meso-mist',
                   )}
                 >
@@ -160,9 +161,12 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                     href={project.repoUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="rounded-full bg-meso-amber px-5 py-2.5 text-sm font-semibold text-meso-night transition-colors hover:bg-meso-ember"
+                    className="group/rep relative rounded-full bg-meso-amber px-5 py-2.5 text-sm font-semibold text-meso-night transition-colors hover:bg-meso-ember"
                   >
-                    Ver repositorio
+                    <span className="absolute -top-10 right-0 opacity-0 transition-opacity duration-200 group-hover/rep:opacity-100">
+                      <ChibiDancer dancing className="h-9 w-9" />
+                    </span>
+                    Código en GitHub
                   </a>
                 )}
                 {project.liveUrl && (
@@ -170,8 +174,11 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                     href={project.liveUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="rounded-full border border-meso-rock px-5 py-2.5 text-sm text-meso-limestone transition-colors hover:border-meso-amber/60 hover:text-meso-amber"
+                    className="group/live relative rounded-full border border-meso-rock px-5 py-2.5 text-sm text-meso-limestone transition-colors hover:border-meso-moss/60 hover:text-meso-moss"
                   >
+                    <span className="absolute -top-10 right-0 opacity-0 transition-opacity duration-200 group-hover/live:opacity-100">
+                      <ChibiDancer dancing className="h-9 w-9" />
+                    </span>
                     Ver demo en vivo
                   </a>
                 )}

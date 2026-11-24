@@ -8,12 +8,14 @@ export function cn(...inputs: ClassValue[]) {
 
 /**
  * Canales de contacto de Alexandra.
- * ⚠️ Reemplaza estos valores con tu correo y usuario reales de GitHub.
+ * ⚠️ Reemplaza estos valores con tu correo, GitHub y LinkedIn reales.
  */
 export const CONTACT = {
   email: 'alexandra.fiallo.dev@gmail.com',
   github: 'https://github.com/alexandrafiallo',
   githubHandle: '@alexandrafiallo',
+  linkedin: 'https://www.linkedin.com/in/alexandra-fiallo',
+  linkedinHandle: 'Alexandra Fiallo',
 } as const;
 
 /** Formatea un número como porcentaje de excavación. */

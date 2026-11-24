@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic';
 import { motion, useInView } from 'framer-motion';
 import AmberCard from '@/components/ui/AmberCard';
 import CanvasLoader from '@/components/3d/CanvasLoader';
+import BrachioCoffee from '@/components/dino/BrachioCoffee';
 
 const DinoPet3D = dynamic(() => import('@/components/3d/DinoPet3D'), {
   ssr: false,
@@ -41,7 +42,15 @@ export default function AboutSection() {
 
   return (
     <section id="sobre-mi" className="relative py-24 sm:py-32">
-      <div className="mx-auto max-w-6xl px-5 sm:px-8">
+      {/* Brachiosaurus asomándose desde el borde, tomando café de código */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute right-0 top-6 z-0 hidden w-52 -translate-x-6 opacity-90 xl:block"
+      >
+        <BrachioCoffee className="h-auto w-full" />
+      </div>
+
+      <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
         {/* Encabezado de sección */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -73,7 +82,7 @@ export default function AboutSection() {
 
               {/* Etiqueta superior */}
               <div className="pointer-events-none absolute left-6 top-6 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] text-meso-mist">
-                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#22774F]" />
+                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#6FCF97]" />
                 Espécimen vivo
               </div>
 
@@ -86,6 +95,14 @@ export default function AboutSection() {
                   Corre mientras visitas esta sección · clic para saltar
                 </p>
               </div>
+            </div>
+
+            {/* Café + Brachiosaurus (versión compacta en móvil/tablet) */}
+            <div
+              aria-hidden
+              className="absolute -right-4 -top-10 w-24 opacity-90 sm:w-28 xl:hidden"
+            >
+              <BrachioCoffee className="h-auto w-full" />
             </div>
 
             {/* Marcas estratigráficas al costado */}

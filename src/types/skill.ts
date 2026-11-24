@@ -1,24 +1,45 @@
-export type Era = 'triassic' | 'jurassic' | 'cretaceous';
+/** Categorías del stack (agrupación de habilidades). */
+export type StackCategory =
+  | 'backend'
+  | 'frontend'
+  | 'movil'
+  | 'datos'
+  | 'devops';
+
+/** Tipo de fósil line-art asociado a una habilidad (icono SVG). */
+export type FossilKind =
+  | 'skull'
+  | 'tricera'
+  | 'vertebra'
+  | 'egg'
+  | 'footprint'
+  | 'claw'
+  | 'rib'
+  | 'tooth'
+  | 'wing'
+  | 'spine';
 
 export interface Skill {
   name: string;
-  /** Nivel de dominio 0-100 (para la barra de excavación) */
+  /** Nivel de dominio 0-100 (honesta, autoevaluada) */
   level: number;
   /** Breve descripción contextual de la habilidad */
   hint?: string;
+  /** Icono de fósil line-art que la representa */
+  fossil: FossilKind;
 }
 
-export interface EraGroup {
-  era: Era;
-  /** Nombre de la era en español */
+export interface SkillGroup {
+  id: StackCategory;
+  /** Nombre de la categoría en español */
   label: string;
-  /** Rango temporal, ej. "252 – 201 Ma" */
-  range: string;
-  /** Descriptor de la era, ej. "Nacimiento de los gigantes" */
+  /** Descriptor corto, ej. "El motor del sistema" */
   subtitle: string;
-  /** Descripción editorial de la era */
+  /** Descripción editorial de la categoría */
   description: string;
-  /** Color de acento de la era (hex) */
+  /** Color de acento de la categoría (hex) */
   accent: string;
+  /** Icono de fósil de la categoría */
+  icon: FossilKind;
   skills: Skill[];
 }

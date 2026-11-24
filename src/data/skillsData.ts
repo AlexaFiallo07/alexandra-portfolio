@@ -1,65 +1,90 @@
-import type { EraGroup } from '@/types';
+import type { SkillGroup } from '@/types';
 
 /**
- * Stack real de Alexandra, organizado por eras geológicas.
+ * Stack real de Alexandra, organizado por categorías.
  * Niveles honestos según lo que ella domina de verdad:
  * - TypeScript: "no tanto" → nivel conservador en consolidación.
- * - Three.js: librería de 3D del navegador (no un lenguaje), en práctica con este portafolio.
+ * - Three.js: es una librería de 3D del navegador (no un lenguaje), en práctica con este portafolio.
+ * - Tailwind / Framer Motion / WebGL: niveles conservadores (sin confirmación explícita).
  */
-export const ERAS: EraGroup[] = [
+export const STACK: SkillGroup[] = [
   {
-    era: 'triassic',
-    label: 'Era Triásica',
-    range: '252 – 201 Ma',
-    subtitle: 'Cimientos & Núcleo (Backend)',
+    id: 'backend',
+    label: 'Backend',
+    subtitle: 'El motor del sistema',
     description:
-      'La base rocosa: lenguajes de programación, servidores, bases de datos y contenedores. Todo sistema vivo comienza aquí, en la corteza profunda del stack.',
-    accent: '#9C6B3F',
+      'Lenguajes, frameworks y lógica de negocio: APIs, autenticación, reglas de negocio y todo lo que ocurre detrás de la interfaz.',
+    accent: '#A98FD6',
+    icon: 'skull',
     skills: [
-      { name: 'Python', level: 88, hint: 'Automatización, scripts y lógica de negocio' },
-      { name: 'JavaScript', level: 88, hint: 'El lenguaje universal de la web' },
-      { name: 'TypeScript', level: 62, hint: 'Lo uso en proyectos, aún en consolidación' },
-      { name: 'Node.js', level: 85, hint: 'APIs y servicios en tiempo real' },
-      { name: 'Django', level: 82, hint: 'Backends robustos y administrables' },
-      { name: 'NestJS', level: 76, hint: 'Arquitectura modular y escalable' },
-      { name: 'PostgreSQL', level: 80, hint: 'Persistencia relacional estricta' },
-      { name: 'MySQL', level: 74, hint: 'Esquemas clínicos y transaccionales' },
-      { name: 'MongoDB', level: 72, hint: 'Documentos flexibles y esquemas vivos' },
-      { name: 'Docker', level: 76, hint: 'Hábitats reproducibles de despliegue' },
+      { name: 'Python', level: 88, hint: 'Automatización, scripts y lógica de negocio', fossil: 'skull' },
+      { name: 'JavaScript', level: 88, hint: 'El lenguaje universal de la web', fossil: 'tooth' },
+      { name: 'TypeScript', level: 62, hint: 'Lo uso en proyectos, aún en consolidación', fossil: 'egg' },
+      { name: 'Node.js', level: 85, hint: 'APIs y servicios en tiempo real', fossil: 'vertebra' },
+      { name: 'Django', level: 82, hint: 'Backends robustos y administrables', fossil: 'skull' },
+      { name: 'NestJS', level: 76, hint: 'Arquitectura modular y escalable', fossil: 'rib' },
     ],
   },
   {
-    era: 'jurassic',
-    label: 'Era Jurásica',
-    range: '201 – 145 Ma',
-    subtitle: 'Expansión & Interfaz (Frontend)',
+    id: 'frontend',
+    label: 'Frontend',
+    subtitle: 'La interfaz que se mueve',
     description:
-      'La era de las grandes superficies: interfaces dinámicas, animación, diseño responsivo y experiencias que respiran con el usuario.',
-    accent: '#2E8B62',
+      'Componentes, layout, animación y gráficos 3D en tiempo real: la capa que el usuario ve, toca y recuerda.',
+    accent: '#C4A35A',
+    icon: 'tricera',
     skills: [
-      { name: 'React', level: 86, hint: 'Componentes y estado declarativo' },
-      { name: 'Next.js', level: 82, hint: 'App Router, SSR y rendimiento' },
-      { name: 'HTML5', level: 90, hint: 'Semántica y accesibilidad' },
-      { name: 'CSS3', level: 86, hint: 'Layout, grid y motion moderno' },
-      { name: 'Tailwind CSS', level: 78, hint: 'Sistemas de diseño de utilidad' },
-      { name: 'Framer Motion', level: 60, hint: 'En práctica: coreografía de interfaz' },
+      { name: 'React', level: 86, hint: 'Componentes y estado declarativo', fossil: 'tricera' },
+      { name: 'Next.js', level: 82, hint: 'App Router, SSR y rendimiento', fossil: 'spine' },
+      { name: 'HTML5', level: 90, hint: 'Semántica y accesibilidad', fossil: 'rib' },
+      { name: 'CSS3', level: 86, hint: 'Layout, grid y motion moderno', fossil: 'claw' },
+      { name: 'Tailwind CSS', level: 78, hint: 'Sistemas de diseño de utilidad', fossil: 'claw' },
+      { name: 'Framer Motion', level: 60, hint: 'En práctica: coreografía de interfaz', fossil: 'wing' },
+      { name: 'Three.js', level: 64, hint: 'Librería 3D del navegador · en práctica', fossil: 'egg' },
+      { name: 'React Three Fiber', level: 60, hint: 'Declaración 3D dentro de React', fossil: 'egg' },
+      { name: 'WebGL', level: 50, hint: 'Nociones de shaders y renderizado', fossil: 'tooth' },
     ],
   },
   {
-    era: 'cretaceous',
-    label: 'Era Cretácica',
-    range: '145 – 66 Ma',
-    subtitle: 'Apogeo: Móvil, 3D & Game Dev',
+    id: 'movil',
+    label: 'Móvil',
+    subtitle: 'Código en el bolsillo',
     description:
-      'La cumbre de la biodiversidad: aplicaciones móvil, gráficos 3D en tiempo real y videojuegos donde el código se convierte en criatura viva.',
-    accent: '#6657E2',
+      'Aplicaciones multiplataforma que llevan el mismo producto a Android e iOS sin duplicar esfuerzo.',
+    accent: '#8F7BD8',
+    icon: 'footprint',
     skills: [
-      { name: 'Flutter', level: 74, hint: 'Apps nativas multiplataforma' },
-      { name: 'React Native', level: 68, hint: 'Móvil con ecosistema React' },
-      { name: 'Three.js', level: 64, hint: 'Librería 3D del navegador · en práctica' },
-      { name: 'React Three Fiber', level: 60, hint: 'Declaración 3D dentro de React' },
-      { name: 'WebGL', level: 50, hint: 'Nociones de shaders y renderizado' },
-      { name: 'Game Development', level: 80, hint: 'Mecánicas, bucles y mundos indie' },
+      { name: 'Flutter', level: 74, hint: 'Apps nativas multiplataforma', fossil: 'footprint' },
+      { name: 'React Native', level: 68, hint: 'Móvil con ecosistema React', fossil: 'footprint' },
+    ],
+  },
+  {
+    id: 'datos',
+    label: 'Bases de Datos',
+    subtitle: 'La memoria del sistema',
+    description:
+      'Persistencia relacional y documental: esquemas, kardex, transacciones y consultas que no mienten.',
+    accent: '#6FCF97',
+    icon: 'egg',
+    skills: [
+      { name: 'PostgreSQL', level: 80, hint: 'Persistencia relacional estricta', fossil: 'egg' },
+      { name: 'MySQL', level: 74, hint: 'Esquemas transaccionales', fossil: 'egg' },
+      { name: 'MongoDB', level: 72, hint: 'Documentos flexibles y esquemas vivos', fossil: 'vertebra' },
+      { name: 'SQLite', level: 76, hint: 'Base ligera integrada (Django)', fossil: 'tooth' },
+    ],
+  },
+  {
+    id: 'devops',
+    label: 'DevOps & Herramientas',
+    subtitle: 'Herramientas de campo',
+    description:
+      'Contenedores, control de versiones e integración continua: el equipo de excavación que mantiene todo en su sitio.',
+    accent: '#A98FD6',
+    icon: 'claw',
+    skills: [
+      { name: 'Docker', level: 76, hint: 'Hábitats reproducibles de despliegue', fossil: 'claw' },
+      { name: 'Git', level: 80, hint: 'Historial limpio, ramas y colaboración', fossil: 'spine' },
+      { name: 'GitHub Actions', level: 72, hint: 'CI que ejecuta la suite en cada push', fossil: 'wing' },
     ],
   },
 ];

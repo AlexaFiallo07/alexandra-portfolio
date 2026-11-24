@@ -26,6 +26,14 @@ function MailIcon({ className }: { className?: string }) {
   );
 }
 
+function LinkedInIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden className={className} fill="currentColor">
+      <path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm7 0h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05C21.4 8.65 22 11 22 14.1V21h-4v-6.1c0-1.45-.03-3.32-2.02-3.32-2.02 0-2.33 1.58-2.33 3.21V21h-4V9Z" />
+    </svg>
+  );
+}
+
 function CopyIcon({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" aria-hidden className={className} fill="none" stroke="currentColor" strokeWidth={1.6}>
@@ -111,7 +119,7 @@ export default function ContactSection() {
     <section id="contacto" className="relative py-24 sm:py-32">
       <div
         aria-hidden
-        className="pointer-events-none absolute left-0 top-1/2 h-[500px] w-[500px] -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(102,87,226,0.12),transparent_65%)] blur-2xl"
+        className="pointer-events-none absolute left-0 top-1/2 h-[500px] w-[500px] -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(106,77,171,0.14),transparent_65%)] blur-2xl"
       />
 
       <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
@@ -140,8 +148,8 @@ export default function ContactSection() {
             Abramos una <span className="text-amber-gradient">excavación</span> juntos
           </h2>
           <p className="mt-4 text-meso-mist">
-            ¿Proyecto web, app 3D o videojuego? Envía una señal y te respondo en
-            24–48 horas.
+            ¿Sistema para tu PYME, tienda virtual o API REST? Envía una señal y te
+            respondo en 24–48 horas.
           </p>
         </motion.div>
 
@@ -255,7 +263,7 @@ export default function ContactSection() {
                   {status === 'error' && error && (
                     <p
                       role="alert"
-                      className="mt-4 rounded-lg border border-[#D0605A]/60 bg-[#D0605A]/10 px-4 py-3 text-sm text-[#A83F39]"
+                      className="mt-4 rounded-lg border border-[#D0605A]/60 bg-[#D0605A]/10 px-4 py-3 text-sm text-[#FF9B94]"
                     >
                       {error}
                     </p>
@@ -326,6 +334,34 @@ export default function ContactSection() {
               </AmberCard>
             </a>
 
+            {/* LinkedIn */}
+            <a
+              href={CONTACT.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group block"
+            >
+              <AmberCard className="flex items-center gap-5 p-6">
+                <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl border border-meso-rock bg-meso-night text-meso-limestone transition-colors group-hover:border-meso-amber/60 group-hover:text-meso-amber">
+                  <LinkedInIcon className="h-6 w-6" />
+                </span>
+                <span className="min-w-0">
+                  <span className="block font-mono text-[10px] uppercase tracking-[0.22em] text-meso-mist">
+                    LinkedIn
+                  </span>
+                  <span className="mt-1 block truncate font-display text-lg font-semibold transition-colors group-hover:text-meso-amber">
+                    {CONTACT.linkedinHandle}
+                  </span>
+                </span>
+                <span
+                  aria-hidden
+                  className="ml-auto text-meso-mist transition-all group-hover:translate-x-1 group-hover:text-meso-amber"
+                >
+                  ↗
+                </span>
+              </AmberCard>
+            </a>
+
             {/* Correo */}
             <AmberCard className="p-6">
               <div className="flex items-center gap-5">
@@ -353,9 +389,9 @@ export default function ContactSection() {
             {/* Disponibilidad */}
             <AmberCard className="p-6" glow={false}>
               <div className="flex items-start gap-3">
-                <span className="mt-1.5 h-2 w-2 shrink-0 animate-pulse rounded-full bg-[#22774F]" />
+                <span className="mt-1.5 h-2 w-2 shrink-0 animate-pulse rounded-full bg-[#6FCF97]" />
                 <div>
-                  <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#22774F]">
+                  <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#6FCF97]">
                     Disponible
                   </p>
                   <p className="mt-2 text-sm leading-relaxed text-meso-mist">
