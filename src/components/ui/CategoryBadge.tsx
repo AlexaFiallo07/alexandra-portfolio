@@ -7,40 +7,39 @@ const CATEGORY_STYLES: Record<
 > = {
   pyme: {
     label: 'Sistema PYME',
-    className: 'border-meso-amber/50 bg-meso-amber/10 text-meso-amber',
-    dot: 'bg-meso-amber',
+    className: 'border-studio-purple/30 bg-studio-purple/10 text-studio-purple-deep',
+    dot: 'bg-studio-purple',
   },
   tienda: {
     label: 'Tienda Virtual',
-    className: 'border-meso-moss/60 bg-meso-moss/12 text-[#C4A35A]',
-    dot: 'bg-meso-moss',
+    className: 'border-studio-green/35 bg-studio-green/10 text-studio-green-deep',
+    dot: 'bg-studio-green',
   },
   api: {
     label: 'API REST',
-    className: 'border-[#6A4DAB]/60 bg-[#6A4DAB]/15 text-[#A98FD6]',
-    dot: 'bg-[#6A4DAB]',
+    className: 'border-studio-purple-deep/30 bg-studio-pearl text-studio-purple-deep',
+    dot: 'bg-studio-purple-deep',
   },
   web: {
     label: 'Web App',
-    className: 'border-meso-rock bg-meso-stone text-meso-mist',
-    dot: 'bg-meso-mist',
+    className: 'border-studio-border bg-studio-pearl text-studio-ink',
+    dot: 'bg-studio-green',
   },
 };
 
 interface CategoryBadgeProps {
   category: ProjectCategory;
-  /** Etiqueta personalizada (por defecto: nombre de la categoría) */
   label?: string;
   className?: string;
 }
 
-/** Tag de categoría de proyecto con punto de acento. */
+/** Tag de categoría de proyecto con alto contraste sobre fondo claro. */
 export default function CategoryBadge({ category, label, className }: CategoryBadgeProps) {
   const style = CATEGORY_STYLES[category];
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-2 rounded-full border px-3 py-1 font-mono text-[11px] uppercase tracking-[0.18em]',
+        'inline-flex items-center gap-2 rounded-full border px-3 py-1 font-mono text-[11px] font-semibold uppercase tracking-[0.16em]',
         style.className,
         className,
       )}

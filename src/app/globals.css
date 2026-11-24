@@ -3,14 +3,16 @@
 @tailwind utilities;
 
 :root {
-  --meso-night: #120d1d;
-  --meso-stone: #1f1433;
-  --meso-rock: #2e2148;
-  --meso-limestone: #f2eff7;
-  --meso-amber: #a98fd6;
-  --meso-ember: #6a4dab;
-  --meso-moss: #c4a35a;
-  --meso-mist: #a79fb8;
+  --studio-bg: #f4f4f7;
+  --studio-card: #ffffff;
+  --studio-pearl: #e8e8ee;
+  --studio-border: #d8d8e2;
+  --studio-purple: #7c3aed;
+  --studio-purple-deep: #5b21b6;
+  --studio-green: #10b981;
+  --studio-green-deep: #059669;
+  --studio-ink: #18181b;
+  --studio-slate: #4b5563;
 }
 
 html {
@@ -19,104 +21,110 @@ html {
 }
 
 body {
-  background-color: var(--meso-night);
-  color: var(--meso-limestone);
+  background-color: var(--studio-bg);
+  color: var(--studio-ink);
   overflow-x: hidden;
   font-feature-settings: 'kern' 1;
 }
 
 ::selection {
-  background: rgba(169, 143, 214, 0.35);
-  color: #120d1d;
+  background: rgba(124, 58, 237, 0.18);
+  color: #5b21b6;
 }
 
-/* Scrollbar — espacio digital */
+/* Scrollbar limpia estilo estudio */
 ::-webkit-scrollbar {
   width: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--meso-night);
+  background: var(--studio-bg);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--meso-rock);
+  background: #c7c7d6;
   border-radius: 999px;
-  border: 2px solid var(--meso-night);
+  border: 2px solid var(--studio-bg);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--meso-ember);
+  background: var(--studio-purple);
 }
 
 @layer components {
-  /* Grano sutil tipo película sobre el fondo oscuro */
-  .grain::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 60;
-    opacity: 0.035;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  /* Papel cuadriculado sutil estilo estudio / blueprint */
+  .studio-grid {
+    background-image:
+      linear-gradient(to right, rgba(91, 33, 182, 0.045) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(16, 185, 129, 0.045) 1px, transparent 1px);
+    background-size: 32px 32px;
   }
 
-  /* Vidrio nocturno */
-  .glass {
-    background: linear-gradient(
-      160deg,
-      rgba(31, 20, 51, 0.92) 0%,
-      rgba(18, 13, 29, 0.9) 100%
-    );
+  /* Tarjeta blanca con borde definido y sombra morada suave */
+  .studio-card {
+    background-color: #ffffff;
+    border: 1px solid #d8d8e2;
+    box-shadow: 0 10px 25px -5px rgba(124, 58, 237, 0.12);
+  }
+
+  /* Superficie vidrio luminoso (navbar / modal) */
+  .studio-glass {
+    background: rgba(255, 255, 255, 0.88);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
+    border: 1px solid #d8d8e2;
+    box-shadow: 0 10px 25px -5px rgba(124, 58, 237, 0.12);
   }
 
-  /* Degradado morado → dorado fósil */
-  .text-amber-gradient {
-    background: linear-gradient(96deg, #a98fd6 0%, #d9c08a 55%, #c4a35a 100%);
+  /* Degradado morado → verde esmeralda */
+  .text-studio-gradient {
+    background: linear-gradient(100deg, #5b21b6 0%, #7c3aed 55%, #10b981 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
   }
 
-  .hairline {
-    border-color: rgba(46, 33, 72, 0.9);
-  }
-
-  /* ---------- Fósiles line-art (badges de stack) ---------- */
+  /* ---------- Fósiles blueprint (morado + verde) ---------- */
   .fossil-icon * {
-    opacity: 0.55;
+    opacity: 0.78;
     stroke-dasharray: 340;
     stroke-dashoffset: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.28s ease, stroke 0.28s ease;
   }
 
   .fossil-badge:hover .fossil-icon *,
   .fossil-badge:focus-visible .fossil-icon * {
     opacity: 1;
-    animation: fossil-draw 0.7s ease forwards;
-    filter: drop-shadow(0 0 6px rgba(196, 163, 90, 0.85));
+    animation: fossil-draw 0.65s ease forwards;
+    filter: drop-shadow(0 0 6px rgba(124, 58, 237, 0.35));
   }
 
   .fossil-badge {
     transition:
-      transform 0.3s ease,
-      border-color 0.3s ease,
-      box-shadow 0.3s ease;
-  }
-  .fossil-badge:hover {
-    transform: translateY(-4px);
-    border-color: rgba(196, 163, 90, 0.6);
-    box-shadow: 0 0 0 1px rgba(196, 163, 90, 0.35), 0 14px 40px -16px rgba(196, 163, 90, 0.5);
+      transform 0.25s ease,
+      border-color 0.25s ease,
+      box-shadow 0.25s ease;
   }
 
-  /* ---------- Partículas de código del Stegosaurus ---------- */
+  .fossil-badge:hover {
+    transform: translateY(-3px);
+    border-color: #7c3aed;
+    box-shadow:
+      4px 4px 0px 0px rgba(124, 58, 237, 0.2),
+      0 12px 28px -8px rgba(16, 185, 129, 0.22);
+  }
+
+  /* ---------- Partículas de código ---------- */
   .code-particle {
     position: absolute;
     font-family: var(--font-mono), monospace;
     font-size: 11px;
-    color: #a98fd6;
+    font-weight: 600;
+    color: #5b21b6;
+    background: #ffffff;
+    border: 1px solid #d8d8e2;
+    border-radius: 6px;
+    padding: 1px 6px;
     pointer-events: none;
     animation: code-float 2.6s ease-in infinite;
-    text-shadow: 0 0 8px rgba(169, 143, 214, 0.7);
+    box-shadow: 0 4px 10px -2px rgba(124, 58, 237, 0.14);
   }
 }
 
@@ -134,12 +142,12 @@ body {
     opacity: 0;
     transform: translateY(8px);
   }
-  15% {
+  18% {
     opacity: 1;
   }
   100% {
     opacity: 0;
-    transform: translateY(-54px);
+    transform: translateY(-48px);
   }
 }
 

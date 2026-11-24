@@ -14,7 +14,7 @@ export const STACK: SkillGroup[] = [
     subtitle: 'El motor del sistema',
     description:
       'Lenguajes, frameworks y lógica de negocio: APIs, autenticación, reglas de negocio y todo lo que ocurre detrás de la interfaz.',
-    accent: '#A98FD6',
+    accent: '#7C3AED',
     icon: 'skull',
     skills: [
       { name: 'Python', level: 88, hint: 'Automatización, scripts y lógica de negocio', fossil: 'skull' },
@@ -30,8 +30,8 @@ export const STACK: SkillGroup[] = [
     label: 'Frontend',
     subtitle: 'La interfaz que se mueve',
     description:
-      'Componentes, layout, animación y gráficos 3D en tiempo real: la capa que el usuario ve, toca y recuerda.',
-    accent: '#C4A35A',
+      'Componentes, layout, animación y gráficos interactivos: la capa que el usuario ve, toca y recuerda.',
+    accent: '#10B981',
     icon: 'tricera',
     skills: [
       { name: 'React', level: 86, hint: 'Componentes y estado declarativo', fossil: 'tricera' },
@@ -51,7 +51,7 @@ export const STACK: SkillGroup[] = [
     subtitle: 'Código en el bolsillo',
     description:
       'Aplicaciones multiplataforma que llevan el mismo producto a Android e iOS sin duplicar esfuerzo.',
-    accent: '#8F7BD8',
+    accent: '#5B21B6',
     icon: 'footprint',
     skills: [
       { name: 'Flutter', level: 74, hint: 'Apps nativas multiplataforma', fossil: 'footprint' },
@@ -64,7 +64,7 @@ export const STACK: SkillGroup[] = [
     subtitle: 'La memoria del sistema',
     description:
       'Persistencia relacional y documental: esquemas, kardex, transacciones y consultas que no mienten.',
-    accent: '#6FCF97',
+    accent: '#059669',
     icon: 'egg',
     skills: [
       { name: 'PostgreSQL', level: 80, hint: 'Persistencia relacional estricta', fossil: 'egg' },
@@ -79,7 +79,7 @@ export const STACK: SkillGroup[] = [
     subtitle: 'Herramientas de campo',
     description:
       'Contenedores, control de versiones e integración continua: el equipo de excavación que mantiene todo en su sitio.',
-    accent: '#A98FD6',
+    accent: '#7C3AED',
     icon: 'claw',
     skills: [
       { name: 'Docker', level: 76, hint: 'Hábitats reproducibles de despliegue', fossil: 'claw' },

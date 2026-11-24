@@ -1,244 +1,181 @@
 'use client';
 
-import dynamic from 'next/dynamic';
 import { motion } from 'framer-motion';
-import CanvasLoader from '@/components/3d/CanvasLoader';
-import Pterodactyls from '@/components/dino/Pterodactyls';
-
-const HeroTRex3D = dynamic(() => import('@/components/dino/HeroTRex3D'), {
-  ssr: false,
-  loading: () => <CanvasLoader label="Despertando al T-Rex…" />,
-});
+import HeroTRexStudio from '@/components/dino/HeroTRexStudio';
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 /**
- * Hero editorial: titular, filosofía, CTAs y vitrina 3D
- * con T-Rex con gafas de desarrollador (mirada al cursor + rugido al clic).
+ * Hero luminoso estilo estudio interactivo / brutalismo suave:
+ * titular de alto contraste (#18181B), CTAs morados (#7C3AED / #5B21B6),
+ * acentos verdes (#10B981) y escena ilustrada interactiva del T-Rex con gafas moradas.
  */
 export default function HeroSection() {
   return (
-    <section id="inicio" className="relative flex min-h-[100svh] items-center overflow-hidden pb-16 pt-32 sm:pt-36">
-      {/* --- Fondo: resplandor morado y estratos --- */}
+    <section
+      id="inicio"
+      className="relative flex min-h-[100svh] items-center overflow-hidden pb-16 pt-32 sm:pt-36"
+    >
+      {/* Acentos geométricos suaves en el fondo */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -right-40 top-1/4 h-[540px] w-[540px] rounded-full bg-[radial-gradient(circle,rgba(106,77,171,0.16),transparent_65%)] blur-2xl"
+        className="pointer-events-none absolute -right-28 top-24 h-[420px] w-[420px] rounded-full bg-studio-purple/10 blur-3xl"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-56 bg-gradient-to-b from-transparent to-meso-night"
+        className="pointer-events-none absolute -left-24 bottom-12 h-[360px] w-[360px] rounded-full bg-studio-green/10 blur-3xl"
       />
-      {/* Líneas estratigráficas de fondo */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 opacity-[0.35]">
-        {[18, 38, 58, 78].map((top) => (
-          <div
-            key={top}
-            className="absolute inset-x-0 h-px bg-gradient-to-r from-transparent via-meso-rock to-transparent"
-            style={{ top: `${top}%` }}
-          />
-        ))}
-      </div>
 
-      {/* Texto vertical decorativo */}
+      {/* Etiqueta vertical lateral */}
       <span
         aria-hidden
-        className="absolute left-5 top-1/2 hidden -translate-y-1/2 rotate-180 font-mono text-[10px] uppercase tracking-[0.5em] text-meso-mist/50 xl:block"
+        className="absolute left-5 top-1/2 hidden -translate-y-1/2 rotate-180 font-mono text-[10px] font-semibold uppercase tracking-[0.42em] text-studio-slate/60 xl:block"
         style={{ writingMode: 'vertical-rl' }}
       >
-        Multiverso Jurásico · Portafolio 2026
+        Multiverso Jurásico · Studio 2026
       </span>
 
-      {/* Pterodáctilos volando en parallax (fondo ambiental) */}
-      <Pterodactyls />
-
-      {/* Dinosaurios cruzando corriendo al fondo */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-16 z-0 overflow-hidden"
-      >
-        {[
-          { dur: '28s', delay: '0s', cls: 'bottom-0 text-meso-rock', h: 'h-14' },
-          { dur: '38s', delay: '-12s', cls: 'bottom-10 text-meso-moss/30', h: 'h-10' },
-          { dur: '52s', delay: '-30s', cls: 'bottom-4 text-meso-rock/80', h: 'h-20' },
-        ].map((d) => (
-          <div
-            key={d.dur}
-            className={`run-across absolute ${d.cls}`}
-            style={{ animationDuration: d.dur, animationDelay: d.delay }}
-          >
-            <svg viewBox="0 0 100 60" className={`${d.h} w-auto`} fill="currentColor">
-              <ellipse cx="44" cy="26" rx="17" ry="9" />
-              <polygon points="28,22 2,14 4,24 26,31" />
-              <polygon points="58,20 72,12 84,14 86,20 74,24 60,26" />
-              <polygon points="84,20 97,26 82,27" />
-              <polygon points="66,27 74,32 70,34 64,31" />
-              <polygon points="34,30 28,44 34,52 40,42 44,34" />
-              <polygon points="56,31 60,44 56,53 52,45 50,35" />
-              <polygon points="40,17 44,10 48,17 52,13 56,18" />
-            </svg>
-          </div>
-        ))}
-      </div>
-
-      <div className="relative mx-auto grid w-full max-w-6xl items-center gap-12 px-5 sm:px-8 lg:grid-cols-[1.05fr_1fr] lg:gap-8">
+      <div className="relative z-10 mx-auto grid w-full max-w-6xl items-center gap-10 px-5 sm:px-8 lg:grid-cols-[1.05fr_1fr] lg:gap-10">
         {/* ---------- Columna editorial ---------- */}
         <div>
-          <motion.p
+          <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: EASE }}
-            className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.28em] text-meso-amber"
+            transition={{ duration: 0.65, ease: EASE }}
+            className="inline-flex items-center gap-2.5 rounded-full border border-studio-border bg-studio-card px-3.5 py-1.5 shadow-studio"
           >
-            <span aria-hidden className="h-px w-10 bg-meso-amber/60" />
-            El Multiverso Jurásico del Código
-          </motion.p>
+            <span className="h-2 w-2 animate-pulse rounded-full bg-studio-green" />
+            <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-studio-purple-deep">
+              El Multiverso Jurásico del Código
+            </span>
+          </motion.div>
 
           <motion.h1
-            initial={{ opacity: 0, y: 26 }}
+            initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.08, ease: EASE }}
-            className="mt-6 font-display text-5xl font-semibold leading-[1.02] tracking-tight sm:text-6xl lg:text-7xl"
+            transition={{ duration: 0.75, delay: 0.08, ease: EASE }}
+            className="mt-6 font-display text-5xl font-bold leading-[1.02] tracking-tight text-studio-ink sm:text-6xl lg:text-7xl"
           >
             Alexandra
             <br />
-            <span className="text-amber-gradient">Fiallo</span>
+            <span className="text-studio-gradient">Fiallo</span>
           </motion.h1>
 
           <motion.p
-            initial={{ opacity: 0, y: 22 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.18, ease: EASE }}
-            className="mt-6 max-w-xl font-mono text-[13px] uppercase leading-relaxed tracking-[0.14em] text-meso-mist sm:text-sm"
+            transition={{ duration: 0.75, delay: 0.16, ease: EASE }}
+            className="mt-6 max-w-xl font-mono text-[13px] font-semibold uppercase leading-relaxed tracking-[0.14em] text-studio-purple-deep sm:text-sm"
           >
             Desarrolladora de Software Full-Stack
-            <span className="mx-2 text-meso-amber">|</span>
+            <span className="mx-2 text-studio-green">|</span>
             Backend &amp; Mobile
           </motion.p>
 
           <motion.p
-            initial={{ opacity: 0, y: 22 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.26, ease: EASE }}
-            className="mt-5 max-w-xl text-base leading-relaxed text-meso-limestone/75 sm:text-lg"
+            transition={{ duration: 0.75, delay: 0.24, ease: EASE }}
+            className="mt-5 max-w-xl text-base leading-relaxed text-studio-slate sm:text-lg"
           >
-            Creo software útil que <em className="not-italic text-meso-limestone">capacite a las personas</em>,
-            optimice sus habilidades cotidianas y convierta el código en{' '}
-            <span className="text-amber-gradient">experiencias interactivas y videojuegos impactantes</span>.
+            Creo software útil que{' '}
+            <strong className="font-semibold text-studio-ink">capacita a las personas</strong>,
+            optimiza sus habilidades cotidianas y convierte el código en{' '}
+            <span className="font-semibold text-studio-purple-deep">
+              experiencias interactivas y videojuegos impactantes
+            </span>
+            .
           </motion.p>
 
           {/* CTAs */}
           <motion.div
-            initial={{ opacity: 0, y: 22 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.36, ease: EASE }}
+            transition={{ duration: 0.75, delay: 0.32, ease: EASE }}
             className="mt-9 flex flex-wrap items-center gap-4"
           >
             <a
               href="#proyectos"
-              className="group rounded-full bg-meso-amber px-7 py-3.5 text-sm font-semibold text-meso-night shadow-amber transition-all hover:-translate-y-0.5 hover:bg-meso-ember hover:shadow-amber-lg"
+              className="group inline-flex items-center gap-2 rounded-full border-2 border-studio-purple-deep bg-studio-purple px-7 py-3.5 text-sm font-semibold text-white shadow-brutal transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:bg-studio-purple-deep"
             >
-              Explorar la excavación
-              <span aria-hidden className="ml-2 inline-block transition-transform group-hover:translate-y-0.5">
+              Explorar proyectos
+              <span aria-hidden className="inline-block transition-transform group-hover:translate-y-0.5">
                 ↓
               </span>
             </a>
             <a
               href="#contacto"
-              className="rounded-full border border-meso-rock px-7 py-3.5 text-sm text-meso-limestone transition-all hover:-translate-y-0.5 hover:border-meso-amber/60 hover:text-meso-amber"
+              className="inline-flex items-center gap-2 rounded-full border border-studio-border bg-studio-card px-7 py-3.5 text-sm font-semibold text-studio-ink shadow-studio transition-all hover:-translate-y-0.5 hover:border-studio-green hover:text-studio-green-deep"
             >
               Enviar una señal
             </a>
           </motion.div>
 
-          {/* Estratos decorativos */}
+          {/* Etiquetas de dominio */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.6 }}
-            className="mt-12 flex items-center gap-4 font-mono text-[10px] uppercase tracking-[0.24em] text-meso-mist/60"
+            transition={{ duration: 0.9, delay: 0.5 }}
+            className="mt-10 flex flex-wrap items-center gap-3 font-mono text-[11px] font-semibold uppercase tracking-[0.2em]"
           >
-            <span className="text-[#A98FD6]">Backend</span>
-            <span aria-hidden className="h-px w-6 bg-meso-rock" />
-            <span className="text-[#6FCF97]">Frontend</span>
-            <span aria-hidden className="h-px w-6 bg-meso-rock" />
-            <span className="text-meso-moss">Mobile</span>
+            <span className="rounded-md border border-studio-purple/25 bg-studio-purple/10 px-2.5 py-1 text-studio-purple-deep">
+              Backend
+            </span>
+            <span className="rounded-md border border-studio-green/30 bg-studio-green/10 px-2.5 py-1 text-studio-green-deep">
+              Frontend
+            </span>
+            <span className="rounded-md border border-studio-border bg-studio-pearl px-2.5 py-1 text-studio-ink">
+              Mobile
+            </span>
           </motion.div>
         </div>
 
-        {/* ---------- Vitrina 3D ---------- */}
+        {/* ---------- Escena interactiva del T-Rex Programador ---------- */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.96 }}
+          initial={{ opacity: 0, scale: 0.97 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1, delay: 0.3, ease: EASE }}
+          transition={{ duration: 0.85, delay: 0.25, ease: EASE }}
           className="relative"
         >
-          <div className="glass relative aspect-[4/5] w-full overflow-hidden rounded-3xl border border-meso-rock/80 shadow-card sm:aspect-square lg:aspect-[4/5]">
-            {/* Canvas del T-Rex */}
-            <div className="absolute inset-0">
-              <HeroTRex3D />
+          <div className="relative aspect-[4/4.3] w-full overflow-hidden rounded-3xl border border-studio-border bg-studio-card shadow-studio-lg sm:aspect-square lg:aspect-[4/4.4]">
+            {/* Barra superior tipo ventana de estudio */}
+            <div className="absolute inset-x-0 top-0 z-30 flex items-center justify-between border-b border-studio-border bg-studio-card/90 px-5 py-3 backdrop-blur-sm">
+              <div className="flex items-center gap-1.5">
+                <span className="h-2.5 w-2.5 rounded-full bg-studio-purple" />
+                <span className="h-2.5 w-2.5 rounded-full bg-studio-green" />
+                <span className="h-2.5 w-2.5 rounded-full bg-studio-border" />
+              </div>
+              <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-studio-slate">
+                trex_studio.tsx
+              </span>
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-studio-green/15 px-2.5 py-0.5 font-mono text-[10px] font-semibold text-studio-green-deep">
+                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-studio-green" />
+                Online
+              </span>
             </div>
 
-            {/* Esquinas de vitrina (brackets HUD) */}
-            {[
-              'left-4 top-4 border-l-2 border-t-2',
-              'right-4 top-4 border-r-2 border-t-2',
-              'left-4 bottom-4 border-b-2 border-l-2',
-              'right-4 bottom-4 border-b-2 border-r-2',
-            ].map((pos) => (
-              <span
-                key={pos}
-                aria-hidden
-                className={`pointer-events-none absolute h-6 w-6 border-meso-amber/60 ${pos}`}
-              />
-            ))}
-
-            {/* Etiqueta superior derecha */}
-            <div className="pointer-events-none absolute right-6 top-6 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] text-meso-mist">
-              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-meso-amber" />
-              En vivo
+            {/* Escena ilustrada interactiva */}
+            <div className="absolute inset-0 pt-10">
+              <HeroTRexStudio />
             </div>
 
-            {/* Placa de especimen */}
-            <div className="pointer-events-none absolute inset-x-6 bottom-6">
-              <div className="flex items-end justify-between gap-3 border-t border-meso-rock/80 pt-3">
-                <div>
-                  <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-meso-amber">
-                    Espécimen 001
-                  </p>
-                  <p className="mt-1 font-display text-sm text-meso-limestone/90">
-                    T-Rex dev · Gafas &amp; rotación 360°
-                  </p>
-                </div>
-                <p className="hidden text-right font-mono text-[9px] uppercase leading-relaxed tracking-[0.18em] text-meso-mist/70 sm:block">
-                  Mueve el cursor
-                  <br />
-                  · clic para rugir
+            {/* Pie de tarjeta */}
+            <div className="pointer-events-none absolute inset-x-4 bottom-4 z-30 flex items-center justify-between rounded-2xl border border-studio-border bg-studio-card/95 px-4 py-2.5 shadow-studio backdrop-blur-sm">
+              <div>
+                <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-studio-purple-deep">
+                  Espécimen 001
+                </p>
+                <p className="font-display text-xs font-semibold text-studio-ink sm:text-sm">
+                  T-Rex Dev · Gafas moradas &amp; stickers
                 </p>
               </div>
+              <span className="rounded-lg bg-studio-pearl px-2.5 py-1 font-mono text-[10px] font-medium text-studio-slate">
+                Mueve el mouse · clic
+              </span>
             </div>
           </div>
         </motion.div>
       </div>
-
-      {/* Indicador de scroll */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.2, duration: 1 }}
-        aria-hidden
-        className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 lg:flex"
-      >
-        <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-meso-mist/60">
-          Desliza para excavar
-        </span>
-        <span className="relative h-10 w-px overflow-hidden bg-meso-rock">
-          <motion.span
-            animate={{ y: ['-100%', '100%'] }}
-            transition={{ duration: 1.6, repeat: Infinity, ease: 'linear' }}
-            className="absolute inset-x-0 h-1/2 bg-meso-amber"
-          />
-        </span>
-      </motion.div>
     </section>
   );
 }

@@ -54,7 +54,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#120D1D',
+  themeColor: '#F4F4F7',
 };
 
 export default function RootLayout({
@@ -62,7 +62,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="es" className={`${sans.variable} ${mono.variable}`}>
-      <body className="grain font-sans antialiased selection:bg-meso-amber/30 selection:text-meso-night">
+      <body className="studio-grid font-sans antialiased text-studio-ink selection:bg-studio-purple/15 selection:text-studio-purple-deep">
         {children}
       </body>
     </html>

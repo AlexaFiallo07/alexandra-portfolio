@@ -10,12 +10,12 @@ interface DinoPet3DProps {
   active?: boolean;
 }
 
-/* Colores de piel realista (oliva) */
-const SKIN = '#66744F';
-const SKIN_DARK = '#46523A';
-const BELLY = '#C9C2A8';
-const CLAW = '#2E2E2A';
-const EYE = '#14150F';
+/* Paleta Studio Light: esmeralda + morado, coherente con el diseño de Antigravity */
+const SKIN = '#3E9E70';
+const SKIN_DARK = '#2E7D57';
+const BELLY = '#D1FAE5';
+const CLAW = '#18181B';
+const EYE = '#18181B';
 
 /**
  * Terópodo realista que corre de un lado a otro del vivarium
@@ -153,10 +153,10 @@ function Dino({ active = false }: DinoPet3DProps) {
   return (
     <>
       {/* Luces de vivarium */}
-      <ambientLight intensity={0.55} color="#FFFFFF" />
-      <directionalLight position={[3, 4, 3]} intensity={1.4} color="#FFFDF8" />
-      <pointLight position={[-2.5, 1.5, -2]} intensity={14} color="#A98FD6" distance={10} />
-      <pointLight position={[2.5, 1, 2]} intensity={7} color="#C4A35A" distance={10} />
+      <ambientLight intensity={0.85} color="#FFFFFF" />
+      <directionalLight position={[3, 4, 3]} intensity={1.5} color="#FFFFFF" />
+      <pointLight position={[-2.5, 1.5, -2]} intensity={12} color="#7C3AED" distance={10} />
+      <pointLight position={[2.5, 1, 2]} intensity={7} color="#10B981" distance={10} />
 
       <group
         ref={root}
@@ -238,7 +238,7 @@ function Dino({ active = false }: DinoPet3DProps) {
               {[0.18, 0.3, 0.42].map((x, i) => (
                 <mesh key={`tooth-${i}`} position={[x, 0.09, 0.08]} rotation={[Math.PI, 0, 0]}>
                   <coneGeometry args={[0.022, 0.09, 6]} />
-                  <meshStandardMaterial color="#F5F1E8" roughness={0.5} />
+                  <meshStandardMaterial color="#FFFFFF" roughness={0.5} />
                 </mesh>
               ))}
             </group>
@@ -253,8 +253,8 @@ function Dino({ active = false }: DinoPet3DProps) {
                 <mesh>
                   <sphereGeometry args={[0.055, 14, 14]} />
                   <meshStandardMaterial
-                    color={hovered ? '#6A4DAB' : EYE}
-                    emissive={hovered ? '#A98FD6' : '#000000'}
+                    color={hovered ? '#7C3AED' : EYE}
+                    emissive={hovered ? '#7C3AED' : '#000000'}
                     emissiveIntensity={hovered ? 0.8 : 0}
                     roughness={0.3}
                   />
@@ -336,14 +336,14 @@ function Dino({ active = false }: DinoPet3DProps) {
         </group>
       </group>
 
-      {/* Suelo del vivarium (piedra oscura museística) */}
+      {/* Suelo del vivarium (papel de estudio claro) */}
       <mesh position={[0, -0.02, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <circleGeometry args={[3, 48]} />
-        <meshStandardMaterial color="#1F1433" roughness={1} />
+        <meshStandardMaterial color="#FFFFFF" roughness={1} />
       </mesh>
       <mesh position={[0, -0.01, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <ringGeometry args={[2.3, 2.36, 64]} />
-        <meshBasicMaterial color="#C4A35A" transparent opacity={0.5} toneMapped={false} />
+        <meshBasicMaterial color="#7C3AED" transparent opacity={0.5} toneMapped={false} />
       </mesh>
 
       {/* Polvo levantado al correr */}
@@ -355,17 +355,17 @@ function Dino({ active = false }: DinoPet3DProps) {
           size={2.4}
           speed={1.4}
           opacity={0.55}
-          color="#C4A35A"
+          color="#10B981"
         />
       )}
 
       <ContactShadows
         position={[0, 0.0, 0]}
-        opacity={0.3}
+        opacity={0.16}
         scale={7}
         blur={2.6}
         far={2}
-        color="#0B0712"
+        color="#5B21B6"
       />
     </>
   );

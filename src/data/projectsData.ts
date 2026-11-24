@@ -64,34 +64,34 @@ export const PROJECTS: Project[] = [
   {
     id: 'multiverso',
     title: 'Multiverso Jurásico',
-    subtitle: 'Portafolio inmersivo con dinosaurios 3D',
+    subtitle: 'Portafolio interactivo estilo estudio luminoso',
     description:
-      'Este mismo sitio: una experiencia de portafolio donde un cráneo fósil 3D rota 360°, pterodáctilos vuelan en parallax y un terópodo corre mientras lees. Construido con Next.js, Three.js y animaciones a 60fps.',
+      'Este mismo sitio: una experiencia de portafolio luminosa donde un T-Rex verde con gafas moradas reacciona al cursor, un Velociraptor pixel art salta obstáculos al hacer scroll y dinosaurios chibi celebran tus clics.',
     category: 'web',
     status: 'destacado',
     year: '2026',
-    stack: ['Next.js 15', 'TypeScript', 'Tailwind CSS', 'Three.js / R3F', 'Framer Motion'],
+    stack: ['Next.js 15', 'TypeScript', 'Tailwind CSS', 'SVG Interactivo', 'Framer Motion'],
     highlights: [
-      'Escena 3D en tiempo real con React Three Fiber y luces de vitrina de museo',
-      'Elenco multi-estilo: siluetas corriendo, pterodáctilos en parallax y dino en vivo',
-      'IntersectionObserver + animaciones solo con transform/opacity (60fps)',
+      'Escena interactiva del Hero con seguimiento de cursor, parallax y stickers dev',
+      'Velociraptor pixel art sincronizado con el porcentaje de scroll y cactus/tags',
+      'IntersectionObserver + animaciones suaves a 60fps solo con transform/opacity',
       'Formulario de contacto con API route y validación serverless',
     ],
     architecture: [
       {
         layer: 'Cliente',
         detail:
-          'Next.js 15 (App Router) con React, Tailwind CSS y Framer Motion. Secciones hidratadas solo cuando entran en pantalla.',
+          'Next.js 15 (App Router) con React, Tailwind CSS y Framer Motion bajo una paleta clara de estudio (#F4F4F7, #FFFFFF, #7C3AED, #10B981).',
       },
       {
-        layer: '3D',
+        layer: 'Interactividad',
         detail:
-          'Three.js vía React Three Fiber: cráneo fósil construido con geometría procedural, rotación 360°, parallax de cursor y pterodáctilos animados con useFrame.',
+          'SVG animado reactivo al puntero (T-Rex con gafas moradas, ventanas flotantes en parallax, dino chibi bailarín y fósiles blueprint).',
       },
       {
         layer: 'Animación',
         detail:
-          'Keyframes CSS para el elenco (correr, volar, bailar, flotar) + framer-motion para entradas escalonadas; todo limitado a transform y opacity.',
+          'Keyframes CSS para el elenco (correr, volar, bailar, flotar) + framer-motion para entradas escalonadas a 60fps.',
       },
       {
         layer: 'Servidor',

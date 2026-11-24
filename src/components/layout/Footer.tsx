@@ -25,95 +25,83 @@ function LinkedInIcon({ className }: { className?: string }) {
 
 function MailIcon({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 24 24" aria-hidden className={className} fill="none" stroke="currentColor" strokeWidth={1.6}>
+    <svg viewBox="0 0 24 24" aria-hidden className={className} fill="none" stroke="currentColor" strokeWidth={1.8}>
       <rect x="2.5" y="4.5" width="19" height="15" rx="2.5" />
       <path d="m3.5 7 8.5 6 8.5-6" strokeLinecap="round" />
     </svg>
   );
 }
 
-/** Meteorito que cruza el pie de página. */
+/** Meteorito divertido estilo estudio que cruza el pie de página. */
 function Meteorite() {
   return (
-    <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-24 overflow-hidden">
-      <div className="animate-meteor absolute left-[65%] top-2 h-1 w-16 -translate-x-1/2 rotate-[-18deg] rounded-full bg-gradient-to-r from-transparent via-meso-moss to-meso-amber shadow-[0_0_12px_2px_rgba(196,163,90,0.55)]" />
+    <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-20 overflow-hidden">
+      <div className="animate-meteor absolute left-[68%] top-4 flex -translate-x-1/2 items-center">
+        <div className="h-0.5 w-24 rounded-full bg-gradient-to-r from-transparent via-studio-purple/60 to-studio-green" />
+        <div className=" -ml-1 h-4 w-4 rounded-full border-2 border-studio-ink bg-studio-green shadow-sm" />
+      </div>
     </div>
   );
 }
 
-/** Dinosaurio chibi despidiéndose con la patita. */
+/** Dinosaurio chibi verde y morado despidiéndose con la patita. */
 function WavingDino() {
   return (
-    <svg viewBox="0 0 64 64" className="h-11 w-11" role="img" aria-label="Dinosaurio despidiéndose">
-      {/* Cola */}
-      <path d="M14 46 Q4 44 6 36 Q12 42 18 40 Z" fill="#6FCF97" />
-      {/* Cuerpo */}
-      <ellipse cx="32" cy="46" rx="16" ry="12" fill="#6FCF97" />
-      <ellipse cx="33" cy="49" rx="10" ry="7" fill="#BFEED4" />
-      {/* Patas */}
-      <ellipse cx="25" cy="57" rx="6.5" ry="4" fill="#3E9E70" />
-      <ellipse cx="41" cy="57" rx="6.5" ry="4" fill="#3E9E70" />
-      {/* Placas */}
+    <svg viewBox="0 0 64 64" className="h-12 w-12 shrink-0" role="img" aria-label="Dinosaurio despidiéndose">
+      <path d="M14 46 Q4 44 6 36 Q12 42 18 40 Z" fill="#10B981" stroke="#18181B" strokeWidth="2" />
+      <ellipse cx="32" cy="46" rx="16" ry="12" fill="#10B981" stroke="#18181B" strokeWidth="2.2" />
+      <ellipse cx="33" cy="49" rx="10" ry="7" fill="#D1FAE5" />
+      <ellipse cx="25" cy="57" rx="6.5" ry="4" fill="#059669" stroke="#18181B" strokeWidth="1.8" />
+      <ellipse cx="41" cy="57" rx="6.5" ry="4" fill="#059669" stroke="#18181B" strokeWidth="1.8" />
       {[[23, 34], [32, 31], [41, 34]].map(([cx, cy]) => (
-        <path key={`${cx}`} d={`M${cx - 5} ${cy + 5} Q${cx} ${cy - 7} ${cx + 5} ${cy + 5} Z`} fill="#C4A35A" />
+        <path key={`${cx}`} d={`M${cx - 5} ${cy + 5} Q${cx} ${cy - 7} ${cx + 5} ${cy + 5} Z`} fill="#7C3AED" stroke="#18181B" strokeWidth="1.5" />
       ))}
-      {/* Patita que saluda */}
-      <g
-        className="animate-wave"
-        style={{ transformBox: 'fill-box', transformOrigin: 'center top' }}
-      >
-        <ellipse cx="48" cy="42" rx="4" ry="8" fill="#3E9E70" />
+      <g className="animate-wave" style={{ transformBox: 'fill-box', transformOrigin: 'center top' }}>
+        <ellipse cx="48" cy="42" rx="4" ry="8" fill="#10B981" stroke="#18181B" strokeWidth="1.8" />
       </g>
-      {/* Cabeza */}
-      <circle cx="33" cy="25" r="15" fill="#6FCF97" />
-      <ellipse cx="41" cy="29" rx="7" ry="5" fill="#BFEED4" />
-      {/* Ojos cerrados de despedida (ríe) */}
-      <path d="M27 23 q3 -3 6 0" stroke="#16324A" strokeWidth="2.2" strokeLinecap="round" fill="none" />
-      <path d="M37 23 q3 -3 6 0" stroke="#16324A" strokeWidth="2.2" strokeLinecap="round" fill="none" />
-      {/* Sonrisa */}
-      <path d="M33 30 q4 4 8 0" stroke="#16324A" strokeWidth="2" strokeLinecap="round" fill="none" />
-      {/* Rubor */}
-      <ellipse cx="27" cy="29" rx="3" ry="2" fill="#F2A6C8" opacity="0.85" />
+      <circle cx="33" cy="25" r="15" fill="#10B981" stroke="#18181B" strokeWidth="2.2" />
+      <ellipse cx="41" cy="29" rx="7" ry="5" fill="#A7F3D0" />
+      <path d="M27 23 q3 -3 6 0" stroke="#18181B" strokeWidth="2.2" strokeLinecap="round" fill="none" />
+      <path d="M37 23 q3 -3 6 0" stroke="#18181B" strokeWidth="2.2" strokeLinecap="round" fill="none" />
+      <path d="M33 30 q4 4 8 0" stroke="#18181B" strokeWidth="2" strokeLinecap="round" fill="none" />
+      <ellipse cx="27" cy="29" rx="3" ry="2" fill="#7C3AED" opacity="0.28" />
     </svg>
   );
 }
 
-/** Pie de página con meteorito, dino de despedida y canales de contacto. */
+/** Pie de página luminoso (#FFFFFF sobre #F4F4F7). */
 export default function Footer() {
   return (
-    <footer className="relative overflow-hidden border-t border-meso-rock/80 bg-meso-night">
+    <footer className="relative overflow-hidden border-t border-studio-border bg-studio-card">
       <Meteorite />
-
-      {/* Estratos decorativos */}
-      <div aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-meso-amber/50 to-transparent" />
 
       <div className="relative mx-auto grid max-w-6xl gap-10 px-5 py-14 sm:px-8 md:grid-cols-[1.4fr_1fr_1fr]">
         {/* Marca + dino de despedida */}
         <div>
           <div className="flex items-start gap-4">
             <div>
-              <p className="font-display text-2xl font-semibold">
-                Alexandra <span className="text-amber-gradient">Fiallo</span>
+              <p className="font-display text-2xl font-bold text-studio-ink">
+                Alexandra <span className="text-studio-gradient">Fiallo</span>
               </p>
-              <p className="mt-3 max-w-sm text-sm leading-relaxed text-meso-mist">
+              <p className="mt-3 max-w-sm text-sm leading-relaxed text-studio-slate">
                 Desarrolladora de Software Full-Stack / Backend &amp; Mobile. Creo software
-                útil que capacite a las personas y experiencias que se sientan vivas.
+                útil que capacite a las personas y experiencias digitales llenas de vida.
               </p>
             </div>
             <WavingDino />
           </div>
-          <div className="mt-5 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.2em] text-meso-mist/60">
-            <span className="text-[#A98FD6]">Backend</span>
-            <span aria-hidden className="h-px w-8 bg-meso-rock" />
-            <span className="text-[#6FCF97]">Frontend</span>
-            <span aria-hidden className="h-px w-8 bg-meso-rock" />
-            <span className="text-meso-moss/80">Mobile</span>
+          <div className="mt-5 flex items-center gap-3 font-mono text-[10px] font-semibold uppercase tracking-[0.2em]">
+            <span className="text-studio-purple-deep">Backend</span>
+            <span aria-hidden className="h-px w-6 bg-studio-border" />
+            <span className="text-studio-green-deep">Frontend</span>
+            <span aria-hidden className="h-px w-6 bg-studio-border" />
+            <span className="text-studio-purple">Mobile</span>
           </div>
         </div>
 
         {/* Navegación */}
         <nav aria-label="Enlaces del pie">
-          <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-meso-amber">
+          <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-studio-purple-deep">
             Secciones
           </p>
           <ul className="mt-4 space-y-2.5">
@@ -121,7 +109,7 @@ export default function Footer() {
               <li key={item.id}>
                 <a
                   href={`#${item.id}`}
-                  className="text-sm text-meso-limestone/70 transition-colors hover:text-meso-amber"
+                  className="text-sm font-medium text-studio-slate transition-colors hover:text-studio-purple"
                 >
                   {item.label}
                 </a>
@@ -132,7 +120,7 @@ export default function Footer() {
 
         {/* Canales */}
         <div>
-          <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-meso-amber">
+          <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-studio-purple-deep">
             Contacto
           </p>
           <ul className="mt-4 space-y-3">
@@ -141,9 +129,9 @@ export default function Footer() {
                 href={CONTACT.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2.5 text-sm text-meso-limestone/70 transition-colors hover:text-meso-amber"
+                className="group inline-flex items-center gap-2.5 text-sm font-medium text-studio-slate transition-colors hover:text-studio-purple"
               >
-                <GitHubIcon className="h-4 w-4" />
+                <GitHubIcon className="h-4 w-4 text-studio-ink" />
                 {CONTACT.githubHandle}
               </a>
             </li>
@@ -152,18 +140,18 @@ export default function Footer() {
                 href={CONTACT.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2.5 text-sm text-meso-limestone/70 transition-colors hover:text-meso-amber"
+                className="group inline-flex items-center gap-2.5 text-sm font-medium text-studio-slate transition-colors hover:text-studio-purple"
               >
-                <LinkedInIcon className="h-4 w-4" />
+                <LinkedInIcon className="h-4 w-4 text-studio-purple-deep" />
                 {CONTACT.linkedinHandle}
               </a>
             </li>
             <li>
               <a
                 href={`mailto:${CONTACT.email}`}
-                className="group inline-flex items-center gap-2.5 text-sm text-meso-limestone/70 transition-colors hover:text-meso-amber"
+                className="group inline-flex items-center gap-2.5 text-sm font-medium text-studio-slate transition-colors hover:text-studio-green-deep"
               >
-                <MailIcon className="h-4 w-4" />
+                <MailIcon className="h-4 w-4 text-studio-green-deep" />
                 {CONTACT.email}
               </a>
             </li>
@@ -172,10 +160,10 @@ export default function Footer() {
       </div>
 
       {/* Línea inferior */}
-      <div className="border-t border-meso-rock/60">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-5 py-5 font-mono text-[11px] uppercase tracking-[0.16em] text-meso-mist/70 sm:flex-row sm:px-8">
+      <div className="border-t border-studio-border bg-studio-pearl/60">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-5 py-5 font-mono text-[11px] uppercase tracking-[0.16em] text-studio-slate sm:flex-row sm:px-8">
           <p>© 2026 Alexandra Fiallo</p>
-          <p className="text-meso-mist/70">Next.js · Three.js · Dinosaurios</p>
+          <p>Next.js · SVG Interactivo · Dinosaurios</p>
         </div>
       </div>
     </footer>

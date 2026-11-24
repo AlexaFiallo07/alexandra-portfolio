@@ -3,42 +3,39 @@
 import { useEffect, useRef } from 'react';
 
 /**
- * Velociraptor en pixel art que corre por el borde superior de la pantalla,
- * sincronizado con el porcentaje de scroll. Salta obstáculos (etiquetas
- * <div> y bugs) a medida que los alcanza. Rendimiento: solo transform/opacity
- * vía requestAnimationFrame (sin re-renders de React en cada frame).
+ * Velociraptor pixel art verde y morado estilo Chrome Dino:
+ * corre sobre una línea punteada justo debajo del navbar sincronizado con
+ * el scroll de la página, saltando cactus y etiquetas HTML (<div>, </>).
  */
 
-/** Posición (0-1) de cada obstáculo en la vía. */
-const OBSTACLES: Array<{ at: number; kind: 'div' | 'bug' }> = [
-  { at: 0.24, kind: 'div' },
-  { at: 0.5, kind: 'bug' },
-  { at: 0.74, kind: 'div' },
-  { at: 0.92, kind: 'bug' },
+const OBSTACLES: Array<{ at: number; kind: 'cactus' | 'div' | 'code' }> = [
+  { at: 0.2, kind: 'cactus' },
+  { at: 0.44, kind: 'div' },
+  { at: 0.68, kind: 'cactus' },
+  { at: 0.88, kind: 'code' },
 ];
 
-/* Sprite del raptor: 14 columnas × 10 filas */
+/* Sprite del raptor: 16 × 10 píxeles (verde esmeralda + detalles morados) */
 const BODY = [
   '........ddd.....',
   '.......dbbbd....',
   '......dbbbbbd...',
-  '..dd..dbebbbbd..',
+  '..pp..dbebbbbd..',
   '.dbbbddbbbbbbbd.',
   'dbbbbbbbbbbbbbbd',
-  'dbbggbbbbbbbbbbd',
+  'dbbppbbbbbbbbbbd',
   'dbbbbbbbbbbbbbd.',
   '.dbbbbbbbbbbbd..',
   '..dbbbbbbbbbd...',
 ];
 
 const PALETTE: Record<string, string> = {
-  d: '#6A4DAB',
-  b: '#A98FD6',
-  g: '#C4A35A',
-  e: '#FFFFFF',
+  d: '#059669', // verde oscuro contorno
+  b: '#10B981', // verde esmeralda cuerpo
+  p: '#7C3AED', // acento morado vibrante (cresta / franja)
+  e: '#18181B', // ojo carbón
 };
 
-/** Patas alternadas (dos fotogramas con steps para el galope). */
 const LEGS_A = [
   { x: 3, y: 10, w: 2, h: 3 },
   { x: 2, y: 13, w: 3, h: 1 },
@@ -60,7 +57,7 @@ function RaptorSprite() {
   return (
     <svg
       viewBox="0 0 16 15"
-      className="h-7 w-auto drop-shadow-[0_0_6px_rgba(169,143,214,0.55)]"
+      className="h-7 w-auto drop-shadow-[0_2px_4px_rgba(91,33,182,0.22)]"
       shapeRendering="crispEdges"
       aria-hidden
     >
@@ -73,38 +70,32 @@ function RaptorSprite() {
             y={c.y}
             width={1}
             height={1}
-            fill={PALETTE[c.code] ?? '#A98FD6'}
+            fill={PALETTE[c.code] ?? '#10B981'}
           />
         ))}
-      {/* Patas — fotograma A (se oculta con steps) */}
       <g className="animate-leg-a">
         {LEGS_A.map((r, i) => (
-          <rect key={`a-${i}`} x={r.x} y={r.y} width={r.w} height={r.h} fill="#6A4DAB" />
+          <rect key={`a-${i}`} x={r.x} y={r.y} width={r.w} height={r.h} fill="#5B21B6" />
         ))}
       </g>
-      {/* Patas — fotograma B */}
       <g className="animate-leg-b">
         {LEGS_B.map((r, i) => (
-          <rect key={`b-${i}`} x={r.x} y={r.y} width={r.w} height={r.h} fill="#6A4DAB" />
+          <rect key={`b-${i}`} x={r.x} y={r.y} width={r.w} height={r.h} fill="#5B21B6" />
         ))}
       </g>
     </svg>
   );
 }
 
-/** Obstáculo tipo bug (insecto pixel-art). */
-function BugSprite() {
+/** Cactus en pixel art verde esmeralda. */
+function CactusSprite() {
   return (
-    <svg viewBox="0 0 10 8" className="h-4 w-auto" shapeRendering="crispEdges" aria-hidden>
-      <rect x="3" y="1" width="4" height="6" fill="#C4A35A" />
-      <rect x="4" y="0" width="2" height="1" fill="#C4A35A" />
-      <rect x="2" y="2" width="1" height="1" fill="#C4A35A" />
-      <rect x="7" y="2" width="1" height="1" fill="#C4A35A" />
-      <rect x="2" y="5" width="1" height="1" fill="#C4A35A" />
-      <rect x="7" y="5" width="1" height="1" fill="#C4A35A" />
-      <rect x="4" y="3" width="2" height="1" fill="#120D1D" />
-      <rect x="3" y="6" width="1" height="1" fill="#6A4DAB" />
-      <rect x="6" y="6" width="1" height="1" fill="#6A4DAB" />
+    <svg viewBox="0 0 9 11" className="h-4 w-auto" shapeRendering="crispEdges" aria-hidden>
+      <rect x="4" y="1" width="2" height="10" fill="#059669" />
+      <rect x="1" y="3" width="2" height="4" fill="#10B981" />
+      <rect x="2" y="6" width="2" height="1" fill="#059669" />
+      <rect x="7" y="2" width="2" height="4" fill="#10B981" />
+      <rect x="6" y="5" width="2" height="1" fill="#059669" />
     </svg>
   );
 }
@@ -112,14 +103,17 @@ function BugSprite() {
 export default function PixelRaptor() {
   const railRef = useRef<HTMLDivElement>(null);
   const raptorRef = useRef<HTMLDivElement>(null);
+  const jumpRef = useRef<HTMLDivElement>(null);
   const fillRef = useRef<HTMLDivElement>(null);
   const pctRef = useRef<HTMLSpanElement>(null);
   const jumpLock = useRef<Set<number>>(new Set());
 
   useEffect(() => {
     let raf = 0;
+    const timeouts: number[] = [];
 
-    const tick = () => {
+    const update = () => {
+      raf = 0;
       const doc = document.documentElement;
       const max = doc.scrollHeight - window.innerHeight;
       const pct = max > 0 ? Math.min(Math.max(window.scrollY / max, 0), 1) : 0;
@@ -133,67 +127,85 @@ export default function PixelRaptor() {
       if (fillRef.current) fillRef.current.style.transform = `scaleX(${pct})`;
       if (pctRef.current) pctRef.current.textContent = `${Math.round(pct * 100)}%`;
 
-      // Salto al alcanzar un obstáculo
       OBSTACLES.forEach((o, i) => {
-        if (Math.abs(pct - o.at) < 0.014 && !jumpLock.current.has(i) && raptor) {
+        const jumper = jumpRef.current;
+        if (Math.abs(pct - o.at) < 0.018 && !jumpLock.current.has(i) && jumper) {
           jumpLock.current.add(i);
-          raptor.classList.add('animate-raptor-jump');
-          window.setTimeout(() => {
-            raptor.classList.remove('animate-raptor-jump');
+          // El salto vive en un elemento hijo para no sobrescribir el
+          // translate3d horizontal que controla el scroll.
+          jumper.classList.add('animate-raptor-jump');
+          const id = window.setTimeout(() => {
+            jumper.classList.remove('animate-raptor-jump');
             jumpLock.current.delete(i);
           }, 650);
+          timeouts.push(id);
         }
       });
-
-      raf = window.requestAnimationFrame(tick);
     };
 
-    raf = window.requestAnimationFrame(tick);
-    return () => window.cancelAnimationFrame(raf);
+    const scheduleUpdate = () => {
+      if (!raf) raf = window.requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener('scroll', scheduleUpdate, { passive: true });
+    window.addEventListener('resize', scheduleUpdate, { passive: true });
+
+    return () => {
+      if (raf) window.cancelAnimationFrame(raf);
+      timeouts.forEach((id) => window.clearTimeout(id));
+      window.removeEventListener('scroll', scheduleUpdate);
+      window.removeEventListener('resize', scheduleUpdate);
+    };
   }, []);
 
   return (
     <div
       aria-hidden
-      className="pointer-events-none fixed inset-x-0 top-[70px] z-40 px-3 sm:px-6"
+      className="pointer-events-none fixed inset-x-0 top-[74px] z-40 px-4 sm:px-8"
     >
-      <div ref={railRef} className="relative mx-auto h-8 max-w-5xl">
-        {/* Vía */}
-        <div className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 overflow-hidden">
-          <div className="h-full w-full bg-meso-rock/70" />
+      <div className="mx-auto flex max-w-5xl items-center gap-3">
+        <div ref={railRef} className="relative h-8 flex-1">
+          {/* Línea punteada estilo Chrome Dino */}
+          <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 border-t-2 border-dotted border-studio-border" />
+          {/* Progreso recorrido en morado → verde */}
           <div
             ref={fillRef}
-            className="absolute inset-0 origin-left bg-gradient-to-r from-meso-ember to-meso-amber"
+            className="absolute inset-x-0 top-1/2 h-[2px] -translate-y-1/2 origin-left bg-gradient-to-r from-studio-purple to-studio-green"
             style={{ transform: 'scaleX(0)' }}
           />
-        </div>
 
-        {/* Obstáculos */}
-        {OBSTACLES.map((o, i) => (
-          <div
-            key={i}
-            className="absolute top-1/2 -translate-y-1/2"
-            style={{ left: `calc(${o.at * 100}% - 14px)` }}
-          >
-            {o.kind === 'div' ? (
-              <span className="block rounded border border-meso-moss/70 bg-meso-stone/90 px-1.5 py-0.5 font-mono text-[8px] tracking-tight text-meso-moss shadow-[0_0_8px_rgba(196,163,90,0.35)]">
-                &lt;div&gt;
-              </span>
-            ) : (
-              <BugSprite />
-            )}
+          {/* Obstáculos: cactus y etiquetas HTML */}
+          {OBSTACLES.map((o, i) => (
+            <div
+              key={i}
+              className="absolute top-1/2 -translate-y-1/2"
+              style={{ left: `calc(${o.at * 100}% - 14px)` }}
+            >
+              {o.kind === 'cactus' ? (
+                <CactusSprite />
+              ) : (
+                <span className="block rounded border border-studio-purple/40 bg-studio-card px-1.5 py-0.5 font-mono text-[8px] font-semibold tracking-tight text-studio-purple-deep shadow-sm">
+                  {o.kind === 'div' ? '<div>' : '</>'}
+                </span>
+              )}
+            </div>
+          ))}
+
+          {/* Raptor pixel art: capas separadas para scroll, centrado y salto */}
+          <div ref={raptorRef} className="absolute left-0 top-1/2 will-change-transform">
+            <div className="-translate-y-1/2">
+              <div ref={jumpRef}>
+                <RaptorSprite />
+              </div>
+            </div>
           </div>
-        ))}
-
-        {/* Raptor */}
-        <div ref={raptorRef} className="absolute left-0 top-1/2 -translate-y-1/2 will-change-transform">
-          <RaptorSprite />
         </div>
 
         {/* Porcentaje de scroll */}
         <span
           ref={pctRef}
-          className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-full pl-3 font-mono text-[9px] tracking-[0.16em] text-meso-mist"
+          className="w-9 shrink-0 rounded-md border border-studio-border bg-studio-card px-1.5 py-0.5 text-center font-mono text-[9px] font-semibold text-studio-purple-deep"
         >
           0%
         </span>

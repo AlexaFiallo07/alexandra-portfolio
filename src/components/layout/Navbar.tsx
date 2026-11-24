@@ -12,8 +12,7 @@ const LINKS = [
 ];
 
 /**
- * Menú de navegación flotante (pill) con barra de progreso de lectura,
- * sección activa y panel móvil desplegable.
+ * Barra de navegación flotante luminosa + Velociraptor pixel art debajo.
  */
 export default function Navbar() {
   const { scrollYProgress } = useScroll();
@@ -22,7 +21,6 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState('');
 
-  // Sección activa según el viewport
   useEffect(() => {
     const ids = ['inicio', ...LINKS.map((l) => l.id), 'contacto'];
     const observer = new IntersectionObserver(
@@ -47,31 +45,31 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Velociraptor pixel-art sincronizado con el scroll */}
+      {/* Velociraptor pixel art verde y morado corriendo sobre línea punteada */}
       <PixelRaptor />
 
-      {/* Barra de progreso de excavación */}
+      {/* Barra superior de progreso */}
       <motion.div
         aria-hidden
         style={{ scaleX: progress }}
-        className="fixed inset-x-0 top-0 z-[60] h-[2px] origin-left bg-gradient-to-r from-meso-amber via-meso-ember to-meso-amber"
+        className="fixed inset-x-0 top-0 z-[60] h-[3px] origin-left bg-gradient-to-r from-studio-purple-deep via-studio-purple to-studio-green"
       />
 
       <header className="fixed inset-x-0 top-4 z-50 flex justify-center px-4">
         <nav
           aria-label="Navegación principal"
-          className="glass relative flex w-full max-w-3xl items-center gap-2 rounded-full border border-meso-rock/80 px-3 py-2 shadow-card backdrop-blur-xl"
+          className="studio-glass relative flex w-full max-w-3xl items-center gap-2 rounded-full px-3 py-2"
         >
           {/* Monograma */}
           <button
             onClick={() => go('inicio')}
-            className="flex items-center gap-2.5 rounded-full pr-1 transition-opacity hover:opacity-80"
+            className="flex items-center gap-2.5 rounded-full pr-1 transition-opacity hover:opacity-85"
             aria-label="Volver al inicio"
           >
-            <span className="grid h-8 w-8 place-items-center rounded-full border border-meso-amber/60 bg-meso-amber/10 font-display text-sm font-bold text-meso-amber">
+            <span className="grid h-8 w-8 place-items-center rounded-full border border-studio-purple-deep bg-studio-purple font-display text-sm font-bold text-white shadow-sm">
               AF
             </span>
-            <span className="hidden font-mono text-[11px] uppercase tracking-[0.2em] text-meso-mist sm:block">
+            <span className="hidden font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-studio-ink sm:block">
               A. Fiallo
             </span>
           </button>
@@ -83,10 +81,10 @@ export default function Navbar() {
                 <button
                   onClick={() => go(link.id)}
                   className={cn(
-                    'rounded-full px-3.5 py-1.5 text-sm transition-colors',
+                    'rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors',
                     active === link.id
-                      ? 'bg-meso-amber/10 text-meso-amber'
-                      : 'text-meso-limestone/70 hover:text-meso-limestone',
+                      ? 'bg-studio-purple/10 text-studio-purple-deep'
+                      : 'text-studio-slate hover:bg-studio-pearl hover:text-studio-ink',
                   )}
                 >
                   {link.label}
@@ -99,10 +97,10 @@ export default function Navbar() {
           <button
             onClick={() => go('contacto')}
             className={cn(
-              'ml-auto rounded-full px-4 py-1.5 text-sm font-semibold transition-all md:ml-1',
+              'ml-auto rounded-full border px-4 py-1.5 text-sm font-semibold transition-all md:ml-1',
               active === 'contacto'
-                ? 'bg-meso-ember text-meso-night shadow-amber'
-                : 'bg-meso-amber text-meso-night hover:bg-meso-ember',
+                ? 'border-studio-purple-deep bg-studio-purple-deep text-white shadow-studio'
+                : 'border-studio-purple-deep bg-studio-purple text-white hover:bg-studio-purple-deep',
             )}
           >
             Contacto
@@ -113,18 +111,18 @@ export default function Navbar() {
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
             aria-label={open ? 'Cerrar menú' : 'Abrir menú'}
-            className="ml-1 grid h-9 w-9 place-items-center rounded-full border border-meso-rock text-meso-limestone md:hidden"
+            className="ml-1 grid h-9 w-9 place-items-center rounded-full border border-studio-border bg-studio-bg text-studio-ink md:hidden"
           >
             <span className="relative block h-3 w-4">
               <span
                 className={cn(
-                  'absolute inset-x-0 top-0 h-px bg-current transition-transform',
+                  'absolute inset-x-0 top-0 h-0.5 bg-current transition-transform',
                   open && 'top-1/2 -translate-y-1/2 rotate-45',
                 )}
               />
               <span
                 className={cn(
-                  'absolute inset-x-0 bottom-0 h-px bg-current transition-transform',
+                  'absolute inset-x-0 bottom-0 h-0.5 bg-current transition-transform',
                   open && 'bottom-1/2 translate-y-1/2 -rotate-45',
                 )}
               />
@@ -136,18 +134,18 @@ export default function Navbar() {
             <motion.ul
               initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.22 }}
-              className="glass absolute left-0 right-0 top-full mt-2 flex flex-col gap-1 rounded-2xl border border-meso-rock p-3 md:hidden"
+              transition={{ duration: 0.2 }}
+              className="studio-glass absolute left-0 right-0 top-full mt-2 flex flex-col gap-1 rounded-2xl p-3 md:hidden"
             >
               {[...LINKS, { id: 'contacto', label: 'Contacto' }].map((link) => (
                 <li key={link.id}>
                   <button
                     onClick={() => go(link.id)}
                     className={cn(
-                      'w-full rounded-xl px-4 py-2.5 text-left text-sm transition-colors',
+                      'w-full rounded-xl px-4 py-2.5 text-left text-sm font-medium transition-colors',
                       active === link.id
-                        ? 'bg-meso-amber/10 text-meso-amber'
-                        : 'text-meso-limestone/80 hover:bg-meso-rock/60',
+                        ? 'bg-studio-purple/10 text-studio-purple-deep'
+                        : 'text-studio-ink hover:bg-studio-pearl',
                     )}
                   >
                     {link.label}

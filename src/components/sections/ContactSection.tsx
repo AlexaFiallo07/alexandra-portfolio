@@ -19,7 +19,7 @@ function GitHubIcon({ className }: { className?: string }) {
 
 function MailIcon({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 24 24" aria-hidden className={className} fill="none" stroke="currentColor" strokeWidth={1.6}>
+    <svg viewBox="0 0 24 24" aria-hidden className={className} fill="none" stroke="currentColor" strokeWidth={1.8}>
       <rect x="2.5" y="4.5" width="19" height="15" rx="2.5" />
       <path d="m3.5 7 8.5 6 8.5-6" strokeLinecap="round" />
     </svg>
@@ -36,7 +36,7 @@ function LinkedInIcon({ className }: { className?: string }) {
 
 function CopyIcon({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 24 24" aria-hidden className={className} fill="none" stroke="currentColor" strokeWidth={1.6}>
+    <svg viewBox="0 0 24 24" aria-hidden className={className} fill="none" stroke="currentColor" strokeWidth={1.8}>
       <rect x="9" y="9" width="11" height="11" rx="2" />
       <path d="M5 15V5a2 2 0 0 1 2-2h10" strokeLinecap="round" />
     </svg>
@@ -44,11 +44,10 @@ function CopyIcon({ className }: { className?: string }) {
 }
 
 const inputCls =
-  'w-full rounded-lg border border-meso-rock bg-white px-4 py-3 text-sm text-meso-limestone placeholder:text-meso-mist/50 outline-none transition-colors focus:border-meso-amber/70 focus:ring-2 focus:ring-meso-amber/20';
+  'w-full rounded-xl border border-studio-border bg-studio-bg px-4 py-3 text-sm text-studio-ink placeholder:text-studio-slate/60 outline-none transition-colors focus:border-studio-purple focus:bg-studio-card focus:ring-2 focus:ring-studio-purple/15';
 
 /**
- * Sección de contacto: formulario mesozoico con validación client/server
- * y canales directos (GitHub + correo con copiado al portapapeles).
+ * Sección de contacto luminosa con tarjetas blancas y canales directos.
  */
 export default function ContactSection() {
   const [status, setStatus] = useState<Status>('idle');
@@ -65,7 +64,7 @@ export default function ContactSection() {
       name: String(data.get('name') ?? ''),
       email: String(data.get('email') ?? ''),
       message: String(data.get('message') ?? ''),
-      company: String(data.get('company') ?? ''), // honeypot
+      company: String(data.get('company') ?? ''),
     };
 
     if (payload.name.trim().length < 2) {
@@ -116,77 +115,72 @@ export default function ContactSection() {
   };
 
   return (
-    <section id="contacto" className="relative py-24 sm:py-32">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute left-0 top-1/2 h-[500px] w-[500px] -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(106,77,171,0.14),transparent_65%)] blur-2xl"
-      />
-
+    <section id="contacto" className="relative py-20 sm:py-28">
       <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
         {/* Encabezado */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.7, ease: EASE }}
+          transition={{ duration: 0.65, ease: EASE }}
           className="flex items-center gap-4"
         >
-          <span className="font-mono text-[11px] uppercase tracking-[0.28em] text-meso-amber">
+          <span className="rounded-full border border-studio-green/35 bg-studio-green/10 px-3 py-1 font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-studio-green-deep">
             04 — Contacto
           </span>
-          <span aria-hidden className="h-px flex-1 bg-meso-rock" />
+          <span aria-hidden className="h-px flex-1 bg-studio-border" />
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.7, delay: 0.08, ease: EASE }}
+          transition={{ duration: 0.65, delay: 0.06, ease: EASE }}
           className="mt-6 max-w-2xl"
         >
-          <h2 className="font-display text-3xl font-semibold leading-tight sm:text-4xl lg:text-[2.75rem]">
-            Abramos una <span className="text-amber-gradient">excavación</span> juntos
+          <h2 className="font-display text-3xl font-bold leading-tight text-studio-ink sm:text-4xl lg:text-[2.6rem]">
+            Construyamos tu próximo{' '}
+            <span className="text-studio-gradient">proyecto juntos</span>
           </h2>
-          <p className="mt-4 text-meso-mist">
-            ¿Sistema para tu PYME, tienda virtual o API REST? Envía una señal y te
-            respondo en 24–48 horas.
+          <p className="mt-3 text-base text-studio-slate">
+            ¿Sistema administrativo para tu PYME, tienda virtual o API REST? Escríbeme y te respondo
+            en 24–48 horas.
           </p>
         </motion.div>
 
         <div className="mt-12 grid gap-6 lg:grid-cols-[1.15fr_1fr]">
           {/* ---------- Formulario ---------- */}
           <motion.div
-            initial={{ opacity: 0, y: 32 }}
+            initial={{ opacity: 0, y: 28 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.7, ease: EASE }}
+            transition={{ duration: 0.65, ease: EASE }}
           >
             <AmberCard className="p-6 sm:p-8">
               {status === 'success' ? (
                 <motion.div
                   initial={{ opacity: 0, scale: 0.96 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.4, ease: EASE }}
+                  transition={{ duration: 0.35, ease: EASE }}
                   className="flex min-h-[360px] flex-col items-center justify-center text-center"
                 >
                   <span
                     aria-hidden
-                    className="grid h-16 w-16 place-items-center rounded-full border-2 border-meso-amber bg-meso-amber/10 text-2xl text-meso-amber shadow-amber"
+                    className="grid h-16 w-16 place-items-center rounded-full border-2 border-studio-green bg-studio-green/15 text-2xl font-bold text-studio-green-deep"
                   >
                     ✓
                   </span>
-                  <h3 className="mt-6 font-display text-2xl font-semibold">
-                    Señal recibida
+                  <h3 className="mt-6 font-display text-2xl font-bold text-studio-ink">
+                    ¡Mensaje recibido!
                   </h3>
-                  <p className="mt-3 max-w-sm text-sm leading-relaxed text-meso-mist">
-                    Tu mensaje queda fosilizado en mi bandeja. Te responderé lo antes
-                    posible.
+                  <p className="mt-3 max-w-sm text-sm leading-relaxed text-studio-slate">
+                    Tu señal llegó limpia al estudio. Te responderé lo antes posible.
                   </p>
                   <button
                     onClick={() => setStatus('idle')}
-                    className="mt-7 rounded-full border border-meso-rock px-6 py-2.5 text-sm text-meso-limestone transition-colors hover:border-meso-amber/60 hover:text-meso-amber"
+                    className="mt-7 rounded-full border border-studio-border bg-studio-bg px-6 py-2.5 text-sm font-semibold text-studio-ink transition-colors hover:border-studio-purple hover:text-studio-purple-deep"
                   >
-                    Enviar otra señal
+                    Enviar otro mensaje
                   </button>
                 </motion.div>
               ) : (
@@ -195,7 +189,7 @@ export default function ContactSection() {
                     <div>
                       <label
                         htmlFor="contact-name"
-                        className="mb-2 block font-mono text-[10px] uppercase tracking-[0.22em] text-meso-mist"
+                        className="mb-2 block font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-studio-purple-deep"
                       >
                         Nombre
                       </label>
@@ -213,7 +207,7 @@ export default function ContactSection() {
                     <div>
                       <label
                         htmlFor="contact-email"
-                        className="mb-2 block font-mono text-[10px] uppercase tracking-[0.22em] text-meso-mist"
+                        className="mb-2 block font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-studio-purple-deep"
                       >
                         Correo
                       </label>
@@ -233,7 +227,7 @@ export default function ContactSection() {
                   <div className="mt-5">
                     <label
                       htmlFor="contact-message"
-                      className="mb-2 block font-mono text-[10px] uppercase tracking-[0.22em] text-meso-mist"
+                      className="mb-2 block font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-studio-purple-deep"
                     >
                       Mensaje
                     </label>
@@ -248,7 +242,7 @@ export default function ContactSection() {
                     />
                   </div>
 
-                  {/* Honeypot antispam (invisible) */}
+                  {/* Honeypot antispam */}
                   <div aria-hidden className="absolute -left-[9999px] h-px w-px overflow-hidden">
                     <label htmlFor="contact-company">Empresa</label>
                     <input
@@ -263,7 +257,7 @@ export default function ContactSection() {
                   {status === 'error' && error && (
                     <p
                       role="alert"
-                      className="mt-4 rounded-lg border border-[#D0605A]/60 bg-[#D0605A]/10 px-4 py-3 text-sm text-[#FF9B94]"
+                      className="mt-4 rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-sm font-medium text-red-700"
                     >
                       {error}
                     </p>
@@ -272,26 +266,26 @@ export default function ContactSection() {
                   <button
                     type="submit"
                     disabled={status === 'sending'}
-                    className="mt-6 flex w-full items-center justify-center gap-3 rounded-lg bg-meso-amber px-6 py-3.5 text-sm font-semibold text-meso-night shadow-amber transition-all hover:bg-meso-ember disabled:cursor-not-allowed disabled:opacity-60"
+                    className="mt-6 flex w-full items-center justify-center gap-3 rounded-xl border-2 border-studio-purple-deep bg-studio-purple px-6 py-3.5 text-sm font-semibold text-white shadow-brutal transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:bg-studio-purple-deep disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     {status === 'sending' ? (
                       <>
                         <span
                           aria-hidden
-                          className="h-4 w-4 animate-spin rounded-full border-2 border-meso-night/30 border-t-meso-night"
+                          className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white"
                         />
                         Enviando señal…
                       </>
                     ) : (
                       <>
-                        Enviar señal
+                        Enviar mensaje
                         <span aria-hidden>→</span>
                       </>
                     )}
                   </button>
 
-                  <p className="mt-3 text-center font-mono text-[10px] uppercase tracking-[0.18em] text-meso-mist/70">
-                    Sin spam · Solo roca sedimentada
+                  <p className="mt-3 text-center font-mono text-[10px] uppercase tracking-[0.16em] text-studio-slate">
+                    Sin spam · Respuesta directa
                   </p>
                 </form>
               )}
@@ -300,105 +294,101 @@ export default function ContactSection() {
 
           {/* ---------- Canales directos ---------- */}
           <motion.div
-            initial={{ opacity: 0, y: 32 }}
+            initial={{ opacity: 0, y: 28 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.7, delay: 0.12, ease: EASE }}
-            className="flex flex-col gap-6"
+            transition={{ duration: 0.65, delay: 0.1, ease: EASE }}
+            className="flex flex-col gap-5"
           >
-            {/* GitHub */}
             <a
               href={CONTACT.github}
               target="_blank"
               rel="noopener noreferrer"
               className="group block"
             >
-              <AmberCard className="flex items-center gap-5 p-6">
-                <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl border border-meso-rock bg-meso-night text-meso-limestone transition-colors group-hover:border-meso-amber/60 group-hover:text-meso-amber">
+              <AmberCard className="flex items-center gap-4 p-5">
+                <span className="grid h-13 w-13 shrink-0 place-items-center rounded-xl border border-studio-border bg-studio-bg p-3 text-studio-ink transition-colors group-hover:border-studio-purple group-hover:text-studio-purple">
                   <GitHubIcon className="h-6 w-6" />
                 </span>
                 <span className="min-w-0">
-                  <span className="block font-mono text-[10px] uppercase tracking-[0.22em] text-meso-mist">
+                  <span className="block font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-studio-slate">
                     Repositorios
                   </span>
-                  <span className="mt-1 block truncate font-display text-lg font-semibold transition-colors group-hover:text-meso-amber">
+                  <span className="mt-0.5 block truncate font-display text-lg font-bold text-studio-ink transition-colors group-hover:text-studio-purple-deep">
                     {CONTACT.githubHandle}
                   </span>
                 </span>
                 <span
                   aria-hidden
-                  className="ml-auto text-meso-mist transition-all group-hover:translate-x-1 group-hover:text-meso-amber"
+                  className="ml-auto text-studio-slate transition-all group-hover:translate-x-1 group-hover:text-studio-purple"
                 >
                   ↗
                 </span>
               </AmberCard>
             </a>
 
-            {/* LinkedIn */}
             <a
               href={CONTACT.linkedin}
               target="_blank"
               rel="noopener noreferrer"
               className="group block"
             >
-              <AmberCard className="flex items-center gap-5 p-6">
-                <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl border border-meso-rock bg-meso-night text-meso-limestone transition-colors group-hover:border-meso-amber/60 group-hover:text-meso-amber">
+              <AmberCard className="flex items-center gap-4 p-5">
+                <span className="grid h-13 w-13 shrink-0 place-items-center rounded-xl border border-studio-border bg-studio-bg p-3 text-studio-purple-deep transition-colors group-hover:border-studio-purple group-hover:text-studio-purple">
                   <LinkedInIcon className="h-6 w-6" />
                 </span>
                 <span className="min-w-0">
-                  <span className="block font-mono text-[10px] uppercase tracking-[0.22em] text-meso-mist">
+                  <span className="block font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-studio-slate">
                     LinkedIn
                   </span>
-                  <span className="mt-1 block truncate font-display text-lg font-semibold transition-colors group-hover:text-meso-amber">
+                  <span className="mt-0.5 block truncate font-display text-lg font-bold text-studio-ink transition-colors group-hover:text-studio-purple-deep">
                     {CONTACT.linkedinHandle}
                   </span>
                 </span>
                 <span
                   aria-hidden
-                  className="ml-auto text-meso-mist transition-all group-hover:translate-x-1 group-hover:text-meso-amber"
+                  className="ml-auto text-studio-slate transition-all group-hover:translate-x-1 group-hover:text-studio-purple"
                 >
                   ↗
                 </span>
               </AmberCard>
             </a>
 
-            {/* Correo */}
-            <AmberCard className="p-6">
-              <div className="flex items-center gap-5">
-                <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl border border-meso-rock bg-meso-night text-meso-limestone">
+            <AmberCard className="p-5">
+              <div className="flex items-center gap-4">
+                <span className="grid h-13 w-13 shrink-0 place-items-center rounded-xl border border-studio-border bg-studio-bg p-3 text-studio-green-deep">
                   <MailIcon className="h-6 w-6" />
                 </span>
                 <span className="min-w-0">
-                  <span className="block font-mono text-[10px] uppercase tracking-[0.22em] text-meso-mist">
+                  <span className="block font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-studio-slate">
                     Correo directo
                   </span>
-                  <span className="mt-1 block truncate font-display text-lg font-semibold">
+                  <span className="mt-0.5 block truncate font-display text-base font-bold text-studio-ink sm:text-lg">
                     {CONTACT.email}
                   </span>
                 </span>
               </div>
               <button
                 onClick={copyEmail}
-                className="mt-5 flex w-full items-center justify-center gap-2 rounded-lg border border-meso-rock px-4 py-3 font-mono text-[11px] uppercase tracking-[0.18em] text-meso-limestone transition-colors hover:border-meso-amber/60 hover:text-meso-amber"
+                className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl border border-studio-border bg-studio-bg px-4 py-2.5 font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-studio-ink transition-colors hover:border-studio-green hover:text-studio-green-deep"
               >
                 <CopyIcon className="h-4 w-4" />
                 {copied ? 'Copiado ✓' : 'Copiar correo'}
               </button>
             </AmberCard>
 
-            {/* Disponibilidad */}
-            <AmberCard className="p-6" glow={false}>
+            <AmberCard className="bg-studio-pearl/80 p-5" glow={false}>
               <div className="flex items-start gap-3">
-                <span className="mt-1.5 h-2 w-2 shrink-0 animate-pulse rounded-full bg-[#6FCF97]" />
+                <span className="mt-1.5 h-2.5 w-2.5 shrink-0 animate-pulse rounded-full bg-studio-green" />
                 <div>
-                  <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#6FCF97]">
-                    Disponible
+                  <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-studio-green-deep">
+                    Disponible para proyectos
                   </p>
-                  <p className="mt-2 text-sm leading-relaxed text-meso-mist">
-                    Abierta a proyectos indie &amp; AAA, freelance de desarrollo web/full
-                    stack, experiencias 3D y colaboraciones creativas.
+                  <p className="mt-1.5 text-sm leading-relaxed text-studio-slate">
+                    Abierta a desarrollo web Full-Stack, backend con Django/Node, apps móviles y
+                    experiencias interactivas.
                   </p>
-                  <p className="mt-3 font-mono text-[10px] tracking-[0.16em] text-meso-mist/70">
+                  <p className="mt-2.5 font-mono text-[10px] font-medium tracking-[0.16em] text-studio-purple-deep">
                     Respuesta estimada: 24–48 h
                   </p>
                 </div>

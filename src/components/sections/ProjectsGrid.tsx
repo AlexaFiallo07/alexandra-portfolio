@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FEATURED_PROJECT, PROJECTS } from '@/data/projectsData';
 import AmberCard from '@/components/ui/AmberCard';
@@ -8,184 +8,160 @@ import CategoryBadge from '@/components/ui/CategoryBadge';
 import ProjectModal from '@/components/ui/ProjectModal';
 import StegoProgrammer from '@/components/dino/StegoProgrammer';
 import ChibiDancer from '@/components/dino/ChibiDancer';
+import ProjectCornerDino, { type ProjectDinoVariant } from '@/components/dino/ProjectCornerDinos';
 import type { Project } from '@/types';
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 const STATUS_META: Record<Project['status'], { label: string; className: string }> = {
-  destacado: { label: 'Destacado', className: 'border-meso-amber/60 bg-meso-amber/10 text-meso-amber' },
-  'en-excavacion': {
-    label: 'En excavación',
-    className: 'border-meso-moss/70 bg-meso-moss/15 text-[#6FCF97]',
+  destacado: {
+    label: 'Destacado',
+    className: 'border-studio-purple/30 bg-studio-purple/10 text-studio-purple-deep',
   },
-  fosilizado: { label: 'Fosilizado', className: 'border-meso-rock bg-meso-night text-meso-mist' },
+  'en-excavacion': {
+    label: 'En desarrollo',
+    className: 'border-studio-green/35 bg-studio-green/15 text-studio-green-deep',
+  },
+  fosilizado: {
+    label: 'Completado',
+    className: 'border-studio-border bg-studio-pearl text-studio-slate',
+  },
 };
 
-/* ------------------------------------------------------------------ */
-/*  Stegosaurus programador (proyecto destacado)                        */
-/* ------------------------------------------------------------------ */
+const CORNER_VARIANTS: Record<string, ProjectDinoVariant> = {
+  multiverso: 'sign-code',
+  'tienda-virtual': 'headphones',
+  'api-rest': 'sign-api',
+};
 
 function StegoPanel() {
   return (
-    <div className="relative flex h-full min-h-[300px] w-full flex-col items-center justify-center overflow-hidden rounded-2xl border border-meso-moss/30 bg-[radial-gradient(ellipse_at_center,rgba(196,163,90,0.10),rgba(31,20,51,0.85)_75%)] p-4">
-      {/* Rejilla de fondo sutil */}
-      <div
-        aria-hidden
-        className="holo-floor absolute inset-x-[-50%] bottom-[-38%] h-[60%] opacity-40 [-webkit-mask-image:linear-gradient(to_top,black,transparent)] [mask-image:linear-gradient(to_top,black,transparent)] [transform:perspective(320px)_rotateX(58deg)]"
-      />
-
-      <div className="relative w-full max-w-[320px]">
+    <div className="studio-grid relative flex h-full min-h-[290px] w-full flex-col items-center justify-center overflow-hidden rounded-2xl border border-studio-border bg-studio-pearl/70 p-4">
+      <div className="relative w-full max-w-[310px]">
         <StegoProgrammer className="w-full" />
       </div>
-
-      {/* Leyenda */}
-      <p className="absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-2 whitespace-nowrap font-mono text-[9px] uppercase tracking-[0.24em] text-meso-mist">
-        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-meso-moss" />
-        Stego compilando · 60 fps
+      <p className="mt-2 flex items-center gap-2 rounded-full border border-studio-border bg-studio-card px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-studio-purple-deep shadow-sm">
+        <span className="h-2 w-2 animate-pulse rounded-full bg-studio-green" />
+        Stego compilando en vivo
       </p>
     </div>
   );
 }
 
-/* ------------------------------------------------------------------ */
-/*  Grid de proyectos (excavación)                                     */
-/* ------------------------------------------------------------------ */
-
+/**
+ * Sección de Proyectos Destacados:
+ * Cada tarjeta incluye un pequeño dinosaurio distinto en una esquina y un
+ * chibi que baila al pasar el cursor sobre "Ver Demo" o "Código en GitHub".
+ */
 export default function ProjectsGrid() {
   const [active, setActive] = useState<Project | null>(null);
-  const featuredRef = useRef<HTMLDivElement>(null);
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
-
   const secondary = PROJECTS.slice(1);
 
-  const onPointerMove = (e: ReactPointerEvent<HTMLDivElement>) => {
-    const rect = featuredRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    const px = (e.clientX - rect.left) / rect.width - 0.5;
-    const py = (e.clientY - rect.top) / rect.height - 0.5;
-    setTilt({ x: -py * 6, y: px * 8 });
-  };
-
   return (
-    <section id="proyectos" className="relative py-24 sm:py-32">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute right-0 top-1/4 h-[420px] w-[420px] rounded-full bg-[radial-gradient(circle,rgba(106,77,171,0.12),transparent_65%)] blur-2xl"
-      />
-
+    <section id="proyectos" className="relative py-20 sm:py-28">
       <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
         {/* Encabezado */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.7, ease: EASE }}
+          transition={{ duration: 0.65, ease: EASE }}
           className="flex items-center gap-4"
         >
-          <span className="font-mono text-[11px] uppercase tracking-[0.28em] text-meso-amber">
-            03 — Excavación de proyectos
+          <span className="rounded-full border border-studio-purple/30 bg-studio-purple/10 px-3 py-1 font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-studio-purple-deep">
+            03 — Proyectos Destacados
           </span>
-          <span aria-hidden className="h-px flex-1 bg-meso-rock" />
+          <span aria-hidden className="h-px flex-1 bg-studio-border" />
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.7, delay: 0.08, ease: EASE }}
+          transition={{ duration: 0.65, delay: 0.06, ease: EASE }}
           className="mt-6 max-w-2xl"
         >
-          <h2 className="font-display text-3xl font-semibold leading-tight sm:text-4xl lg:text-[2.75rem]">
-            Estratos de <span className="text-amber-gradient">trabajo</span>
+          <h2 className="font-display text-3xl font-bold leading-tight text-studio-ink sm:text-4xl lg:text-[2.6rem]">
+            Proyectos con <span className="text-studio-gradient">arquitectura real</span>
           </h2>
-          <p className="mt-4 text-meso-mist">
-            Cada proyecto es un hallazgo: abre la ficha técnica para estudiar su
-            arquitectura capa por capa.
+          <p className="mt-3 text-base text-studio-slate">
+            Pasa el cursor sobre los botones para ver bailar al dino chibi o abre cualquier ficha
+            para explorar la arquitectura del sistema.
           </p>
         </motion.div>
 
-        {/* ---------- Proyecto destacado ---------- */}
+        {/* ---------- Proyecto destacado (EffiAdmi + Stegosaurus programador) ---------- */}
         <motion.div
-          initial={{ opacity: 0, y: 36 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 0.8, ease: EASE }}
+          viewport={{ once: true, margin: '-90px' }}
+          transition={{ duration: 0.7, ease: EASE }}
           className="mt-12"
         >
-          {/* Capa de tilt (separada de la animación de entrada de Framer) */}
-          <div
-            ref={featuredRef}
-            onPointerMove={onPointerMove}
-            onPointerLeave={() => setTilt({ x: 0, y: 0 })}
-            style={{
-              perspective: 1200,
-              transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
-              transition: 'transform 0.35s cubic-bezier(0.22,1,0.36,1)',
-            }}
-          >
           <AmberCard className="p-0">
-            <div className="grid gap-8 p-6 sm:p-8 lg:grid-cols-[1.1fr_1fr] lg:gap-10 lg:p-10">
-              {/* Contenido */}
+            <div className="grid gap-8 p-6 sm:p-8 lg:grid-cols-[1.15fr_1fr] lg:gap-10 lg:p-10">
               <div className="flex flex-col">
-                <div className="flex flex-wrap items-center gap-3">
+                <div className="flex flex-wrap items-center gap-2.5">
                   <CategoryBadge category={FEATURED_PROJECT.category} />
-                  <span className="rounded-full border border-meso-amber/60 bg-meso-amber/10 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.18em] text-meso-amber">
+                  <span className="rounded-full border border-studio-green/35 bg-studio-green/15 px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.16em] text-studio-green-deep">
                     Proyecto de grado
                   </span>
-                  <span className="ml-auto font-mono text-[11px] tracking-[0.18em] text-meso-mist">
+                  <span className="ml-auto font-mono text-[11px] font-semibold tracking-[0.18em] text-studio-slate">
                     {FEATURED_PROJECT.year}
                   </span>
                 </div>
 
-                <h3 className="mt-5 font-display text-4xl font-semibold sm:text-5xl">
+                <h3 className="mt-5 font-display text-4xl font-bold text-studio-ink sm:text-5xl">
                   {FEATURED_PROJECT.title}
                 </h3>
-                <p className="mt-2 text-meso-amber">{FEATURED_PROJECT.subtitle}</p>
-                <p className="mt-4 leading-relaxed text-meso-limestone/80">
+                <p className="mt-2 font-semibold text-studio-purple">{FEATURED_PROJECT.subtitle}</p>
+                <p className="mt-4 leading-relaxed text-studio-slate">
                   {FEATURED_PROJECT.description}
                 </p>
 
-                {/* Hallazgos */}
                 <ul className="mt-6 space-y-2.5">
                   {FEATURED_PROJECT.highlights.slice(0, 3).map((h) => (
-                    <li key={h} className="flex items-start gap-2.5 text-sm text-meso-limestone/85">
-                      <span aria-hidden className="mt-1.5 h-1.5 w-1.5 shrink-0 rotate-45 bg-meso-amber" />
+                    <li key={h} className="flex items-start gap-2.5 text-sm text-studio-ink">
+                      <span aria-hidden className="mt-1.5 h-2 w-2 shrink-0 rotate-45 rounded-[2px] bg-studio-green" />
                       {h}
                     </li>
                   ))}
                 </ul>
 
-                {/* Stack */}
                 <div className="mt-6 flex flex-wrap gap-2">
                   {FEATURED_PROJECT.stack.map((tech) => (
                     <span
                       key={tech}
-                      className="rounded-full border border-meso-rock bg-meso-night/70 px-3 py-1 font-mono text-[11px] text-meso-limestone/80"
+                      className="rounded-full border border-studio-border bg-studio-bg px-3 py-1 font-mono text-[11px] font-medium text-studio-ink"
                     >
                       {tech}
                     </span>
                   ))}
                 </div>
 
-                <div className="mt-8 flex flex-wrap items-center gap-3 lg:mt-auto">
+                {/* Botones con Chibi bailarín al hacer hover */}
+                <div className="mt-8 flex flex-wrap items-center gap-3 pt-4 lg:mt-auto">
                   <button
+                    type="button"
                     onClick={() => setActive(FEATURED_PROJECT)}
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-meso-amber px-7 py-3.5 text-sm font-semibold text-meso-night shadow-amber transition-all hover:-translate-y-0.5 hover:bg-meso-ember hover:shadow-amber-lg"
+                    className="group/demo relative inline-flex items-center justify-center gap-2 rounded-full border-2 border-studio-purple-deep bg-studio-purple px-7 py-3 text-sm font-semibold text-white shadow-brutal transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:bg-studio-purple-deep"
                   >
-                    Abrir ficha técnica
+                    <span className="pointer-events-none absolute -top-10 right-2 opacity-0 transition-opacity duration-200 group-hover/demo:opacity-100">
+                      <ChibiDancer dancing className="h-9 w-9" />
+                    </span>
+                    Ver Demo / Ficha
                     <span aria-hidden>→</span>
                   </button>
 
-                  {/* Chibi bailarín al hacer hover sobre el botón de código */}
                   {FEATURED_PROJECT.repoUrl && (
                     <a
                       href={FEATURED_PROJECT.repoUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group/gh relative inline-flex items-center gap-2 rounded-full border border-meso-rock px-6 py-3.5 text-sm text-meso-limestone transition-all hover:-translate-y-0.5 hover:border-meso-moss/60 hover:text-meso-moss"
+                      className="group/gh relative inline-flex items-center gap-2 rounded-full border border-studio-border bg-studio-card px-6 py-3 text-sm font-semibold text-studio-ink shadow-studio transition-all hover:-translate-y-0.5 hover:border-studio-green hover:text-studio-green-deep"
                     >
-                      <span className="absolute -top-9 right-0 opacity-0 transition-opacity duration-200 group-hover/gh:opacity-100">
-                        <ChibiDancer dancing className="h-10 w-10 drop-shadow-[0_0_8px_rgba(111,207,151,0.5)]" />
+                      <span className="pointer-events-none absolute -top-10 right-2 opacity-0 transition-opacity duration-200 group-hover/gh:opacity-100">
+                        <ChibiDancer dancing className="h-9 w-9" />
                       </span>
                       Código en GitHub
                       <span aria-hidden>↗</span>
@@ -194,96 +170,133 @@ export default function ProjectsGrid() {
                 </div>
               </div>
 
-              {/* Stegosaurus programador */}
               <div className="flex items-center">
                 <StegoPanel />
               </div>
             </div>
           </AmberCard>
-          </div>
         </motion.div>
 
-        {/* ---------- Proyectos secundarios ---------- */}
+        {/* ---------- Proyectos secundarios (cada tarjeta con su dino distinto en la esquina) ---------- */}
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {secondary.map((project, i) => {
             const status = STATUS_META[project.status];
+            const cornerVariant = CORNER_VARIANTS[project.id] ?? 'sign-code';
             return (
-              <motion.button
+              <motion.div
                 key={project.id}
-                type="button"
-                onClick={() => setActive(project)}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 28 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-80px' }}
-                transition={{ duration: 0.65, delay: i * 0.1, ease: EASE }}
-                className="group text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-meso-amber/70"
-                aria-label={`Ver ficha de ${project.title}`}
+                transition={{ duration: 0.6, delay: i * 0.08, ease: EASE }}
+                className="group flex"
               >
-                <AmberCard className="flex h-full flex-col p-6">
-                  <div className="flex items-start justify-between gap-3">
-                    <span
-                      aria-hidden
-                      className="grid h-12 w-12 place-items-center rounded-xl border border-meso-rock bg-meso-night/70 text-2xl transition-transform duration-500 group-hover:-rotate-6 group-hover:scale-110"
-                    >
-                      {project.emoji ?? '🦴'}
-                    </span>
-                    <span
-                      className={`rounded-full border px-2.5 py-1 font-mono text-[9px] uppercase tracking-[0.16em] ${status.className}`}
-                    >
-                      {status.label}
-                    </span>
+                <AmberCard className="relative flex h-full w-full flex-col p-6">
+                  {/* Pequeño dinosaurio distinto en la esquina superior derecha */}
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute right-3 top-3 transition-transform duration-300 group-hover:rotate-6 group-hover:scale-105"
+                  >
+                    <ProjectCornerDino variant={cornerVariant} className="h-16 w-16" />
                   </div>
 
-                  <div className="mt-5 flex items-center gap-3">
-                    <CategoryBadge category={project.category} />
-                    <span className="font-mono text-[10px] tracking-[0.16em] text-meso-mist">
-                      {project.year}
-                    </span>
-                  </div>
-
-                  <h3 className="mt-3 font-display text-xl font-semibold transition-colors group-hover:text-meso-amber">
-                    {project.title}
-                  </h3>
-                  <p className="mt-1 text-sm text-meso-amber/90">{project.subtitle}</p>
-                  <p className="mt-3 flex-1 text-[13px] leading-relaxed text-meso-mist">
-                    {project.description}
-                  </p>
-
-                  <div className="mt-5 flex flex-wrap gap-1.5">
-                    {project.stack.slice(0, 3).map((tech) => (
+                  <button
+                    type="button"
+                    onClick={() => setActive(project)}
+                    className="flex flex-1 flex-col text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-studio-purple"
+                    aria-label={`Ver ficha de ${project.title}`}
+                  >
+                    <div className="flex items-center gap-2.5 pr-16">
                       <span
-                        key={tech}
-                        className="rounded border border-meso-rock px-2 py-0.5 font-mono text-[10px] text-meso-limestone/70"
+                        className={`rounded-full border px-2.5 py-1 font-mono text-[9px] font-semibold uppercase tracking-[0.14em] ${status.className}`}
                       >
-                        {tech}
+                        {status.label}
                       </span>
-                    ))}
-                    {project.stack.length > 3 && (
-                      <span className="font-mono text-[10px] text-meso-mist/70">
-                        +{project.stack.length - 3}
+                      <span className="font-mono text-[10px] font-medium text-studio-slate">
+                        {project.year}
                       </span>
+                    </div>
+
+                    <div className="mt-4">
+                      <CategoryBadge category={project.category} />
+                    </div>
+
+                    <h3 className="mt-4 font-display text-xl font-bold text-studio-ink transition-colors group-hover:text-studio-purple-deep">
+                      {project.title}
+                    </h3>
+                    <p className="mt-1 text-sm font-medium text-studio-purple">{project.subtitle}</p>
+                    <p className="mt-3 flex-1 text-[13px] leading-relaxed text-studio-slate">
+                      {project.description}
+                    </p>
+
+                    <div className="mt-5 flex flex-wrap gap-1.5">
+                      {project.stack.slice(0, 3).map((tech) => (
+                        <span
+                          key={tech}
+                          className="rounded-md border border-studio-border bg-studio-bg px-2 py-0.5 font-mono text-[10px] font-medium text-studio-ink"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                      {project.stack.length > 3 && (
+                        <span className="font-mono text-[10px] text-studio-slate">
+                          +{project.stack.length - 3}
+                        </span>
+                      )}
+                    </div>
+                  </button>
+
+                  {/* Botones de acción con chibi bailarín al hover */}
+                  <div className="mt-6 flex flex-wrap items-center gap-2.5 border-t border-studio-border pt-4">
+                    {project.liveUrl ? (
+                      <a
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group/demo relative inline-flex items-center gap-1.5 rounded-full bg-studio-purple px-4 py-1.5 font-mono text-[11px] font-semibold uppercase tracking-[0.1em] text-white transition-colors hover:bg-studio-purple-deep"
+                      >
+                        <ChibiDancer
+                          dancing
+                          className="h-5 w-5 opacity-0 transition-opacity duration-200 group-hover/demo:opacity-100"
+                        />
+                        Ver Demo ↗
+                      </a>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => setActive(project)}
+                        className="group/demo relative inline-flex items-center gap-1.5 rounded-full bg-studio-purple/10 px-4 py-1.5 font-mono text-[11px] font-semibold uppercase tracking-[0.1em] text-studio-purple-deep transition-colors hover:bg-studio-purple hover:text-white"
+                      >
+                        <ChibiDancer
+                          dancing
+                          className="h-5 w-5 opacity-0 transition-opacity duration-200 group-hover/demo:opacity-100"
+                        />
+                        Ver Demo →
+                      </button>
+                    )}
+
+                    {project.repoUrl && (
+                      <a
+                        href={project.repoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group/gh relative inline-flex items-center gap-1.5 rounded-full border border-studio-border bg-studio-bg px-3.5 py-1.5 font-mono text-[11px] font-semibold uppercase tracking-[0.1em] text-studio-ink transition-colors hover:border-studio-green hover:text-studio-green-deep"
+                      >
+                        <ChibiDancer
+                          dancing
+                          className="h-5 w-5 opacity-0 transition-opacity duration-200 group-hover/gh:opacity-100"
+                        />
+                        GitHub ↗
+                      </a>
                     )}
                   </div>
-
-                  {/* Chibi que baila al pasar el cursor por la tarjeta */}
-                  <span className="mt-5 flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.16em] text-meso-mist transition-colors group-hover:text-meso-amber">
-                    <ChibiDancer
-                      dancing
-                      className="h-7 w-7 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
-                    />
-                    Ver ficha
-                    <span aria-hidden className="transition-transform group-hover:translate-x-1">
-                      →
-                    </span>
-                  </span>
                 </AmberCard>
-              </motion.button>
+              </motion.div>
             );
           })}
         </div>
       </div>
 
-      {/* Modal de ficha técnica */}
       <ProjectModal project={active} onClose={() => setActive(null)} />
     </section>
   );

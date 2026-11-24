@@ -6,12 +6,13 @@ import { ContactShadows, Sparkles } from '@react-three/drei';
 import * as THREE from 'three';
 
 /* Colores: piel realista oliva + gafas dorado fósil */
-const SKIN = '#5F6E49';
-const SKIN_DARK = '#43502F';
-const BELLY = '#B7B392';
-const CLAW = '#26261F';
-const GOLD = '#C4A35A';
-const LENS = '#1F1433';
+/* Paleta Studio Light: esmeralda + morado, coherente con el diseño de Antigravity */
+const SKIN = '#3E9E70';
+const SKIN_DARK = '#2E7D57';
+const BELLY = '#D1FAE5';
+const CLAW = '#18181B';
+const FRAME = '#7C3AED';
+const LENS = '#18181B';
 
 /**
  * Bust de T-Rex con gafas de desarrollador:
@@ -178,11 +179,11 @@ function TRexBust() {
           <group key={`eye-${s}`} position={[0.34, 0.12, s * 0.4]}>
             <mesh>
               <sphereGeometry args={[0.13, 20, 20]} />
-              <meshStandardMaterial color="#F2EFE4" roughness={0.35} />
+              <meshStandardMaterial color="#FFFFFF" roughness={0.35} />
             </mesh>
             <mesh ref={ref} position={[0.05, 0, 0]}>
               <sphereGeometry args={[0.06, 16, 16]} />
-              <meshStandardMaterial color={hovered ? '#A98FD6' : '#14150F'} roughness={0.25} />
+              <meshStandardMaterial color={hovered ? '#7C3AED' : '#18181B'} roughness={0.25} />
             </mesh>
             <mesh position={[0.07, 0.03, s * 0.03]}>
               <sphereGeometry args={[0.02, 8, 8]} />
@@ -211,8 +212,8 @@ function TRexBust() {
             <mesh key={`frame-${s}`} position={[0.06, 0, s * 0.42]}>
               <torusGeometry args={[0.21, 0.028, 10, 4]} />
               <meshStandardMaterial
-                color={GOLD}
-                emissive={GOLD}
+                color={FRAME}
+                emissive={FRAME}
                 emissiveIntensity={hovered ? 0.9 : 0.35}
                 metalness={0.7}
                 roughness={0.3}
@@ -222,13 +223,13 @@ function TRexBust() {
           {/* Puente */}
           <mesh position={[0.06, 0.04, 0]} rotation={[Math.PI / 2, 0, 0]}>
             <cylinderGeometry args={[0.024, 0.024, 0.5, 8]} />
-            <meshStandardMaterial color={GOLD} metalness={0.7} roughness={0.3} />
+            <meshStandardMaterial color={FRAME} metalness={0.7} roughness={0.3} />
           </mesh>
           {/* Patillas hacia atrás */}
           {[-1, 1].map((s) => (
             <mesh key={`temple-${s}`} position={[-0.18, 0.05, s * 0.5]} rotation={[0, s * 0.5, 0]}>
               <boxGeometry args={[0.5, 0.03, 0.03]} />
-              <meshStandardMaterial color={GOLD} metalness={0.7} roughness={0.3} />
+              <meshStandardMaterial color={FRAME} metalness={0.7} roughness={0.3} />
             </mesh>
           ))}
         </group>
@@ -248,7 +249,7 @@ function TRexBust() {
           {teeth.slice(0, 6).map((tn, i) => (
             <mesh key={`lt-${i}`} position={[tn.x, 0.1, 0.16]} scale={tn.s * 0.85}>
               <coneGeometry args={[0.05, 0.2, 8]} />
-              <meshStandardMaterial color="#F2EFE4" roughness={0.45} />
+              <meshStandardMaterial color="#FFFFFF" roughness={0.45} />
             </mesh>
           ))}
         </group>
@@ -262,7 +263,7 @@ function TRexBust() {
             scale={tn.s}
           >
             <coneGeometry args={[0.055, 0.24, 8]} />
-            <meshStandardMaterial color="#F2EFE4" roughness={0.45} />
+            <meshStandardMaterial color="#FFFFFF" roughness={0.45} />
           </mesh>
         ))}
         {teeth.map((tn, i) => (
@@ -273,7 +274,7 @@ function TRexBust() {
             scale={tn.s}
           >
             <coneGeometry args={[0.055, 0.24, 8]} />
-            <meshStandardMaterial color="#F2EFE4" roughness={0.45} />
+            <meshStandardMaterial color="#FFFFFF" roughness={0.45} />
           </mesh>
         ))}
 
@@ -296,13 +297,13 @@ function TRexBust() {
 function Exhibit() {
   return (
     <>
-      {/* Luz de vitrina de museo */}
-      <ambientLight intensity={0.5} color="#FFFFFF" />
-      <directionalLight position={[3.5, 5, 2.5]} intensity={1.45} color="#FFFDF8" />
+      {/* Luz de estudio: brillante y limpia sobre fondo claro */}
+      <ambientLight intensity={0.85} color="#FFFFFF" />
+      <directionalLight position={[3.5, 5, 2.5]} intensity={1.6} color="#FFFFFF" />
       {/* Rim morado trasero */}
-      <pointLight position={[-2.8, 1.6, -2.4]} intensity={30} color="#A98FD6" distance={14} />
-      {/* Relleno dorado */}
-      <pointLight position={[2.4, -0.4, 2.6]} intensity={10} color="#C4A35A" distance={12} />
+      <pointLight position={[-2.8, 1.6, -2.4]} intensity={18} color="#7C3AED" distance={14} />
+      {/* Relleno verde esmeralda */}
+      <pointLight position={[2.4, -0.4, 2.6]} intensity={8} color="#10B981" distance={12} />
 
       <group position={[0, -0.4, 0]}>
         <TRexBust />
@@ -310,20 +311,20 @@ function Exhibit() {
         {/* Pedestal de museo */}
         <mesh position={[-0.5, -1.5, 0]}>
           <cylinderGeometry args={[1.1, 1.35, 0.4, 6]} />
-          <meshStandardMaterial color="#1F1433" roughness={1} />
+          <meshStandardMaterial color="#E8E8EE" roughness={1} />
         </mesh>
         <mesh position={[-0.5, -1.72, 0]}>
           <cylinderGeometry args={[1.5, 1.5, 0.08, 48]} />
-          <meshStandardMaterial color="#120D1D" roughness={1} />
+          <meshStandardMaterial color="#D8D8E2" roughness={1} />
         </mesh>
 
         {/* Anillo escáner */}
         <mesh position={[-0.5, -1.26, 0]} rotation={[Math.PI / 2, 0, 0]}>
           <torusGeometry args={[1.18, 0.018, 10, 90]} />
           <meshStandardMaterial
-            color="#C4A35A"
-            emissive="#C4A35A"
-            emissiveIntensity={1.6}
+            color="#7C3AED"
+            emissive="#7C3AED"
+            emissiveIntensity={0.7}
             toneMapped={false}
           />
         </mesh>
@@ -331,22 +332,22 @@ function Exhibit() {
 
       <ContactShadows
         position={[0, -2.2, 0]}
-        opacity={0.35}
+        opacity={0.18}
         scale={9}
         blur={2.8}
         far={3.5}
-        color="#000000"
+        color="#5B21B6"
       />
 
-      {/* Polvo de la excavación */}
+      {/* Partículas moradas de estudio */}
       <Sparkles
         count={45}
         scale={[7, 5, 5]}
         position={[0, 0.4, 0]}
         size={2.6}
         speed={0.3}
-        opacity={0.45}
-        color="#A98FD6"
+        opacity={0.35}
+        color="#7C3AED"
       />
     </>
   );

@@ -8,20 +8,18 @@ import ChibiDancer from '@/components/dino/ChibiDancer';
 import { cn } from '@/lib/utils';
 
 interface ProjectModalProps {
-  /** Proyecto a mostrar; `null` cierra el modal. */
   project: Project | null;
   onClose: () => void;
 }
 
 const STATUS_LABEL: Record<Project['status'], string> = {
   destacado: 'Destacado',
-  'en-excavacion': 'En excavación',
-  fosilizado: 'Fosilizado',
+  'en-excavacion': 'En desarrollo',
+  fosilizado: 'Completado',
 };
 
-/** Modal con ficha técnica estratigráfica del proyecto (arquitectura, stack, highlights). */
+/** Modal luminoso con ficha técnica del proyecto (arquitectura, stack, highlights). */
 export default function ProjectModal({ project, onClose }: ProjectModalProps) {
-  // Bloqueo de scroll + cierre con Escape
   useEffect(() => {
     if (!project) return;
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
@@ -42,25 +40,25 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.25 }}
-          className="fixed inset-0 z-[70] flex items-end justify-center bg-meso-night/85 p-0 backdrop-blur-sm sm:items-center sm:p-6"
+          transition={{ duration: 0.22 }}
+          className="fixed inset-0 z-[70] flex items-end justify-center bg-studio-ink/40 p-0 backdrop-blur-sm sm:items-center sm:p-6"
           onClick={onClose}
           role="dialog"
           aria-modal="true"
           aria-labelledby="project-modal-title"
         >
           <motion.div
-            initial={{ opacity: 0, y: 40, scale: 0.98 }}
+            initial={{ opacity: 0, y: 36, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 30, scale: 0.98 }}
-            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            exit={{ opacity: 0, y: 24, scale: 0.98 }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             onClick={(e) => e.stopPropagation()}
-            className="glass relative max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-t-3xl border border-meso-amber/30 shadow-amber-lg sm:rounded-3xl"
+            className="relative max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-t-3xl border border-studio-border bg-studio-card shadow-studio-lg sm:rounded-3xl"
           >
-            {/* Barra de escáner superior */}
+            {/* Acento superior morado → verde */}
             <div
               aria-hidden
-              className="sticky top-0 z-10 h-0.5 bg-gradient-to-r from-meso-amber/0 via-meso-amber to-meso-amber/0"
+              className="sticky top-0 z-10 h-1 bg-gradient-to-r from-studio-purple-deep via-studio-purple to-studio-green"
             />
 
             <div className="p-6 sm:p-9">
@@ -69,40 +67,40 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                 <CategoryBadge category={project.category} />
                 <span
                   className={cn(
-                    'font-mono text-[11px] uppercase tracking-[0.18em]',
+                    'rounded-full px-2.5 py-0.5 font-mono text-[11px] font-semibold uppercase tracking-[0.16em]',
                     project.status === 'destacado'
-                      ? 'text-meso-amber'
+                      ? 'bg-studio-purple/10 text-studio-purple-deep'
                       : project.status === 'en-excavacion'
-                        ? 'text-[#6FCF97]'
-                        : 'text-meso-mist',
+                        ? 'bg-studio-green/15 text-studio-green-deep'
+                        : 'bg-studio-pearl text-studio-slate',
                   )}
                 >
                   {STATUS_LABEL[project.status]}
                 </span>
-                <span className="ml-auto font-mono text-[11px] tracking-[0.18em] text-meso-mist">
+                <span className="ml-auto font-mono text-[11px] font-medium tracking-[0.18em] text-studio-slate">
                   {project.year}
                 </span>
               </div>
 
               <h2
                 id="project-modal-title"
-                className="mt-4 font-display text-3xl font-semibold sm:text-4xl"
+                className="mt-4 font-display text-3xl font-bold text-studio-ink sm:text-4xl"
               >
                 {project.title}
               </h2>
-              <p className="mt-1.5 text-meso-amber">{project.subtitle}</p>
-              <p className="mt-4 leading-relaxed text-meso-limestone/80">{project.description}</p>
+              <p className="mt-1.5 font-medium text-studio-purple">{project.subtitle}</p>
+              <p className="mt-4 leading-relaxed text-studio-slate">{project.description}</p>
 
               {/* Highlights */}
               {project.highlights.length > 0 && (
                 <div className="mt-7">
-                  <h3 className="font-mono text-[11px] uppercase tracking-[0.22em] text-meso-mist">
-                    Hallazgos clave
+                  <h3 className="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-studio-purple-deep">
+                    Puntos clave
                   </h3>
                   <ul className="mt-3 grid gap-2.5 sm:grid-cols-2">
                     {project.highlights.map((h) => (
-                      <li key={h} className="flex items-start gap-2.5 text-sm text-meso-limestone/85">
-                        <span aria-hidden className="mt-1.5 h-1.5 w-1.5 shrink-0 rotate-45 bg-meso-amber" />
+                      <li key={h} className="flex items-start gap-2.5 text-sm text-studio-ink">
+                        <span aria-hidden className="mt-1.5 h-2 w-2 shrink-0 rotate-45 rounded-[2px] bg-studio-green" />
                         {h}
                       </li>
                     ))}
@@ -110,25 +108,25 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                 </div>
               )}
 
-              {/* Arquitectura estratigráfica */}
+              {/* Arquitectura */}
               {project.architecture && project.architecture.length > 0 && (
                 <div className="mt-8">
-                  <h3 className="font-mono text-[11px] uppercase tracking-[0.22em] text-meso-mist">
+                  <h3 className="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-studio-purple-deep">
                     Arquitectura del sistema
                   </h3>
-                  <ol className="relative mt-4 space-y-5 border-l border-meso-rock pl-5">
+                  <ol className="relative mt-4 space-y-5 border-l-2 border-studio-border pl-5">
                     {project.architecture.map((layer, i) => (
                       <li key={layer.layer} className="relative">
                         <span
                           aria-hidden
-                          className="absolute -left-[27px] top-1 grid h-4 w-4 place-items-center rounded-full border border-meso-amber/60 bg-meso-night"
+                          className="absolute -left-[29px] top-1 grid h-4 w-4 place-items-center rounded-full border-2 border-studio-purple bg-studio-card"
                         >
-                          <span className="h-1.5 w-1.5 rounded-full bg-meso-amber" />
+                          <span className="h-1.5 w-1.5 rounded-full bg-studio-green" />
                         </span>
-                        <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-meso-amber">
+                        <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-studio-purple-deep">
                           {String(i + 1).padStart(2, '0')} · {layer.layer}
                         </p>
-                        <p className="mt-1 text-sm leading-relaxed text-meso-limestone/80">
+                        <p className="mt-1 text-sm leading-relaxed text-studio-slate">
                           {layer.detail}
                         </p>
                       </li>
@@ -139,14 +137,14 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
 
               {/* Stack */}
               <div className="mt-8">
-                <h3 className="font-mono text-[11px] uppercase tracking-[0.22em] text-meso-mist">
-                  Estrato tecnológico
+                <h3 className="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-studio-purple-deep">
+                  Stack tecnológico
                 </h3>
                 <div className="mt-3 flex flex-wrap gap-2">
                   {project.stack.map((tech) => (
                     <span
                       key={tech}
-                      className="rounded-full border border-meso-rock bg-meso-night/70 px-3 py-1 font-mono text-[11px] tracking-wide text-meso-limestone/80"
+                      className="rounded-full border border-studio-border bg-studio-bg px-3 py-1 font-mono text-[11px] font-medium text-studio-ink"
                     >
                       {tech}
                     </span>
@@ -155,18 +153,18 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
               </div>
 
               {/* Enlaces + cierre */}
-              <div className="mt-9 flex flex-wrap items-center gap-3 border-t border-meso-rock/70 pt-6">
+              <div className="mt-9 flex flex-wrap items-center gap-3 border-t border-studio-border pt-6">
                 {project.repoUrl && (
                   <a
                     href={project.repoUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group/rep relative rounded-full bg-meso-amber px-5 py-2.5 text-sm font-semibold text-meso-night transition-colors hover:bg-meso-ember"
+                    className="group/rep relative inline-flex items-center gap-2 rounded-full bg-studio-purple px-5 py-2.5 text-sm font-semibold text-white shadow-studio transition-colors hover:bg-studio-purple-deep"
                   >
-                    <span className="absolute -top-10 right-0 opacity-0 transition-opacity duration-200 group-hover/rep:opacity-100">
+                    <span className="pointer-events-none absolute -top-10 right-2 opacity-0 transition-opacity duration-200 group-hover/rep:opacity-100">
                       <ChibiDancer dancing className="h-9 w-9" />
                     </span>
-                    Código en GitHub
+                    Código en GitHub ↗
                   </a>
                 )}
                 {project.liveUrl && (
@@ -174,18 +172,18 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                     href={project.liveUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group/live relative rounded-full border border-meso-rock px-5 py-2.5 text-sm text-meso-limestone transition-colors hover:border-meso-moss/60 hover:text-meso-moss"
+                    className="group/live relative inline-flex items-center gap-2 rounded-full border border-studio-green bg-studio-green/10 px-5 py-2.5 text-sm font-semibold text-studio-green-deep transition-colors hover:bg-studio-green hover:text-white"
                   >
-                    <span className="absolute -top-10 right-0 opacity-0 transition-opacity duration-200 group-hover/live:opacity-100">
+                    <span className="pointer-events-none absolute -top-10 right-2 opacity-0 transition-opacity duration-200 group-hover/live:opacity-100">
                       <ChibiDancer dancing className="h-9 w-9" />
                     </span>
-                    Ver demo en vivo
+                    Ver demo en vivo ↗
                   </a>
                 )}
                 <button
                   onClick={onClose}
                   autoFocus
-                  className="ml-auto rounded-full border border-meso-rock px-5 py-2.5 text-sm text-meso-mist transition-colors hover:border-meso-amber/60 hover:text-meso-amber"
+                  className="ml-auto rounded-full border border-studio-border bg-studio-bg px-5 py-2.5 text-sm font-medium text-studio-ink transition-colors hover:border-studio-purple hover:text-studio-purple-deep"
                 >
                   Cerrar ficha ✕
                 </button>

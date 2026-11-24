@@ -6,15 +6,15 @@ import { cn } from '@/lib/utils';
 
 interface AmberCardProps extends Omit<HTMLMotionProps<'article'>, 'children'> {
   children?: ReactNode;
-  /** Muestra el resplandor ámbar en el borde al pasar el cursor */
+  /** Muestra resplandor morado y elevación sutil al pasar el cursor */
   glow?: boolean;
   /** Retraso de aparición escalonada (segundos) */
   delay?: number;
 }
 
 /**
- * Contenedor tipo "piedra caliza" con glassmorphism, borde roca erosionada
- * y resplandor ámbar opcional al interactuar.
+ * Tarjeta luminosa estilo estudio interactivo / brutalismo suave:
+ * fondo #FFFFFF, borde 1px solid #D8D8E2 y sombra suave morada.
  */
 export default function AmberCard({
   children,
@@ -25,31 +25,20 @@ export default function AmberCard({
 }: AmberCardProps) {
   return (
     <motion.article
-      initial={{ opacity: 0, y: 28 }}
+      initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-80px' }}
-      transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
-      whileHover={glow ? { y: -6 } : undefined}
+      transition={{ duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] }}
+      whileHover={glow ? { y: -4 } : undefined}
       className={cn(
-        'group relative overflow-hidden rounded-2xl border border-meso-rock/80 glass shadow-card',
+        'group relative overflow-hidden rounded-2xl border border-studio-border bg-studio-card shadow-studio',
         glow &&
-          'transition-[box-shadow,border-color] duration-500 hover:border-meso-amber/50 hover:shadow-amber',
+          'transition-[box-shadow,border-color,transform] duration-300 hover:border-studio-purple/60 hover:shadow-studio-lg',
         className,
       )}
       {...rest}
     >
-      {/* Resplandor interior ámbar */}
-      {glow && (
-        <span
-          aria-hidden
-          className="pointer-events-none absolute -inset-px opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-          style={{
-            background:
-              'radial-gradient(500px circle at var(--x,50%) var(--y,0%), rgba(106,77,171,0.12), transparent 65%)',
-          }}
-        />
-      )}
-      <div className="relative z-10">{children}</div>
+      <div className="relative z-10 h-full">{children}</div>
     </motion.article>
   );
 }
