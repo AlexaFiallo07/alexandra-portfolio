@@ -4,15 +4,15 @@ import { useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { ContactShadows, Sparkles } from '@react-three/drei';
 import * as THREE from 'three';
+import SkinMat, { DINO_SKIN } from '@/components/3d/SkinMat';
 
-/* Colores: piel realista oliva + gafas dorado fósil */
 /* Paleta Studio Light: esmeralda + morado, coherente con el diseño de Antigravity */
-const SKIN = '#3E9E70';
-const SKIN_DARK = '#2E7D57';
-const BELLY = '#D1FAE5';
-const CLAW = '#18181B';
+const SKIN_DARK = DINO_SKIN.dark;
+const CLAW = DINO_SKIN.claw;
 const FRAME = '#7C3AED';
 const LENS = '#18181B';
+const MOUTH = '#7A3B3B';
+const TONGUE = '#B96565';
 
 /**
  * Bust de T-Rex con gafas de desarrollador:
@@ -122,38 +122,88 @@ function TRexBust() {
       {/* ---------- Cuello / busto ---------- */}
       <mesh position={[-0.55, 0.3, 0]} rotation={[0, 0, 0.5]} scale={[1, 1, 0.85]}>
         <cylinderGeometry args={[0.5, 0.95, 1.7, 14]} />
-        <meshStandardMaterial color={SKIN_DARK} roughness={0.95} />
+        <SkinMat color={SKIN_DARK} />
       </mesh>
       <mesh position={[-0.5, -0.5, 0]} scale={[1.2, 0.7, 1]}>
         <sphereGeometry args={[0.9, 24, 24]} />
-        <meshStandardMaterial color={SKIN} roughness={0.95} />
+        <SkinMat />
       </mesh>
 
       {/* Franjas dorsales del cuello */}
       {[-0.15, -0.45, -0.75].map((y, i) => (
         <mesh key={`stripe-${i}`} position={[-0.62 - i * 0.08, y + 0.55, 0]} scale={[1, 0.4, 1.15]}>
           <sphereGeometry args={[0.34 - i * 0.03, 12, 12]} />
-          <meshStandardMaterial color={SKIN_DARK} roughness={1} />
+          <SkinMat color={SKIN_DARK} roughness={1} />
         </mesh>
       ))}
+
+      {/* Hombros musculares */}
+      {[-1, 1].map((s) => (
+        <mesh key={`shoulder-${s}`} position={[-0.55, -0.15, s * 0.5]} scale={[1.05, 0.85, 0.8]}>
+          <sphereGeometry args={[0.5, 20, 20]} />
+          <SkinMat />
+        </mesh>
+      ))}
+
+      {/* Escudos dorsales */}
+      {[-0.75, -0.35, 0.05].map((y, i) => (
+        <mesh
+          key={`scute-${i}`}
+          position={[-0.78 - i * 0.05, y + 0.75, 0]}
+          rotation={[0, 0, -0.25]}
+        >
+          <coneGeometry args={[0.12 - i * 0.01, 0.34, 6]} />
+          <SkinMat color={SKIN_DARK} roughness={0.95} />
+        </mesh>
+      ))}
+
+      {/* Brazos pequeños con tres garras */}
+      {[-1, 1].map((s) => (
+        <group key={`arm-${s}`} position={[-0.25, -0.35, s * 0.62]} rotation={[0, 0, -0.5]}>
+          <mesh position={[0.12, -0.12, 0]}>
+            <capsuleGeometry args={[0.09, 0.22, 6, 10]} />
+            <SkinMat />
+          </mesh>
+          <mesh position={[0.3, -0.3, 0]}>
+            <sphereGeometry args={[0.12, 14, 14]} />
+            <SkinMat />
+          </mesh>
+          {[0, 1, 2].map((c) => (
+            <mesh
+              key={c}
+              position={[0.4, -0.34, (c - 1) * 0.07]}
+              rotation={[0, 0, -Math.PI / 2]}
+            >
+              <coneGeometry args={[0.022, 0.14, 6]} />
+              <meshStandardMaterial color={CLAW} roughness={0.4} />
+            </mesh>
+          ))}
+        </group>
+      ))}
+
+      {/* Cola de contrapeso que se pierde tras la vitrina */}
+      <mesh position={[-1.55, -0.55, 0]} rotation={[0, 0, Math.PI / 2 + 0.22]} scale={[1, 1, 0.8]}>
+        <coneGeometry args={[0.42, 1.5, 16]} />
+        <SkinMat color={SKIN_DARK} />
+      </mesh>
 
       {/* ---------- Cabeza ---------- */}
       <group ref={head} position={[0, 1.35, 0]}>
         {/* Cráneo */}
         <mesh scale={[1.25, 0.9, 0.9]}>
           <sphereGeometry args={[0.62, 32, 32]} />
-          <meshStandardMaterial color={SKIN} roughness={0.92} />
+          <SkinMat />
         </mesh>
 
         {/* Hocico superior */}
         <mesh position={[0.78, -0.1, 0]} scale={[1.35, 0.62, 0.72]}>
           <sphereGeometry args={[0.5, 28, 28]} />
-          <meshStandardMaterial color={SKIN} roughness={0.92} />
+          <SkinMat />
         </mesh>
         {/* Punta del hocico */}
         <mesh position={[1.32, -0.16, 0]} scale={[0.7, 0.5, 0.6]}>
           <sphereGeometry args={[0.32, 20, 20]} />
-          <meshStandardMaterial color={SKIN_DARK} roughness={0.95} />
+          <SkinMat color={SKIN_DARK} />
         </mesh>
         {/* Narinas */}
         {[-1, 1].map((s) => (
@@ -163,11 +213,25 @@ function TRexBust() {
           </mesh>
         ))}
 
+        {/* Osteodermos: pequeñas protuberancias sobre el hocico */}
+        {[
+          [0.62, 0.2, 0.12],
+          [0.92, 0.12, 0.1],
+          [1.18, 0.02, 0.08],
+          [0.62, 0.2, -0.12],
+          [0.92, 0.12, -0.1],
+        ].map(([x, y, z], i) => (
+          <mesh key={`osteoderm-${i}`} position={[x, y, z]} scale={[1.2, 0.6, 1]}>
+            <sphereGeometry args={[0.055, 10, 10]} />
+            <SkinMat color={SKIN_DARK} roughness={0.95} />
+          </mesh>
+        ))}
+
         {/* Ceja feroz (hueso sobre el ojo) */}
         {[-1, 1].map((s) => (
           <mesh key={`brow-${s}`} position={[0.3, 0.3, s * 0.36]} rotation={[0, 0, -0.16]}>
             <boxGeometry args={[0.5, 0.14, 0.3]} />
-            <meshStandardMaterial color={SKIN_DARK} roughness={0.95} />
+            <SkinMat color={SKIN_DARK} />
           </mesh>
         ))}
 
@@ -177,9 +241,18 @@ function TRexBust() {
           { s: -1, ref: pupilR },
         ].map(({ s, ref }) => (
           <group key={`eye-${s}`} position={[0.34, 0.12, s * 0.4]}>
+            {/* Cuenca oscura y párpado inferior */}
+            <mesh position={[0, 0, s * -0.05]}>
+              <sphereGeometry args={[0.16, 18, 18]} />
+              <meshStandardMaterial color="#203A2C" roughness={1} />
+            </mesh>
+            <mesh position={[-0.01, -0.13, s * 0.03]} scale={[1.25, 0.45, 0.8]}>
+              <sphereGeometry args={[0.12, 14, 14]} />
+              <SkinMat color={SKIN_DARK} />
+            </mesh>
             <mesh>
               <sphereGeometry args={[0.13, 20, 20]} />
-              <meshStandardMaterial color="#FFFFFF" roughness={0.35} />
+              <meshPhysicalMaterial color="#FFFFFF" roughness={0.12} clearcoat={1} clearcoatRoughness={0.08} />
             </mesh>
             <mesh ref={ref} position={[0.05, 0, 0]}>
               <sphereGeometry args={[0.06, 16, 16]} />
@@ -220,6 +293,13 @@ function TRexBust() {
               />
             </mesh>
           ))}
+          {/* Reflejo de estudio en los cristales */}
+          {[-1, 1].map((s) => (
+            <mesh key={`glint-${s}`} position={[0.09, 0.06, s * 0.45]} rotation={[0, 0, -0.5]}>
+              <planeGeometry args={[0.09, 0.028]} />
+              <meshBasicMaterial color="#FFFFFF" transparent opacity={0.7} toneMapped={false} />
+            </mesh>
+          ))}
           {/* Puente */}
           <mesh position={[0.06, 0.04, 0]} rotation={[Math.PI / 2, 0, 0]}>
             <cylinderGeometry args={[0.024, 0.024, 0.5, 8]} />
@@ -236,20 +316,41 @@ function TRexBust() {
 
         {/* ---------- Mandíbula inferior (ruge al clic) ---------- */}
         <group ref={jaw} position={[0.1, -0.3, 0]}>
+          {/* Bisagras de la mandíbula */}
+          {[-1, 1].map((s) => (
+            <mesh key={`hinge-${s}`} position={[-0.28, 0.02, s * 0.36]}>
+              <sphereGeometry args={[0.13, 14, 14]} />
+              <SkinMat color={SKIN_DARK} />
+            </mesh>
+          ))}
           <mesh position={[0.6, -0.06, 0]} scale={[1.7, 0.4, 0.66]}>
             <sphereGeometry args={[0.4, 20, 20]} />
-            <meshStandardMaterial color={SKIN_DARK} roughness={0.95} />
+            <SkinMat color={SKIN_DARK} />
           </mesh>
           {/* Boca interior */}
           <mesh position={[0.55, 0.06, 0]} scale={[1.4, 0.18, 0.5]}>
             <sphereGeometry args={[0.4, 16, 16]} />
-            <meshStandardMaterial color="#7A3B3B" roughness={1} />
+            <meshStandardMaterial color={MOUTH} roughness={1} />
+            {/* Lengua */}
+            <mesh position={[0.52, 0.05, 0]} scale={[1.1, 0.12, 0.34]}>
+              <sphereGeometry args={[0.34, 16, 12]} />
+              <meshStandardMaterial color={TONGUE} roughness={0.75} />
+            </mesh>
           </mesh>
-          {/* Dientes inferiores */}
-          {teeth.slice(0, 6).map((tn, i) => (
-            <mesh key={`lt-${i}`} position={[tn.x, 0.1, 0.16]} scale={tn.s * 0.85}>
-              <coneGeometry args={[0.05, 0.2, 8]} />
-              <meshStandardMaterial color="#FFFFFF" roughness={0.45} />
+          {/* Dientes inferiores (ambos lados) */}
+          {[-1, 1].flatMap((s) =>
+            teeth.slice(0, 6).map((tn, i) => (
+              <mesh key={`lt-${s}-${i}`} position={[tn.x, 0.1, s * 0.17]} scale={tn.s * 0.85}>
+                <coneGeometry args={[0.05, 0.2, 8]} />
+                <meshStandardMaterial color="#FFFFFF" roughness={0.45} />
+              </mesh>
+            )),
+          )}
+          {/* Colmillos */}
+          {[-1, 1].map((s) => (
+            <mesh key={`fang-${s}`} position={[0.38, 0.12, s * 0.18]} scale={1.15}>
+              <coneGeometry args={[0.06, 0.3, 8]} />
+              <meshStandardMaterial color="#FFFFFF" roughness={0.4} />
             </mesh>
           ))}
         </group>
@@ -282,7 +383,7 @@ function TRexBust() {
         {[-0.1, -0.3, -0.5].map((x, i) => (
           <mesh key={`crest-${i}`} position={[x, 0.55 + i * 0.04, 0]} rotation={[0, 0, -0.4 - i * 0.2]}>
             <coneGeometry args={[0.07, 0.26, 6]} />
-            <meshStandardMaterial color={SKIN_DARK} roughness={0.95} />
+            <SkinMat color={SKIN_DARK} />
           </mesh>
         ))}
       </group>
@@ -297,36 +398,50 @@ function TRexBust() {
 function Exhibit() {
   return (
     <>
-      {/* Luz de estudio: brillante y limpia sobre fondo claro */}
-      <ambientLight intensity={0.85} color="#FFFFFF" />
-      <directionalLight position={[3.5, 5, 2.5]} intensity={1.6} color="#FFFFFF" />
+      {/* Iluminación de estudio en tres puntos */}
+      <ambientLight intensity={0.7} color="#FFFFFF" />
+      <hemisphereLight args={['#FFFFFF', '#D8D8E2', 0.55]} />
+      <directionalLight position={[3.5, 5, 2.5]} intensity={1.7} color="#FFFFFF" />
+      <directionalLight position={[-3, 2, 1]} intensity={0.6} color="#E8E2F5" />
       {/* Rim morado trasero */}
-      <pointLight position={[-2.8, 1.6, -2.4]} intensity={18} color="#7C3AED" distance={14} />
+      <pointLight position={[-2.8, 1.6, -2.4]} intensity={20} color="#7C3AED" distance={14} />
       {/* Relleno verde esmeralda */}
-      <pointLight position={[2.4, -0.4, 2.6]} intensity={8} color="#10B981" distance={12} />
+      <pointLight position={[2.4, -0.4, 2.6]} intensity={9} color="#10B981" distance={12} />
+      {/* Luz rasante que marca la textura de escamas */}
+      <pointLight position={[1.5, 1.2, -2]} intensity={5} color="#FFFFFF" distance={8} />
 
       <group position={[0, -0.4, 0]}>
         <TRexBust />
 
-        {/* Pedestal de museo */}
-        <mesh position={[-0.5, -1.5, 0]}>
-          <cylinderGeometry args={[1.1, 1.35, 0.4, 6]} />
-          <meshStandardMaterial color="#E8E8EE" roughness={1} />
+        {/* Pedestal de museo: base, cuerpo hexagonal y tapa pulida */}
+        <mesh position={[-0.5, -1.78, 0]}>
+          <cylinderGeometry args={[1.55, 1.62, 0.1, 48]} />
+          <meshStandardMaterial color="#D8D8E2" roughness={0.85} />
         </mesh>
-        <mesh position={[-0.5, -1.72, 0]}>
-          <cylinderGeometry args={[1.5, 1.5, 0.08, 48]} />
-          <meshStandardMaterial color="#D8D8E2" roughness={1} />
+        <mesh position={[-0.5, -1.5, 0]}>
+          <cylinderGeometry args={[1.12, 1.36, 0.44, 6]} />
+          <meshStandardMaterial color="#F4F4F7" roughness={0.7} metalness={0.05} />
+        </mesh>
+        <mesh position={[-0.5, -1.27, 0]}>
+          <cylinderGeometry args={[1.2, 1.2, 0.06, 48]} />
+          <meshStandardMaterial color="#FFFFFF" roughness={0.45} metalness={0.12} />
         </mesh>
 
-        {/* Anillo escáner */}
+        {/* Anillo escáner y filete dorado-morado */}
         <mesh position={[-0.5, -1.26, 0]} rotation={[Math.PI / 2, 0, 0]}>
-          <torusGeometry args={[1.18, 0.018, 10, 90]} />
+          <torusGeometry args={[1.2, 0.022, 10, 90]} />
           <meshStandardMaterial
             color="#7C3AED"
             emissive="#7C3AED"
-            emissiveIntensity={0.7}
+            emissiveIntensity={0.65}
+            metalness={0.4}
+            roughness={0.3}
             toneMapped={false}
           />
+        </mesh>
+        <mesh position={[-0.5, -1.72, 0]} rotation={[Math.PI / 2, 0, 0]}>
+          <torusGeometry args={[1.5, 0.012, 8, 80]} />
+          <meshStandardMaterial color="#10B981" metalness={0.5} roughness={0.35} />
         </mesh>
       </group>
 

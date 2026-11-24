@@ -38,12 +38,27 @@ const PARTICLES = [
 function PteroSilhouette() {
   return (
     <svg viewBox="0 0 120 48" className="h-auto w-full" aria-hidden>
-      <path d="M52 24 q10 -3 18 0 l16 -6 -4 6 8 2 -10 3 q-10 3 -20 1 z" fill="currentColor" />
+      {/* Ala trasera / cola */}
+      <path d="M54 26 Q40 40 16 46 Q34 36 44 26 Z" fill="currentColor" opacity="0.72" />
+      <path d="M50 26 Q38 32 24 42" stroke="#FFFFFF" strokeWidth="1" strokeLinecap="round" fill="none" opacity="0.4" />
+
+      {/* Ala delantera con varillas de la membrana */}
       <g className="animate-wing-flap" style={{ animationDelay: 'inherit' }}>
-        <path d="M56 24 q-14 -20 -40 -20 q22 6 30 22 z" fill="currentColor" />
+        <path d="M58 24 Q44 6 10 4 Q20 11 26 19 Q16 15 6 18 Q22 25 48 28 Z" fill="currentColor" />
+        <path d="M56 25 Q40 14 14 6 M54 26 Q36 21 12 18 M52 27 Q34 26 24 23" stroke="#FFFFFF" strokeWidth="0.9" strokeLinecap="round" fill="none" opacity="0.38" />
+        <path d="M56 24 Q42 8 12 5" stroke="#FFFFFF" strokeWidth="1.4" strokeLinecap="round" fill="none" opacity="0.5" />
       </g>
-      <path d="M54 26 q-12 16 -34 18 q20 -8 28 -20 z" fill="currentColor" opacity="0.7" />
-      <path d="M70 20 q6 -8 12 -8 q-4 5 -5 9 z" fill="currentColor" />
+
+      {/* Cuerpo, cuello y pecho */}
+      <path d="M50 25 Q62 19 74 22 L92 18 Q96 18 96 22 Q96 27 90 28 L70 31 Q58 33 50 28 Z" fill="currentColor" />
+      <path d="M60 25 Q72 23 86 22" stroke="#FFFFFF" strokeWidth="1" strokeLinecap="round" fill="none" opacity="0.42" />
+
+      {/* Cabeza, cresta, ojo y pico */}
+      <path d="M86 15 Q96 11 102 16 L106 15 L100 20 Q94 24 86 21 Z" fill="currentColor" />
+      <path d="M99 14 Q104 9 110 11 L104 17 Z" fill="currentColor" opacity="0.85" />
+      <path d="M104 17 L119 21 L104 23 Z" fill="currentColor" />
+      <path d="M104 23 L116 25 L103 26 Z" fill="currentColor" opacity="0.7" />
+      <circle cx="98" cy="17" r="1.3" fill="#FFFFFF" opacity="0.85" />
     </svg>
   );
 }

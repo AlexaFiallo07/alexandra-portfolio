@@ -4,18 +4,19 @@ import { useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { ContactShadows, Sparkles } from '@react-three/drei';
 import * as THREE from 'three';
+import SkinMat, { DINO_SKIN } from '@/components/3d/SkinMat';
 
 interface DinoPet3DProps {
   /** Cuando la sección entra en pantalla, el dino empieza a correr. */
   active?: boolean;
 }
 
-/* Paleta Studio Light: esmeralda + morado, coherente con el diseño de Antigravity */
-const SKIN = '#3E9E70';
-const SKIN_DARK = '#2E7D57';
-const BELLY = '#D1FAE5';
-const CLAW = '#18181B';
-const EYE = '#18181B';
+/* Paleta Studio Light compartida con el T-Rex del hero */
+const SKIN = DINO_SKIN.skin;
+const SKIN_DARK = DINO_SKIN.dark;
+const BELLY = DINO_SKIN.belly;
+const CLAW = DINO_SKIN.claw;
+const EYE = DINO_SKIN.claw;
 
 /**
  * Terópodo realista que corre de un lado a otro del vivarium
@@ -152,11 +153,13 @@ function Dino({ active = false }: DinoPet3DProps) {
   /* ---------- Geometría ---------- */
   return (
     <>
-      {/* Luces de vivarium */}
-      <ambientLight intensity={0.85} color="#FFFFFF" />
-      <directionalLight position={[3, 4, 3]} intensity={1.5} color="#FFFFFF" />
-      <pointLight position={[-2.5, 1.5, -2]} intensity={12} color="#7C3AED" distance={10} />
-      <pointLight position={[2.5, 1, 2]} intensity={7} color="#10B981" distance={10} />
+      {/* Iluminación de vivarium en tres puntos */}
+      <ambientLight intensity={0.68} color="#FFFFFF" />
+      <hemisphereLight args={['#FFFFFF', '#D8D8E2', 0.5]} />
+      <directionalLight position={[3, 4, 3]} intensity={1.55} color="#FFFFFF" />
+      <directionalLight position={[-3, 2, -1]} intensity={0.45} color="#E8E2F5" />
+      <pointLight position={[-2.5, 1.5, -2]} intensity={14} color="#7C3AED" distance={10} />
+      <pointLight position={[2.5, 1, 2]} intensity={8} color="#10B981" distance={10} />
 
       <group
         ref={root}
@@ -178,28 +181,44 @@ function Dino({ active = false }: DinoPet3DProps) {
           {/* ---------- Torso ---------- */}
           <mesh position={[0, 0.95, 0]} scale={[1.25, 0.78, 0.72]}>
             <sphereGeometry args={[0.62, 24, 24]} />
-            <meshStandardMaterial color={SKIN} roughness={0.9} />
+            <SkinMat />
           </mesh>
           {/* Cadera */}
           <mesh position={[-0.5, 0.9, 0]} scale={[1, 1.05, 0.9]}>
             <sphereGeometry args={[0.5, 20, 20]} />
-            <meshStandardMaterial color={SKIN_DARK} roughness={0.9} />
+            <SkinMat color={SKIN_DARK} />
           </mesh>
           {/* Pecho */}
           <mesh position={[0.5, 1.0, 0]} scale={[1, 0.9, 0.85]}>
             <sphereGeometry args={[0.45, 20, 20]} />
-            <meshStandardMaterial color={SKIN} roughness={0.9} />
+            <SkinMat />
           </mesh>
           {/* Vientre */}
           <mesh position={[0.1, 0.68, 0]} scale={[1.4, 0.5, 0.7]}>
             <sphereGeometry args={[0.5, 18, 18]} />
             <meshStandardMaterial color={BELLY} roughness={0.95} />
           </mesh>
+          {/* Costillas del vientre */}
+          {[-0.45, -0.2, 0.05, 0.3].map((x, i) => (
+            <mesh key={`rib-${i}`} position={[x, 0.62, 0.33]} rotation={[0, 0, -0.1]}>
+              <torusGeometry args={[0.16, 0.012, 6, 16, Math.PI]} />
+              <meshStandardMaterial color={SKIN_DARK} roughness={1} />
+            </mesh>
+          ))}
+          {/* Escamas laterales */}
+          {[-0.3, 0, 0.3].flatMap((x, i) =>
+            [-1, 1].map((s) => (
+              <mesh key={`flank-${i}-${s}`} position={[x, 1.02, s * 0.42]} scale={[1, 0.7, 0.5]}>
+                <sphereGeometry args={[0.07, 10, 10]} />
+                <SkinMat color={SKIN_DARK} roughness={0.95} />
+              </mesh>
+            )),
+          )}
           {/* Franjas dorsales */}
           {[-0.35, 0.0, 0.35].map((x, i) => (
             <mesh key={`stripe-${i}`} position={[x, 1.42 - i * 0.03, 0]} scale={[1, 0.35, 1.1]}>
               <sphereGeometry args={[0.22 - i * 0.02, 12, 12]} />
-              <meshStandardMaterial color={SKIN_DARK} roughness={0.95} />
+              <SkinMat color={SKIN_DARK} roughness={0.95} />
             </mesh>
           ))}
           {/* Púas dorsales */}
@@ -210,10 +229,23 @@ function Dino({ active = false }: DinoPet3DProps) {
             </mesh>
           ))}
 
+          {/* Cresta de plumas moradas (toque estudio) */}
+          {[0.55, 0.28, 0.02].map((x, i) => (
+            <mesh
+              key={`plume-${i}`}
+              position={[x, 1.6 - i * 0.06, 0]}
+              rotation={[0, 0, 0.45 + i * 0.12]}
+              scale={[1, 1, 0.35]}
+            >
+              <coneGeometry args={[0.075, 0.34 - i * 0.04, 6]} />
+              <meshStandardMaterial color="#7C3AED" roughness={0.65} metalness={0.1} />
+            </mesh>
+          ))}
+
           {/* ---------- Cuello ---------- */}
           <mesh position={[0.88, 1.32, 0]} rotation={[0, 0, -0.5]}>
             <cylinderGeometry args={[0.2, 0.32, 0.75, 8]} />
-            <meshStandardMaterial color={SKIN} roughness={0.9} />
+            <SkinMat />
           </mesh>
 
           {/* ---------- Cabeza ---------- */}
@@ -221,42 +253,68 @@ function Dino({ active = false }: DinoPet3DProps) {
             {/* Cráneo */}
             <mesh scale={[1.05, 0.75, 0.7]}>
               <sphereGeometry args={[0.32, 24, 24]} />
-              <meshStandardMaterial color={SKIN} roughness={0.9} />
+              <SkinMat />
             </mesh>
             {/* Hocico */}
             <mesh position={[0.36, -0.06, 0]} scale={[1.35, 0.5, 0.55]}>
               <sphereGeometry args={[0.24, 20, 20]} />
-              <meshStandardMaterial color={SKIN_DARK} roughness={0.9} />
+              <SkinMat color={SKIN_DARK} />
             </mesh>
+            {/* Narinas */}
+            {[-1, 1].map((s) => (
+              <mesh key={`nostril-${s}`} position={[0.56, 0.01, s * 0.07]} scale={[1, 0.7, 1]}>
+                <sphereGeometry args={[0.022, 8, 8]} />
+                <meshStandardMaterial color={CLAW} roughness={1} />
+              </mesh>
+            ))}
+            {/* Mejilla */}
+            {[-1, 1].map((s) => (
+              <mesh key={`cheek-${s}`} position={[0.02, -0.08, s * 0.15]} scale={[1, 0.6, 0.7]}>
+                <sphereGeometry args={[0.1, 12, 12]} />
+                <SkinMat color={SKIN_DARK} />
+              </mesh>
+            ))}
             {/* Mandíbula inferior (boca entreabierta) */}
             <group position={[0.08, -0.2, 0]} rotation={[0, 0, -0.16]}>
               <mesh position={[0.3, 0, 0]} scale={[1.5, 0.4, 0.55]}>
                 <sphereGeometry args={[0.2, 16, 16]} />
                 <meshStandardMaterial color={BELLY} roughness={0.92} />
               </mesh>
-              {/* Dientes */}
-              {[0.18, 0.3, 0.42].map((x, i) => (
-                <mesh key={`tooth-${i}`} position={[x, 0.09, 0.08]} rotation={[Math.PI, 0, 0]}>
-                  <coneGeometry args={[0.022, 0.09, 6]} />
-                  <meshStandardMaterial color="#FFFFFF" roughness={0.5} />
-                </mesh>
-              ))}
+              {/* Dientes (ambos lados) */}
+              {[-1, 1].flatMap((side) =>
+                [0.18, 0.3, 0.42].map((x, i) => (
+                  <mesh
+                    key={`tooth-${side}-${i}`}
+                    position={[x, 0.09, side * 0.08]}
+                    rotation={[Math.PI, 0, 0]}
+                  >
+                    <coneGeometry args={[0.022, 0.09, 6]} />
+                    <meshStandardMaterial color="#FFFFFF" roughness={0.5} />
+                  </mesh>
+                )),
+              )}
             </group>
             {/* Ceja feroz */}
             <mesh position={[0.16, 0.16, 0]} rotation={[0, 0, -0.12]}>
               <boxGeometry args={[0.3, 0.07, 0.5]} />
-              <meshStandardMaterial color={SKIN_DARK} roughness={0.9} />
+              <SkinMat color={SKIN_DARK} />
             </mesh>
             {/* Ojos */}
             {[-1, 1].map((s) => (
               <group key={`eye-${s}`} position={[0.2, 0.06, s * 0.2]}>
+                {/* Cuenca oscura */}
+                <mesh position={[0, 0, s * -0.02]}>
+                  <sphereGeometry args={[0.075, 12, 12]} />
+                  <meshStandardMaterial color="#203A2C" roughness={1} />
+                </mesh>
                 <mesh>
                   <sphereGeometry args={[0.055, 14, 14]} />
-                  <meshStandardMaterial
+                  <meshPhysicalMaterial
                     color={hovered ? '#7C3AED' : EYE}
                     emissive={hovered ? '#7C3AED' : '#000000'}
                     emissiveIntensity={hovered ? 0.8 : 0}
-                    roughness={0.3}
+                    roughness={0.18}
+                    clearcoat={1}
                   />
                 </mesh>
                 <mesh position={[0.03, 0.02, s * 0.02]}>
@@ -268,7 +326,7 @@ function Dino({ active = false }: DinoPet3DProps) {
             {/* Penacho */}
             <mesh position={[-0.06, 0.3, 0]} rotation={[0, 0, -0.35]} scale={[1, 1, 0.3]}>
               <coneGeometry args={[0.09, 0.26, 6]} />
-              <meshStandardMaterial color={SKIN_DARK} roughness={0.9} />
+              <SkinMat color={SKIN_DARK} />
             </mesh>
           </group>
 
@@ -280,7 +338,7 @@ function Dino({ active = false }: DinoPet3DProps) {
             <group key={`arm-${s}`} ref={ref} position={[0.62, 1.02, s * 0.22]}>
               <mesh position={[0.1, -0.12, 0]} rotation={[0, 0, -0.5]}>
                 <cylinderGeometry args={[0.045, 0.055, 0.3, 6]} />
-                <meshStandardMaterial color={SKIN_DARK} roughness={0.9} />
+                <SkinMat color={SKIN_DARK} />
               </mesh>
               <mesh position={[0.2, -0.24, 0]} rotation={[0, 0, -1.1]}>
                 <coneGeometry args={[0.03, 0.12, 6]} />
@@ -298,39 +356,56 @@ function Dino({ active = false }: DinoPet3DProps) {
               {/* Muslo */}
               <mesh position={[0.05, -0.12, 0]} scale={[1, 1.2, 0.75]}>
                 <sphereGeometry args={[0.3, 16, 16]} />
-                <meshStandardMaterial color={SKIN_DARK} roughness={0.9} />
+                <SkinMat color={SKIN_DARK} />
               </mesh>
               {/* Pantorrilla (se flexiona) */}
               <group ref={shin} position={[0.05, -0.42, 0]}>
                 <mesh position={[0, -0.26, 0]}>
                   <cylinderGeometry args={[0.09, 0.13, 0.55, 7]} />
-                  <meshStandardMaterial color={SKIN} roughness={0.9} />
+                  <SkinMat />
                 </mesh>
-                {/* Pie + garras */}
+                {/* Tobillo, pie y tres garras */}
+                <mesh position={[0.06, -0.44, 0]}>
+                  <sphereGeometry args={[0.12, 12, 12]} />
+                  <SkinMat color={SKIN_DARK} />
+                </mesh>
                 <mesh position={[0.1, -0.56, 0]}>
-                  <boxGeometry args={[0.36, 0.1, 0.18]} />
-                  <meshStandardMaterial color={SKIN_DARK} roughness={0.9} />
+                  <boxGeometry args={[0.36, 0.1, 0.2]} />
+                  <SkinMat color={SKIN_DARK} />
                 </mesh>
-                {[-0.06, 0.06].map((z) => (
-                  <mesh key={`claw-${z}`} position={[0.3, -0.56, z]} rotation={[0, 0, -Math.PI / 2]}>
-                    <coneGeometry args={[0.03, 0.12, 6]} />
-                    <meshStandardMaterial color={CLAW} roughness={0.7} />
+                {[-0.08, 0, 0.08].map((z) => (
+                  <mesh key={`claw-${z}`} position={[0.31, -0.56, z]} rotation={[0, 0, -Math.PI / 2]}>
+                    <coneGeometry args={[0.028, 0.13, 6]} />
+                    <meshStandardMaterial color={CLAW} roughness={0.55} metalness={0.1} />
                   </mesh>
                 ))}
               </group>
             </group>
           ))}
 
-          {/* ---------- Cola larga de contrapeso ---------- */}
+          {/* ---------- Cola larga y segmentada de contrapeso ---------- */}
           <group ref={tail} position={[-0.78, 0.92, 0]}>
-            <mesh position={[-0.95, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
-              <coneGeometry args={[0.3, 1.9, 8]} />
-              <meshStandardMaterial color={SKIN} roughness={0.9} />
-            </mesh>
-            {/* Punta más oscura */}
-            <mesh position={[-1.9, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
-              <coneGeometry args={[0.1, 0.5, 8]} />
-              <meshStandardMaterial color={SKIN_DARK} roughness={0.9} />
+            {[
+              { x: -0.4, y: 0.02, r: 0.28, h: 0.85 },
+              { x: -1.05, y: 0.05, r: 0.22, h: 0.75 },
+              { x: -1.62, y: 0.1, r: 0.16, h: 0.62 },
+              { x: -2.08, y: 0.16, r: 0.1, h: 0.5 },
+            ].map((seg, i) => (
+              <mesh key={`tail-${i}`} position={[seg.x, seg.y, 0]} rotation={[0, 0, Math.PI / 2]}>
+                <coneGeometry args={[seg.r, seg.h, 10]} />
+                <SkinMat color={i > 1 ? SKIN_DARK : SKIN} />
+              </mesh>
+            ))}
+            {/* Anillos de acento morado */}
+            {[-0.95, -1.7].map((x) => (
+              <mesh key={`tail-ring-${x}`} position={[x, 0.08, 0]} rotation={[0, Math.PI / 2, 0]}>
+                <torusGeometry args={[0.19, 0.012, 6, 20]} />
+                <meshStandardMaterial color="#7C3AED" roughness={0.5} metalness={0.3} />
+              </mesh>
+            ))}
+            <mesh position={[-2.38, 0.2, 0]} rotation={[0, 0, Math.PI / 2]}>
+              <coneGeometry args={[0.055, 0.35, 8]} />
+              <SkinMat color={SKIN_DARK} />
             </mesh>
           </group>
         </group>
@@ -345,6 +420,13 @@ function Dino({ active = false }: DinoPet3DProps) {
         <ringGeometry args={[2.3, 2.36, 64]} />
         <meshBasicMaterial color="#7C3AED" transparent opacity={0.5} toneMapped={false} />
       </mesh>
+      {/* Anillos de blueprint en el suelo */}
+      {[0.8, 1.5].map((r) => (
+        <mesh key={`floor-ring-${r}`} position={[0, -0.008, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+          <ringGeometry args={[r, r + 0.008, 64]} />
+          <meshBasicMaterial color="#10B981" transparent opacity={0.18} toneMapped={false} />
+        </mesh>
+      ))}
 
       {/* Polvo levantado al correr */}
       {active && (

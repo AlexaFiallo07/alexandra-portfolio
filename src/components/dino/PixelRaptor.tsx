@@ -17,16 +17,16 @@ const OBSTACLES: Array<{ at: number; kind: 'cactus' | 'div' | 'code' }> = [
 
 /* Sprite del raptor: 16 × 10 píxeles (verde esmeralda + detalles morados) */
 const BODY = [
-  '........ddd.....',
-  '.......dbbbd....',
-  '......dbbbbbd...',
-  '..pp..dbebbbbd..',
-  '.dbbbddbbbbbbbd.',
+  '..........dddd..',
+  '.........dppbbdd',
+  '.......dppbbbbbd',
+  '..d....dppbbbebd',
+  '.dbbddppbbbbbwsd',
   'dbbbbbbbbbbbbbbd',
-  'dbbppbbbbbbbbbbd',
-  'dbbbbbbbbbbbbbd.',
+  'dbbhhbbbbbbbbbbd',
+  'dbbhhpbbbbbbbbd.',
   '.dbbbbbbbbbbbd..',
-  '..dbbbbbbbbbd...',
+  '..dbbbbbbbbbbd..',
 ];
 
 const PALETTE: Record<string, string> = {
@@ -34,6 +34,9 @@ const PALETTE: Record<string, string> = {
   b: '#10B981', // verde esmeralda cuerpo
   p: '#7C3AED', // acento morado vibrante (cresta / franja)
   e: '#18181B', // ojo carbón
+  h: '#A7F3D0', // vientre / brillo menta
+  w: '#FFFFFF', // diente y brillo del ojo
+  s: '#5B21B6', // sombra morada profunda
 };
 
 const LEGS_A = [
@@ -73,14 +76,35 @@ function RaptorSprite() {
             fill={PALETTE[c.code] ?? '#10B981'}
           />
         ))}
+      {/* Brillo doble en el ojo y línea de la mandíbula */}
+      <rect x="13.15" y="3.15" width="0.45" height="0.45" fill="#FFFFFF" />
+      <rect x="12.2" y="3" width="0.3" height="0.3" fill="#FFFFFF" opacity="0.8" />
+      <rect x="12" y="4.25" width="3" height="0.35" fill="#18181B" opacity="0.45" />
+      <rect x="8.3" y="1.7" width="0.5" height="0.5" fill="#FFFFFF" opacity="0.65" />
       <g className="animate-leg-a">
         {LEGS_A.map((r, i) => (
-          <rect key={`a-${i}`} x={r.x} y={r.y} width={r.w} height={r.h} fill="#5B21B6" />
+          <g key={`a-${i}`}>
+            <rect x={r.x} y={r.y} width={r.w} height={r.h} fill="#5B21B6" />
+            {r.h === 1 && (
+              <>
+                <rect x={r.x} y={r.y + 0.6} width="1" height="0.5" fill="#FFFFFF" />
+                <rect x={r.x + r.w - 1} y={r.y + 0.6} width="1" height="0.5" fill="#FFFFFF" />
+              </>
+            )}
+          </g>
         ))}
       </g>
       <g className="animate-leg-b">
         {LEGS_B.map((r, i) => (
-          <rect key={`b-${i}`} x={r.x} y={r.y} width={r.w} height={r.h} fill="#5B21B6" />
+          <g key={`b-${i}`}>
+            <rect x={r.x} y={r.y} width={r.w} height={r.h} fill="#5B21B6" />
+            {r.h === 1 && (
+              <>
+                <rect x={r.x} y={r.y + 0.6} width="1" height="0.5" fill="#FFFFFF" />
+                <rect x={r.x + r.w - 1} y={r.y + 0.6} width="1" height="0.5" fill="#FFFFFF" />
+              </>
+            )}
+          </g>
         ))}
       </g>
     </svg>
@@ -91,11 +115,20 @@ function RaptorSprite() {
 function CactusSprite() {
   return (
     <svg viewBox="0 0 9 11" className="h-4 w-auto" shapeRendering="crispEdges" aria-hidden>
-      <rect x="4" y="1" width="2" height="10" fill="#059669" />
-      <rect x="1" y="3" width="2" height="4" fill="#10B981" />
-      <rect x="2" y="6" width="2" height="1" fill="#059669" />
-      <rect x="7" y="2" width="2" height="4" fill="#10B981" />
-      <rect x="6" y="5" width="2" height="1" fill="#059669" />
+      {/* Flor morada y contorno oscuro */}
+      <rect x="3" y="0" width="3" height="1" fill="#7C3AED" />
+      <rect x="3" y="1" width="3" height="10" fill="#059669" />
+      <rect x="4" y="2" width="1.4" height="8" fill="#10B981" />
+      <rect x="4" y="2" width="0.45" height="6" fill="#A7F3D0" />
+      {/* Brazos con sombra y brillo */}
+      <rect x="0" y="3" width="2.5" height="5" fill="#059669" />
+      <rect x="1" y="4" width="1.2" height="3" fill="#10B981" />
+      <rect x="0.5" y="4.5" width="0.4" height="2" fill="#A7F3D0" />
+      <rect x="6.5" y="2" width="2.5" height="6" fill="#059669" />
+      <rect x="7" y="3" width="1.2" height="4" fill="#10B981" />
+      <rect x="7" y="3.5" width="0.4" height="3" fill="#A7F3D0" />
+      {/* Base */}
+      <rect x="2" y="10" width="5" height="1" fill="#5B21B6" />
     </svg>
   );
 }

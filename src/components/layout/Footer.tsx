@@ -37,8 +37,26 @@ function Meteorite() {
   return (
     <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-20 overflow-hidden">
       <div className="animate-meteor absolute left-[68%] top-4 flex -translate-x-1/2 items-center">
-        <div className="h-0.5 w-24 rounded-full bg-gradient-to-r from-transparent via-studio-purple/60 to-studio-green" />
-        <div className=" -ml-1 h-4 w-4 rounded-full border-2 border-studio-ink bg-studio-green shadow-sm" />
+        <svg width="132" height="24" viewBox="0 0 132 24" fill="none" aria-hidden>
+          <defs>
+            <linearGradient id="footer-meteor-tail" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stopColor="#7C3AED" stopOpacity="0" />
+              <stop offset="55%" stopColor="#7C3AED" stopOpacity="0.65" />
+              <stop offset="100%" stopColor="#10B981" />
+            </linearGradient>
+            <linearGradient id="footer-meteor-core" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="#10B981" />
+              <stop offset="100%" stopColor="#059669" />
+            </linearGradient>
+          </defs>
+          <path d="M2 12 h106" stroke="url(#footer-meteor-tail)" strokeWidth="2" strokeLinecap="round" />
+          <path d="M18 8 h62" stroke="#FFFFFF" strokeWidth="0.8" strokeLinecap="round" opacity="0.5" />
+          <circle cx="120" cy="12" r="8" fill="url(#footer-meteor-core)" stroke="#18181B" strokeWidth="2" />
+          <circle cx="117" cy="9" r="2" fill="#D1FAE5" opacity="0.9" />
+          <circle cx="123" cy="15" r="1" fill="#5B21B6" opacity="0.6" />
+          <circle cx="108" cy="6" r="1.4" fill="#7C3AED" />
+          <circle cx="101" cy="17" r="1" fill="#10B981" />
+        </svg>
       </div>
     </div>
   );
@@ -48,23 +66,83 @@ function Meteorite() {
 function WavingDino() {
   return (
     <svg viewBox="0 0 64 64" className="h-12 w-12 shrink-0" role="img" aria-label="Dinosaurio despidiéndose">
-      <path d="M14 46 Q4 44 6 36 Q12 42 18 40 Z" fill="#10B981" stroke="#18181B" strokeWidth="2" />
-      <ellipse cx="32" cy="46" rx="16" ry="12" fill="#10B981" stroke="#18181B" strokeWidth="2.2" />
-      <ellipse cx="33" cy="49" rx="10" ry="7" fill="#D1FAE5" />
-      <ellipse cx="25" cy="57" rx="6.5" ry="4" fill="#059669" stroke="#18181B" strokeWidth="1.8" />
-      <ellipse cx="41" cy="57" rx="6.5" ry="4" fill="#059669" stroke="#18181B" strokeWidth="1.8" />
-      {[[23, 34], [32, 31], [41, 34]].map(([cx, cy]) => (
-        <path key={`${cx}`} d={`M${cx - 5} ${cy + 5} Q${cx} ${cy - 7} ${cx + 5} ${cy + 5} Z`} fill="#7C3AED" stroke="#18181B" strokeWidth="1.5" />
-      ))}
-      <g className="animate-wave" style={{ transformBox: 'fill-box', transformOrigin: 'center top' }}>
-        <ellipse cx="48" cy="42" rx="4" ry="8" fill="#10B981" stroke="#18181B" strokeWidth="1.8" />
+      <defs>
+        <linearGradient id="footer-dino-body" x1="0" y1="0" x2="0.2" y2="1">
+          <stop offset="0%" stopColor="#10B981" />
+          <stop offset="58%" stopColor="#10B981" />
+          <stop offset="100%" stopColor="#059669" />
+        </linearGradient>
+        <linearGradient id="footer-dino-belly" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#D1FAE5" />
+          <stop offset="100%" stopColor="#A7F3D0" />
+        </linearGradient>
+        <linearGradient id="footer-dino-plate" x1="0" y1="0" x2="0.5" y2="1">
+          <stop offset="0%" stopColor="#7C3AED" />
+          <stop offset="100%" stopColor="#5B21B6" />
+        </linearGradient>
+        <pattern id="footer-dino-scales" width="8" height="7" patternUnits="userSpaceOnUse">
+          <circle cx="2" cy="2" r="1" fill="#FFFFFF" opacity="0.24" />
+        </pattern>
+        <filter id="footer-dino-shadow" x="-30%" y="-30%" width="160%" height="160%">
+          <feDropShadow dx="0" dy="1.6" stdDeviation="1.6" floodColor="#5B21B6" floodOpacity="0.2" />
+        </filter>
+      </defs>
+
+      {/* Sombra y cola */}
+      <ellipse cx="32" cy="61" rx="17" ry="2.4" fill="#5B21B6" opacity="0.12" />
+      <path d="M16 46 Q4 45 6 35 Q6 32 9 33 Q13 42 20 40 Z" fill="url(#footer-dino-body)" stroke="#18181B" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
+      <path d="M10 36 Q13 41 17 43" stroke="#D1FAE5" strokeWidth="1.2" strokeLinecap="round" fill="none" opacity="0.7" />
+
+      {/* Cuerpo, vientre y patitas */}
+      <g filter="url(#footer-dino-shadow)">
+        <ellipse cx="32" cy="46" rx="16" ry="12" fill="url(#footer-dino-body)" stroke="#18181B" strokeWidth="2.2" />
       </g>
-      <circle cx="33" cy="25" r="15" fill="#10B981" stroke="#18181B" strokeWidth="2.2" />
-      <ellipse cx="41" cy="29" rx="7" ry="5" fill="#A7F3D0" />
-      <path d="M27 23 q3 -3 6 0" stroke="#18181B" strokeWidth="2.2" strokeLinecap="round" fill="none" />
-      <path d="M37 23 q3 -3 6 0" stroke="#18181B" strokeWidth="2.2" strokeLinecap="round" fill="none" />
+      <ellipse cx="32" cy="46" rx="15" ry="11" fill="url(#footer-dino-scales)" />
+      <path d="M21 40 Q29 36 38 38" stroke="#FFFFFF" strokeWidth="1.4" strokeLinecap="round" fill="none" opacity="0.5" />
+      <ellipse cx="33" cy="49" rx="10" ry="7" fill="url(#footer-dino-belly)" stroke="#A7F3D0" strokeWidth="0.8" />
+      <path d="M27 49 q6 2 12 0" stroke="#059669" strokeWidth="1" strokeLinecap="round" fill="none" opacity="0.35" />
+      <ellipse cx="25" cy="57" rx="6.5" ry="4" fill="url(#footer-dino-body)" stroke="#18181B" strokeWidth="1.8" />
+      <ellipse cx="41" cy="57" rx="6.5" ry="4" fill="url(#footer-dino-body)" stroke="#18181B" strokeWidth="1.8" />
+      {[22, 27, 38, 43].map((x) => (
+        <ellipse key={x} cx={x} cy="59" rx="1.7" ry="1" fill="#FFFFFF" stroke="#18181B" strokeWidth="0.7" />
+      ))}
+
+      {/* Placas dorsales con brillo */}
+      {[[23, 34], [32, 31], [41, 34]].map(([cx, cy]) => (
+        <g key={`${cx}`}>
+          <path d={`M${cx - 5} ${cy + 5} Q${cx} ${cy - 7} ${cx + 5} ${cy + 5} Z`} fill="url(#footer-dino-plate)" stroke="#18181B" strokeWidth="1.5" strokeLinejoin="round" />
+          <path d={`M${cx - 2} ${cy + 1} Q${cx} ${cy - 4} ${cx + 2} ${cy + 1}`} stroke="#FFFFFF" strokeWidth="0.9" strokeLinecap="round" fill="none" opacity="0.55" />
+        </g>
+      ))}
+
+      {/* Patita que saluda: se conserva la animación */}
+      <g className="animate-wave" style={{ transformBox: 'fill-box', transformOrigin: 'center top' }}>
+        <ellipse cx="48" cy="42" rx="4" ry="8" fill="url(#footer-dino-body)" stroke="#18181B" strokeWidth="1.8" />
+        <path d="M46 38 q2 -2 4 0" stroke="#D1FAE5" strokeWidth="1.1" strokeLinecap="round" fill="none" opacity="0.75" />
+        {[45, 48, 51].map((x) => (
+          <path key={x} d={`M${x} 36 l0.5 -2.5`} stroke="#FFFFFF" strokeWidth="1.1" strokeLinecap="round" />
+        ))}
+      </g>
+
+      {/* Cabeza: hocico, cejas, ojos con doble brillo y sonrisa */}
+      <g filter="url(#footer-dino-shadow)">
+        <circle cx="33" cy="25" r="15" fill="url(#footer-dino-body)" stroke="#18181B" strokeWidth="2.2" />
+      </g>
+      <path d="M24 17 Q32 12 41 16" stroke="#FFFFFF" strokeWidth="1.5" strokeLinecap="round" fill="none" opacity="0.55" />
+      <ellipse cx="41" cy="29" rx="7" ry="5" fill="url(#footer-dino-belly)" stroke="#A7F3D0" strokeWidth="0.9" />
+      <ellipse cx="46" cy="27.5" rx="1.6" ry="1.1" fill="#18181B" />
+      <path d="M26 18 q3 -2 5 0" stroke="#18181B" strokeWidth="1.4" strokeLinecap="round" fill="none" />
+      <path d="M36 18 q3 -1 5 0.8" stroke="#18181B" strokeWidth="1.4" strokeLinecap="round" fill="none" />
+      <circle cx="30" cy="23" r="3.2" fill="#18181B" />
+      <circle cx="39" cy="23" r="3.2" fill="#18181B" />
+      <circle cx="31.1" cy="21.8" r="1.1" fill="#FFFFFF" />
+      <circle cx="40.1" cy="21.8" r="1.1" fill="#FFFFFF" />
+      <circle cx="28.9" cy="24.4" r="0.55" fill="#FFFFFF" opacity="0.85" />
+      <circle cx="37.9" cy="24.4" r="0.55" fill="#FFFFFF" opacity="0.85" />
+      <ellipse cx="26" cy="29" rx="3" ry="2" fill="#7C3AED" opacity="0.28" />
+      <ellipse cx="44" cy="30" rx="2.6" ry="1.6" fill="#7C3AED" opacity="0.22" />
       <path d="M33 30 q4 4 8 0" stroke="#18181B" strokeWidth="2" strokeLinecap="round" fill="none" />
-      <ellipse cx="27" cy="29" rx="3" ry="2" fill="#7C3AED" opacity="0.28" />
+      <path d="M36 32 q2 1.6 3.5 -0.2" stroke="#7C3AED" strokeWidth="1.2" strokeLinecap="round" fill="none" opacity="0.75" />
     </svg>
   );
 }
