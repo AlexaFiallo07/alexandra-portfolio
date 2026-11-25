@@ -1,10 +1,18 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { useRef } from 'react';
+import dynamic from 'next/dynamic';
+import { motion, useInView } from 'framer-motion';
 import { STACK } from '@/data/skillsData';
 import FossilIcon from '@/components/dino/FossilIcons';
+import CanvasLoader from '@/components/3d/CanvasLoader';
 import { pct } from '@/lib/utils';
 import type { SkillGroup } from '@/types';
+
+const FossilStudio3D = dynamic(() => import('@/components/dino/FossilStudio3D'), {
+  ssr: false,
+  loading: () => <CanvasLoader label="Preparando el fósil…" />,
+});
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -72,6 +80,9 @@ function SkillBadge({
  * Tarjetas blancas #FFFFFF con fósiles y huellas line-art en morado y verde.
  */
 export default function StackSection() {
+  const fossilRef = useRef<HTMLDivElement>(null);
+  const fossilInView = useInView(fossilRef, { once: true, margin: '-80px' });
+
   return (
     <section id="stack" className="relative py-20 sm:py-28">
       <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
@@ -104,6 +115,40 @@ export default function StackSection() {
             Pasa el cursor sobre cada tecnología para iluminar y ensamblar su ilustración fósil en
             línea fina morada y verde.
           </p>
+        </motion.div>
+
+        {/* ---------- Fósil 3D: GLB cuando existe, cráneo procedural si no ---------- */}
+        <motion.div
+          ref={fossilRef}
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.7, delay: 0.1, ease: EASE }}
+          className="relative mt-8 grid overflow-hidden rounded-3xl border border-studio-border bg-studio-card shadow-studio lg:grid-cols-[1fr_280px]"
+        >
+          <div className="p-6 sm:p-8">
+            <span className="rounded-full border border-studio-purple/30 bg-studio-purple/10 px-3 py-1 font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-studio-purple-deep">
+              03 — Fósil en vivo
+            </span>
+            <h3 className="mt-4 font-display text-2xl font-bold text-studio-ink sm:text-3xl">
+              Del fósil al modelo anatómico
+            </h3>
+            <p className="mt-3 max-w-xl text-sm leading-relaxed text-studio-slate">
+              Esta vitrina usa <code className="font-mono text-studio-purple-deep">fossil_skull.glb</code>{' '}
+              con iluminación de estudio cuando el archivo está disponible; mientras tanto, el
+              cráneo procedural mantiene la escena viva.
+            </p>
+            <p className="mt-4 font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-studio-green-deep">
+              → Mueve el cursor para girar la pieza
+            </p>
+          </div>
+
+          <div className="studio-grid relative h-56 border-t border-studio-border bg-studio-pearl/40 lg:border-l lg:border-t-0">
+            {fossilInView && <FossilStudio3D className="h-full w-full" />}
+            <span className="pointer-events-none absolute bottom-3 left-3 rounded-md border border-studio-border bg-studio-card/90 px-2.5 py-1 font-mono text-[10px] font-semibold text-studio-slate shadow-sm">
+              fossil_skull.glb · R3F
+            </span>
+          </div>
         </motion.div>
 
         {/* Categorías */}

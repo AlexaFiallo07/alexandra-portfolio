@@ -31,3 +31,17 @@ npm start
 - `src/components/sections/AboutSection.tsx` monta el vivarium 3D solo cuando entra en pantalla (`useInView`).
 - Las escenas 3D se cargan con `next/dynamic` + `ssr: false` y muestran `CanvasLoader` (paleta `studio-*`).
 - Todo el movimiento usa `transform`/`opacity` y respeta `prefers-reduced-motion`.
+
+## Integración de modelos GLB (Blender → Three.js)
+
+Los tres puntos 3D están preparados para recibir esculturas `.glb` sin romper el diseño claro:
+
+| Escena | Archivo | Clips | Respaldo |
+| --- | --- | --- | --- |
+| Hero | `public/models/trex_hero.glb` | `Idle`, `Roar` | Bust procedural con gafas |
+| Sobre mí | `public/models/theropod_run.glb` | `Idle`, `Run`, `Jump` | Terópodo procedural animado |
+| Tech Stack | `public/models/fossil_skull.glb` | `Idle` (opcional) | Cráneo fósil procedural |
+
+- `useGLTF` + `useAnimations` cargan y reproducen los clips; `<Environment preset="studio" />` y canvas `alpha: true` se activan solo en la rama GLB.
+- `/api/models/status?file=...` comprueba de forma segura qué archivos existen. Si no hay GLB o falla la carga, `ModelGate` monta el respaldo procedural automáticamente.
+- Convención de exportación: `glTF Binary`, `+Y Up`, modifiers aplicados, skinning/shape keys incluidos, +X al frente, 30k–50k triángulos. Detalles y nombres de objetos en `public/models/README.md`.

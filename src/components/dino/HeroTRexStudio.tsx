@@ -32,6 +32,7 @@ export default function HeroTRexStudio() {
   const win4Ref = useRef<HTMLDivElement>(null);
 
   const [roarIdx, setRoarIdx] = useState<number | null>(null);
+  const [roarSignal, setRoarSignal] = useState(0);
   const [bouncing, setBouncing] = useState(false);
   const [webglOk, setWebglOk] = useState(true);
 
@@ -85,6 +86,7 @@ export default function HeroTRexStudio() {
   const handleInteract = () => {
     setBouncing(true);
     setRoarIdx((prev) => (prev === null ? 0 : (prev + 1) % ROAR_LINES.length));
+    setRoarSignal((prev) => prev + 1);
     window.setTimeout(() => setBouncing(false), 450);
   };
 
@@ -175,7 +177,7 @@ export default function HeroTRexStudio() {
             bouncing ? '-translate-y-3 scale-[1.03]' : ''
           }`}
         >
-          <HeroTRex3D />
+          <HeroTRex3D roarSignal={roarSignal} />
         </div>
       ) : (
         <>

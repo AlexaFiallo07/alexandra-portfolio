@@ -1,10 +1,19 @@
 'use client';
 
-import { useMemo, useRef, useState } from 'react';
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { ContactShadows, Sparkles } from '@react-three/drei';
+import {
+  ContactShadows,
+  Environment,
+  Sparkles,
+  useAnimations,
+  useGLTF,
+} from '@react-three/drei';
 import * as THREE from 'three';
+import ModelGate from '@/components/3d/ModelGate';
 import SkinMat, { DINO_SKIN } from '@/components/3d/SkinMat';
+import { MODEL_CLIPS, MODEL_FILES, MODEL_PATHS } from '@/lib/modelFiles';
+import { findClip, fitModel } from '@/lib/model3d';
 
 /* Paleta Studio Light: esmeralda + morado, coherente con el diseño de Antigravity */
 const SKIN_DARK = DINO_SKIN.dark;
@@ -14,13 +23,18 @@ const LENS = '#18181B';
 const MOUTH = '#7A3B3B';
 const TONGUE = '#B96565';
 
+interface HeroTRex3DProps {
+  /** Contador externo de clics: permite rugir desde la tarjeta completa. */
+  roarSignal?: number;
+}
+
 /**
  * Bust de T-Rex con gafas de desarrollador:
  * - las pupilas siguen el cursor del usuario
  * - al hacer clic ruge (abre la mandíbula y ladea la cabeza)
  * - rotación suave + parallax
  */
-function TRexBust() {
+function TRexBust({ roarSignal = 0 }: HeroTRex3DProps) {
   const root = useRef<THREE.Group>(null);
   const head = useRef<THREE.Group>(null);
   const jaw = useRef<THREE.Group>(null);
@@ -28,7 +42,15 @@ function TRexBust() {
   const pupilR = useRef<THREE.Mesh>(null);
 
   const roar = useRef<{ start: number } | null>(null);
+  const lastRoar = useRef(0);
   const [hovered, setHovered] = useState(false);
+
+  useEffect(() => {
+    if (roarSignal > lastRoar.current) {
+      lastRoar.current = roarSignal;
+      roar.current = { start: performance.now() / 1000 };
+    }
+  }, [roarSignal]);
 
   const reducedMotion = useMemo(
     () =>
@@ -392,10 +414,124 @@ function TRexBust() {
 }
 
 /* ------------------------------------------------------------------ */
+/*  T-Rex GLB (Blender → useGLTF + useAnimations)                       */
+/* ------------------------------------------------------------------ */
+
+function HeroTRexGlb({ roarSignal = 0 }: HeroTRex3DProps) {
+  const root = useRef<THREE.Group>(null);
+  const { scene, animations } = useGLTF(MODEL_PATHS[MODEL_FILES.trexHero]);
+  const { actions, names } = useAnimations(animations, root);
+
+  const fit = useMemo(() => fitModel(scene, 2.6, -1.2, 'y'), [scene]);
+  const idleName = useMemo(
+    () => findClip(names, [MODEL_CLIPS.trexHero.idle]) ?? '',
+    [names],
+  );
+  const roarName = useMemo(
+    () => findClip(names, [MODEL_CLIPS.trexHero.roar]) ?? '',
+    [names],
+  );
+  const pupils = useMemo(() => {
+    const found: Array<{ object: THREE.Object3D; base: THREE.Vector3 }> = [];
+    for (const name of ['PupilL', 'PupilR']) {
+      const object = scene.getObjectByName(name);
+      if (object) found.push({ object, base: object.position.clone() });
+    }
+    return found;
+  }, [scene]);
+
+  const lastRoar = useRef(0);
+  const reducedMotion = useMemo(
+    () =>
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+    [],
+  );
+
+  useEffect(() => {
+    const idle = idleName ? actions[idleName] : undefined;
+    idle?.reset().fadeIn(0.4).play();
+    return () => {
+      idle?.fadeOut(0.2);
+    };
+  }, [actions, idleName]);
+
+  const playRoar = useCallback(() => {
+    if (reducedMotion) return;
+    const roar = roarName ? actions[roarName] : undefined;
+    if (!roar) return;
+
+    roar.clampWhenFinished = true;
+    roar.reset().setLoop(THREE.LoopOnce, 1).fadeIn(0.12).play();
+    const ms = Math.max(roar.getClip().duration, 0.9) * 1000;
+    window.setTimeout(() => {
+      roar.fadeOut(0.3);
+      const idle = idleName ? actions[idleName] : undefined;
+      idle?.reset().fadeIn(0.3).play();
+    }, ms);
+  }, [actions, idleName, reducedMotion, roarName]);
+
+  useEffect(() => {
+    if (roarSignal <= lastRoar.current) return;
+    lastRoar.current = roarSignal;
+    playRoar();
+  }, [playRoar, roarSignal]);
+
+  useFrame((state, delta) => {
+    const group = root.current;
+    if (group) {
+      if (!reducedMotion) group.rotation.y += delta * 0.18;
+      group.rotation.x = THREE.MathUtils.lerp(
+        group.rotation.x,
+        -state.pointer.y * 0.14,
+        0.06,
+      );
+      group.position.x = THREE.MathUtils.lerp(
+        group.position.x,
+        state.pointer.x * 0.14,
+        0.06,
+      );
+    }
+
+    for (const { object, base } of pupils) {
+      object.position.x = THREE.MathUtils.lerp(
+        object.position.x,
+        base.x + state.pointer.x * 0.035,
+        0.14,
+      );
+      object.position.y = THREE.MathUtils.lerp(
+        object.position.y,
+        base.y + state.pointer.y * 0.028,
+        0.14,
+      );
+    }
+  });
+
+  return (
+    <group
+      ref={root}
+      onPointerDown={(e) => {
+        e.stopPropagation();
+        playRoar();
+      }}
+      onPointerOver={(e) => {
+        e.stopPropagation();
+        document.body.style.cursor = 'pointer';
+      }}
+      onPointerOut={() => {
+        document.body.style.cursor = 'auto';
+      }}
+    >
+      <primitive object={scene} scale={fit.scale} position={fit.position} />
+    </group>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /*  Escena del hero                                                     */
 /* ------------------------------------------------------------------ */
 
-function Exhibit() {
+function Exhibit({ roarSignal = 0, glb = false }: HeroTRex3DProps & { glb?: boolean }) {
   return (
     <>
       {/* Iluminación de estudio en tres puntos */}
@@ -410,8 +546,20 @@ function Exhibit() {
       {/* Luz rasante que marca la textura de escamas */}
       <pointLight position={[1.5, 1.2, -2]} intensity={5} color="#FFFFFF" distance={8} />
 
+      {glb && (
+        <Suspense fallback={null}>
+          <Environment preset="studio" />
+        </Suspense>
+      )}
+
       <group position={[0, -0.4, 0]}>
-        <TRexBust />
+        {glb ? (
+          <Suspense fallback={null}>
+            <HeroTRexGlb roarSignal={roarSignal} />
+          </Suspense>
+        ) : (
+          <TRexBust roarSignal={roarSignal} />
+        )}
 
         {/* Pedestal de museo: base, cuerpo hexagonal y tapa pulida */}
         <mesh position={[-0.5, -1.78, 0]}>
@@ -469,17 +617,35 @@ function Exhibit() {
 }
 
 /**
- * Vitrina 3D del hero: bust de T-Rex con gafas de desarrollador,
- * mirada que sigue el cursor, rugido al clic y rotación 360°.
+ * Vitrina 3D del hero: usa trex_hero.glb cuando está disponible y mantiene
+ * el bust procedural como respaldo. Mirada al cursor, rugido y rotación 360°.
  */
-export default function HeroTRex3D() {
-  return (
-    <Canvas
-      dpr={[1, 1.75]}
-      gl={{ antialias: true, alpha: true }}
-      camera={{ position: [0, 0.4, 6.4], fov: 40 }}
-    >
-      <Exhibit />
+export default function HeroTRex3D({ roarSignal = 0 }: HeroTRex3DProps) {
+  const canvasProps = {
+    dpr: [1, 1.75] as [number, number],
+    gl: { antialias: true, alpha: true },
+    camera: { position: [0, 0.4, 6.4] as [number, number, number], fov: 40 },
+  };
+
+  const procedural = (
+    <Canvas {...canvasProps}>
+      <Exhibit roarSignal={roarSignal} />
     </Canvas>
+  );
+
+  const withGlb = (
+    <Canvas {...canvasProps}>
+      <Exhibit roarSignal={roarSignal} glb />
+    </Canvas>
+  );
+
+  return (
+    <ModelGate
+      file={MODEL_FILES.trexHero}
+      fallback={procedural}
+      label="Cargando T-Rex GLB…"
+    >
+      {withGlb}
+    </ModelGate>
   );
 }

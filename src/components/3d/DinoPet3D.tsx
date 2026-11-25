@@ -1,10 +1,19 @@
 'use client';
 
-import { useMemo, useRef, useState } from 'react';
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { ContactShadows, Sparkles } from '@react-three/drei';
+import {
+  ContactShadows,
+  Environment,
+  Sparkles,
+  useAnimations,
+  useGLTF,
+} from '@react-three/drei';
 import * as THREE from 'three';
+import ModelGate from '@/components/3d/ModelGate';
 import SkinMat, { DINO_SKIN } from '@/components/3d/SkinMat';
+import { MODEL_CLIPS, MODEL_FILES, MODEL_PATHS } from '@/lib/modelFiles';
+import { findClip, fitModel, pickClip } from '@/lib/model3d';
 
 interface DinoPet3DProps {
   /** Cuando la sección entra en pantalla, el dino empieza a correr. */
@@ -453,15 +462,205 @@ function Dino({ active = false }: DinoPet3DProps) {
   );
 }
 
-/** Vivarium 3D del terópodo: Canvas con la escena interactiva. */
-export default function DinoPet3D(props: DinoPet3DProps) {
+/* ------------------------------------------------------------------ */
+/*  Terópodo GLB (Blender → useGLTF + useAnimations)                    */
+/* ------------------------------------------------------------------ */
+
+function TheropodGlb({ active = false }: DinoPet3DProps) {
+  const root = useRef<THREE.Group>(null);
+  const { scene, animations } = useGLTF(MODEL_PATHS[MODEL_FILES.theropodRun]);
+  const { actions, names } = useAnimations(animations, root);
+
+  const fit = useMemo(() => fitModel(scene, 2.2, 0, 'x'), [scene]);
+  const idleName = useMemo(
+    () => pickClip(names, [MODEL_CLIPS.theropodRun.idle]) ?? '',
+    [names],
+  );
+  const runName = useMemo(
+    () => pickClip(names, [MODEL_CLIPS.theropodRun.run]) ?? '',
+    [names],
+  );
+  const jumpName = useMemo(
+    () => findClip(names, [MODEL_CLIPS.theropodRun.jump]),
+    [names],
+  );
+
+  const jump = useRef<{ start: number } | null>(null);
+  const welcomed = useRef(false);
+  const facing = useRef(0);
+  const runMix = useRef(0);
+  const reducedMotion = useMemo(
+    () =>
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+    [],
+  );
+
+  useEffect(() => {
+    const target = active && !reducedMotion ? runName : idleName;
+    const other = target === runName ? idleName : runName;
+    if (target) actions[target]?.reset().fadeIn(0.35).play();
+    if (other && other !== target) actions[other]?.fadeOut(0.35);
+  }, [active, actions, idleName, reducedMotion, runName]);
+
+  const triggerJump = useCallback(() => {
+    if (reducedMotion) return;
+    jump.current = { start: performance.now() / 1000 };
+
+    const action = jumpName ? actions[jumpName] : undefined;
+    if (!action) return;
+    action.clampWhenFinished = true;
+    action.reset().setLoop(THREE.LoopOnce, 1).fadeIn(0.1).play();
+
+    const ms = Math.max(action.getClip().duration, 0.6) * 1000;
+    window.setTimeout(() => {
+      action.fadeOut(0.25);
+      const baseName = active ? runName : idleName;
+      const base = baseName ? actions[baseName] : undefined;
+      base?.reset().fadeIn(0.25).play();
+    }, ms);
+  }, [actions, active, idleName, jumpName, reducedMotion, runName]);
+
+  useEffect(() => {
+    if (active && !welcomed.current) {
+      welcomed.current = true;
+      triggerJump();
+    }
+  }, [active, triggerJump]);
+
+  useFrame((state) => {
+    const targetRun = active && !reducedMotion ? 1 : 0;
+    runMix.current = THREE.MathUtils.lerp(runMix.current, targetRun, 0.06);
+    const run = runMix.current;
+    const t = state.clock.elapsedTime;
+    const now = performance.now() / 1000;
+    const group = root.current;
+    if (!group) return;
+
+    const omega = 0.42;
+    group.position.x = THREE.MathUtils.lerp(
+      group.position.x,
+      Math.sin(t * omega) * 1.65 * run,
+      0.2,
+    );
+
+    const travelDir = Math.cos(t * omega) >= 0 ? 0 : Math.PI;
+    const targetFacing = run > 0.4 ? travelDir : state.pointer.x * 0.3;
+    facing.current = THREE.MathUtils.lerp(facing.current, targetFacing, 0.1);
+
+    if (jump.current) {
+      const jp = (now - jump.current.start) / 0.9;
+      if (jp >= 1) {
+        jump.current = null;
+        group.position.y = THREE.MathUtils.lerp(group.position.y, 0, 0.12);
+        group.rotation.z = THREE.MathUtils.lerp(group.rotation.z, 0, 0.12);
+      } else {
+        const arc = Math.sin(jp * Math.PI);
+        group.position.y = arc * 0.55;
+        group.rotation.z = arc * 0.1;
+        group.rotation.y = facing.current + jp * Math.PI * 2;
+      }
+    } else {
+      group.position.y = THREE.MathUtils.lerp(group.position.y, 0, 0.12);
+      group.rotation.z = THREE.MathUtils.lerp(group.rotation.z, 0, 0.12);
+      group.rotation.y = facing.current;
+    }
+  });
+
   return (
-    <Canvas
-      dpr={[1, 1.75]}
-      gl={{ antialias: true, alpha: true }}
-      camera={{ position: [0, 1.4, 6.2], fov: 42 }}
-    >
+    <>
+      <ambientLight intensity={0.68} color="#FFFFFF" />
+      <hemisphereLight args={['#FFFFFF', '#D8D8E2', 0.5]} />
+      <directionalLight position={[3, 4, 3]} intensity={1.55} color="#FFFFFF" />
+      <pointLight position={[-2.5, 1.5, -2]} intensity={14} color="#7C3AED" distance={10} />
+      <pointLight position={[2.5, 1, 2]} intensity={8} color="#10B981" distance={10} />
+
+      <group
+        ref={root}
+        onPointerDown={(e) => {
+          e.stopPropagation();
+          triggerJump();
+        }}
+        onPointerOver={(e) => {
+          e.stopPropagation();
+          document.body.style.cursor = 'pointer';
+        }}
+        onPointerOut={() => {
+          document.body.style.cursor = 'auto';
+        }}
+      >
+        <primitive object={scene} scale={fit.scale} position={fit.position} />
+      </group>
+
+      <mesh position={[0, -0.02, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <circleGeometry args={[3, 48]} />
+        <meshStandardMaterial color="#FFFFFF" roughness={1} />
+      </mesh>
+      {[0.8, 1.5, 2.3].map((r) => (
+        <mesh key={`ring-${r}`} position={[0, -0.01, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+          <ringGeometry args={[r, r + 0.008, 64]} />
+          <meshBasicMaterial
+            color={r === 2.3 ? '#7C3AED' : '#10B981'}
+            transparent
+            opacity={r === 2.3 ? 0.5 : 0.18}
+            toneMapped={false}
+          />
+        </mesh>
+      ))}
+
+      {active && (
+        <Sparkles
+          count={24}
+          scale={[5, 0.7, 2]}
+          position={[0, 0.15, 0]}
+          size={2.4}
+          speed={1.4}
+          opacity={0.55}
+          color="#10B981"
+        />
+      )}
+      <ContactShadows
+        position={[0, 0, 0]}
+        opacity={0.16}
+        scale={7}
+        blur={2.6}
+        far={2}
+        color="#5B21B6"
+      />
+    </>
+  );
+}
+
+/** Vivarium 3D del terópodo: GLB cuando existe, escena procedural como respaldo. */
+export default function DinoPet3D(props: DinoPet3DProps) {
+  const canvasProps = {
+    dpr: [1, 1.75] as [number, number],
+    gl: { antialias: true, alpha: true },
+    camera: { position: [0, 1.4, 6.2] as [number, number, number], fov: 42 },
+  };
+
+  const procedural = (
+    <Canvas {...canvasProps}>
       <Dino {...props} />
     </Canvas>
+  );
+
+  const withGlb = (
+    <Canvas {...canvasProps}>
+      <Suspense fallback={null}>
+        <Environment preset="studio" />
+        <TheropodGlb {...props} />
+      </Suspense>
+    </Canvas>
+  );
+
+  return (
+    <ModelGate
+      file={MODEL_FILES.theropodRun}
+      fallback={procedural}
+      label="Cargando terópodo GLB…"
+    >
+      {withGlb}
+    </ModelGate>
   );
 }
