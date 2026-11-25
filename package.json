@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate:models": "node scripts/generate-models.mjs",
+    "validate:models": "node scripts/validate-models.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.9",

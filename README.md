@@ -34,7 +34,7 @@ npm start
 
 ## Integración de modelos GLB (Blender → Three.js)
 
-Los tres puntos 3D están preparados para recibir esculturas `.glb` sin romper el diseño claro:
+Los tres puntos 3D ya tienen `.glb` funcionales incluidos (generados por código); también aceptan esculturas `.glb` de Blender con los mismos nombres sin romper el diseño claro:
 
 | Escena | Archivo | Clips | Respaldo |
 | --- | --- | --- | --- |
@@ -45,3 +45,4 @@ Los tres puntos 3D están preparados para recibir esculturas `.glb` sin romper e
 - `useGLTF` + `useAnimations` cargan y reproducen los clips; `<Environment preset="studio" />` y canvas `alpha: true` se activan solo en la rama GLB.
 - `/api/models/status?file=...` comprueba de forma segura qué archivos existen. Si no hay GLB o falla la carga, `ModelGate` monta el respaldo procedural automáticamente.
 - Convención de exportación: `glTF Binary`, `+Y Up`, modifiers aplicados, skinning/shape keys incluidos, +X al frente, 30k–50k triángulos. Detalles y nombres de objetos en `public/models/README.md`.
+- Regeneración y comprobación: `npm run generate:models` y `npm run validate:models`. Los GLB incluidos son versiones ligeras con animaciones reales; una escultura de Blender puede reemplazarlos sin cambios de código.

@@ -1,6 +1,6 @@
 # Modelos 3D (`.glb`)
 
-Esta carpeta espera tres esculturas exportadas desde **Blender en glTF Binary (`.glb`)**. La app comprueba su presencia con `/api/models/status?file=...` y, si no existen o fallan, usa automáticamente los modelos procedurales de React Three Fiber. **No hace falta crear archivos para que el portafolio funcione.**
+Esta carpeta contiene tres modelos en **glTF Binary (`.glb`)** generados con `npm run generate:models` (geometría procedural + animaciones reales). La app comprueba su presencia con `/api/models/status?file=...` y, si faltan o fallan, usa automáticamente los modelos procedurales de React Three Fiber. Puedes reemplazar cualquiera por una escultura exportada desde Blender con el mismo nombre, sin tocar el código.
 
 ## Archivos y clips esperados
 
@@ -21,7 +21,7 @@ Los nombres de clips se buscan por coincidencia (mayúsculas/minúsculas y parti
   - Terópodo: longitud ~2.2 unidades.
   - Fósil: longitud ~1.9 unidades.
   - T-Rex del hero: altura ~2.6 unidades.
-- Triángulos objetivo: **30k–50k por modelo** para mantener 60 fps.
+- Triángulos objetivo para esculturas definitivas: **30k–50k por modelo** para mantener 60 fps. Los GLB incluidos son versiones funcionales ligeras (~8k, ~5.7k y ~12.6k triángulos) para que la integración se vea activa desde ya.
 - Materiales PBR suaves (rugosidad alta en piel/hueso, metálico bajo en detalles) para que la iluminación `studio` de drei lea bien sobre `#F4F4F7`.
 
 ## Integración en código
@@ -31,4 +31,4 @@ Los nombres de clips se buscan por coincidencia (mayúsculas/minúsculas y parti
 - `src/lib/useModelAvailable.ts` consulta el estado del archivo; `src/components/3d/ModelGate.tsx` precarga y captura errores.
 - Si no hay GLB: T-Rex → `HeroTRex3D` procedural; terópodo → `DinoPet3D` procedural; fósil → cráneo procedural en `FossilStudio3D`.
 
-> Nota: actualmente **no hay GLB en esta carpeta**; los tres respaldos procedurales son la experiencia por defecto.
+> Estado actual: los tres GLB ya están incluidos, con clips `Idle`/`Run`/`Jump` en el terópodo, `Idle` en el fósil y `Idle`/`Roar` en el T-Rex. `npm run validate:models` comprueba que cargan, que las escalas son válidas y que `PupilL`/`PupilR` existen en el hero.
