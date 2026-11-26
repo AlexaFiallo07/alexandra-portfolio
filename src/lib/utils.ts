@@ -6,16 +6,11 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-/**
- * Canales de contacto de Alexandra.
- * ⚠️ Reemplaza estos valores con tu correo, GitHub y LinkedIn reales.
- */
+/** Canales de contacto reales de Alexandra. */
 export const CONTACT = {
-  email: 'alexandra.fiallo.dev@gmail.com',
-  github: 'https://github.com/alexandrafiallo',
-  githubHandle: '@alexandrafiallo',
-  linkedin: 'https://www.linkedin.com/in/alexandra-fiallo',
-  linkedinHandle: 'Alexandra Fiallo',
+  email: 'alexafialloc@gmail.com',
+  github: 'https://github.com/AlexaFiallo07',
+  githubHandle: '@AlexaFiallo07',
 } as const;
 
 /** Formatea un número como porcentaje de excavación. */

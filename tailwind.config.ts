@@ -1,9 +1,9 @@
 import type { Config } from 'tailwindcss';
 
 /**
- * Tema "El Multiverso Jurásico del Código" — Studio Light / Soft Brutalism:
- * Fondo #F4F4F7, superficies #FFFFFF / #E8E8EE, bordes #D8D8E2,
- * morado primario #7C3AED / #5B21B6, verde dino #10B981 / #059669.
+ * Paleta de Alexandra: fondo #F6F3FB, morados #1F1433 / #3A2370 /
+ * #6A4DAB / #A98FD6, oro #C4A35A y detalles verdes. Los dinosaurios son
+ * solo acentos; el tema comunica un portafolio full-stack.
  */
 const config: Config = {
   content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
@@ -11,16 +11,18 @@ const config: Config = {
     extend: {
       colors: {
         studio: {
-          bg: '#F4F4F7',
+          bg: '#F6F3FB',
           card: '#FFFFFF',
-          pearl: '#E8E8EE',
-          border: '#D8D8E2',
-          purple: '#7C3AED',
-          'purple-deep': '#5B21B6',
-          green: '#10B981',
-          'green-deep': '#059669',
-          ink: '#18181B',
-          slate: '#4B5563',
+          pearl: '#EFEAF7',
+          border: '#E4DCF1',
+          purple: '#6A4DAB',
+          'purple-deep': '#3A2370',
+          lilac: '#A98FD6',
+          gold: '#C4A35A',
+          green: '#3E9D7B',
+          'green-deep': '#2B775D',
+          ink: '#1F1433',
+          slate: '#5B5570',
         },
       },
       fontFamily: {
@@ -29,10 +31,10 @@ const config: Config = {
         mono: ['var(--font-mono)', '"Fira Code"', 'monospace'],
       },
       boxShadow: {
-        studio: '0 10px 25px -5px rgba(124, 58, 237, 0.12)',
-        'studio-lg': '0 18px 40px -10px rgba(124, 58, 237, 0.2)',
-        brutal: '4px 4px 0px 0px #5B21B6',
-        'brutal-green': '4px 4px 0px 0px #059669',
+        studio: '0 10px 25px -5px rgba(106, 77, 171, 0.14)',
+        'studio-lg': '0 18px 40px -10px rgba(58, 35, 112, 0.2)',
+        brutal: '4px 4px 0px 0px #3A2370',
+        'brutal-green': '4px 4px 0px 0px #2B775D',
       },
       keyframes: {
         'float-soft': {
@@ -101,6 +103,10 @@ const config: Config = {
           '0%, 100%': { transform: 'rotate(-6deg)' },
           '50%': { transform: 'rotate(6deg)' },
         },
+        'dino-spin': {
+          from: { transform: 'rotateY(0deg)' },
+          to: { transform: 'rotateY(360deg)' },
+        },
       },
       animation: {
         'float-soft': 'float-soft 5.5s ease-in-out infinite',
@@ -118,6 +124,7 @@ const config: Config = {
         'raptor-jump': 'raptor-jump 0.6s ease-out',
         'screen-flicker': 'screen-flicker 2.2s ease-in-out infinite',
         'tail-wag': 'tail-wag 1.4s ease-in-out infinite',
+        'dino-spin': 'dino-spin 1.05s ease-in-out',
       },
     },
   },

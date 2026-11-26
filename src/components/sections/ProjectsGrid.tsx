@@ -1,5 +1,6 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FEATURED_PROJECT, PROJECTS } from '@/data/projectsData';
@@ -10,6 +11,14 @@ import StegoProgrammer from '@/components/dino/StegoProgrammer';
 import ChibiDancer from '@/components/dino/ChibiDancer';
 import ProjectCornerDino, { type ProjectDinoVariant } from '@/components/dino/ProjectCornerDinos';
 import type { Project } from '@/types';
+
+const StegoProgrammer3D = dynamic(
+  () => import('@/components/dino/StegoProgrammer3D'),
+  {
+    ssr: false,
+    loading: () => <StegoProgrammer className="w-full" />,
+  },
+);
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -29,7 +38,7 @@ const STATUS_META: Record<Project['status'], { label: string; className: string 
 };
 
 const CORNER_VARIANTS: Record<string, ProjectDinoVariant> = {
-  multiverso: 'sign-code',
+  portafolio: 'sign-code',
   'tienda-virtual': 'headphones',
   'api-rest': 'sign-api',
 };
@@ -37,8 +46,8 @@ const CORNER_VARIANTS: Record<string, ProjectDinoVariant> = {
 function StegoPanel() {
   return (
     <div className="studio-grid relative flex h-full min-h-[290px] w-full flex-col items-center justify-center overflow-hidden rounded-2xl border border-studio-border bg-studio-pearl/70 p-4">
-      <div className="relative w-full max-w-[310px]">
-        <StegoProgrammer className="w-full" />
+      <div className="relative h-56 w-full max-w-[340px]">
+        <StegoProgrammer3D />
       </div>
       <p className="mt-2 flex items-center gap-2 rounded-full border border-studio-border bg-studio-card px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-studio-purple-deep shadow-sm">
         <span className="h-2 w-2 animate-pulse rounded-full bg-studio-green" />
@@ -49,16 +58,16 @@ function StegoPanel() {
 }
 
 /**
- * Sección de Proyectos Destacados:
- * Cada tarjeta incluye un pequeño dinosaurio distinto en una esquina y un
- * chibi que baila al pasar el cursor sobre "Ver Demo" o "Código en GitHub".
+ * Proyectos destacados: EFFIADMI abre la sección con su arquitectura real y
+ * el resto de fichas quedan claramente agrupadas. Los dinosaurios pequeños
+ * son solo un acento en las esquinas de las tarjetas.
  */
 export default function ProjectsGrid() {
   const [active, setActive] = useState<Project | null>(null);
   const secondary = PROJECTS.slice(1);
 
   return (
-    <section id="proyectos" className="relative py-20 sm:py-28">
+    <section id="proyectos" className="relative scroll-mt-24 py-20 sm:py-28">
       <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
         {/* Encabezado */}
         <motion.div
@@ -85,8 +94,9 @@ export default function ProjectsGrid() {
             Proyectos con <span className="text-studio-gradient">arquitectura real</span>
           </h2>
           <p className="mt-3 text-base text-studio-slate">
-            Pasa el cursor sobre los botones para ver bailar al dino chibi o abre cualquier ficha
-            para explorar la arquitectura del sistema.
+            Abre cualquier ficha para ver el stack y la arquitectura por capas. También hay espacios
+            limpios para futuros desarrollos empresariales y prototipos de videojuegos formativos;
+            las plantillas esperan contenido real.
           </p>
         </motion.div>
 
@@ -177,8 +187,22 @@ export default function ProjectsGrid() {
           </AmberCard>
         </motion.div>
 
+        {/* ---------- Próximamente / En desarrollo ---------- */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.55, ease: EASE }}
+          className="mt-12 flex items-center gap-4"
+        >
+          <span className="rounded-full border border-studio-green/35 bg-studio-green/10 px-3 py-1 font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-studio-green-deep">
+            Próximamente / En desarrollo
+          </span>
+          <span aria-hidden className="h-px flex-1 bg-studio-border" />
+        </motion.div>
+
         {/* ---------- Proyectos secundarios (cada tarjeta con su dino distinto en la esquina) ---------- */}
-        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-6 grid gap-6 sm:grid-cols-2">
           {secondary.map((project, i) => {
             const status = STATUS_META[project.status];
             const cornerVariant = CORNER_VARIANTS[project.id] ?? 'sign-code';
@@ -193,10 +217,7 @@ export default function ProjectsGrid() {
               >
                 <AmberCard className="relative flex h-full w-full flex-col p-6">
                   {/* Pequeño dinosaurio distinto en la esquina superior derecha */}
-                  <div
-                    aria-hidden
-                    className="pointer-events-none absolute right-3 top-3 transition-transform duration-300 group-hover:rotate-6 group-hover:scale-105"
-                  >
+                  <div className="absolute right-3 top-3 z-10 transition-transform duration-300 group-hover:rotate-6 group-hover:scale-105">
                     <ProjectCornerDino variant={cornerVariant} className="h-16 w-16" />
                   </div>
 
@@ -215,6 +236,11 @@ export default function ProjectsGrid() {
                       <span className="font-mono text-[10px] font-medium text-studio-slate">
                         {project.year}
                       </span>
+                      {project.isPlaceholder && (
+                        <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.12em] text-studio-gold">
+                          Plantilla
+                        </span>
+                      )}
                     </div>
 
                     <div className="mt-4">

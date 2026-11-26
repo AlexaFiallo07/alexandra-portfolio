@@ -14,7 +14,7 @@ interface AmberCardProps extends Omit<HTMLMotionProps<'article'>, 'children'> {
 
 /**
  * Tarjeta luminosa estilo estudio interactivo / brutalismo suave:
- * fondo #FFFFFF, borde 1px solid #D8D8E2 y sombra suave morada.
+ * fondo #FFFFFF, borde 1px solid #E4DCF1 y sombra suave morada.
  */
 export default function AmberCard({
   children,

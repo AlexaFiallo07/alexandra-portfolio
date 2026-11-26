@@ -4,6 +4,7 @@ import HeroSection from '@/components/sections/HeroSection';
 import AboutSection from '@/components/sections/AboutSection';
 import StackSection from '@/components/sections/StackSection';
 import ProjectsGrid from '@/components/sections/ProjectsGrid';
+import EducationSection from '@/components/sections/EducationSection';
 import ContactSection from '@/components/sections/ContactSection';
 import Pterodactyls from '@/components/dino/Pterodactyls';
 
@@ -18,6 +19,7 @@ export default function Home() {
         <AboutSection />
         <StackSection />
         <ProjectsGrid />
+        <EducationSection />
         <ContactSection />
       </main>
       <Footer />

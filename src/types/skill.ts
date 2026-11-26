@@ -4,7 +4,8 @@ export type StackCategory =
   | 'frontend'
   | 'movil'
   | 'datos'
-  | 'devops';
+  | 'devops'
+  | 'videojuegos';
 
 /** Tipo de fósil line-art asociado a una habilidad (icono SVG). */
 export type FossilKind =
@@ -25,6 +26,8 @@ export interface Skill {
   level: number;
   /** Breve descripción contextual de la habilidad */
   hint?: string;
+  /** Estado actual: ya la uso en proyectos o está en aprendizaje activo */
+  stage?: 'aplico' | 'desarrollo';
   /** Icono de fósil line-art que la representa */
   fossil: FossilKind;
 }

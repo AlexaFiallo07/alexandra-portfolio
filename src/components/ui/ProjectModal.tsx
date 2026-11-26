@@ -4,7 +4,6 @@ import { useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import type { Project } from '@/types';
 import CategoryBadge from '@/components/ui/CategoryBadge';
-import ChibiDancer from '@/components/dino/ChibiDancer';
 import { cn } from '@/lib/utils';
 
 interface ProjectModalProps {
@@ -161,9 +160,6 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                     rel="noopener noreferrer"
                     className="group/rep relative inline-flex items-center gap-2 rounded-full bg-studio-purple px-5 py-2.5 text-sm font-semibold text-white shadow-studio transition-colors hover:bg-studio-purple-deep"
                   >
-                    <span className="pointer-events-none absolute -top-10 right-2 opacity-0 transition-opacity duration-200 group-hover/rep:opacity-100">
-                      <ChibiDancer dancing className="h-9 w-9" />
-                    </span>
                     Código en GitHub ↗
                   </a>
                 )}
@@ -174,9 +170,6 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                     rel="noopener noreferrer"
                     className="group/live relative inline-flex items-center gap-2 rounded-full border border-studio-green bg-studio-green/10 px-5 py-2.5 text-sm font-semibold text-studio-green-deep transition-colors hover:bg-studio-green hover:text-white"
                   >
-                    <span className="pointer-events-none absolute -top-10 right-2 opacity-0 transition-opacity duration-200 group-hover/live:opacity-100">
-                      <ChibiDancer dancing className="h-9 w-9" />
-                    </span>
                     Ver demo en vivo ↗
                   </a>
                 )}

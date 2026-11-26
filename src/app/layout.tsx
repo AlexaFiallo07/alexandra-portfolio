@@ -17,36 +17,37 @@ const mono = Fira_Code({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Alexandra Fiallo — El Multiverso Jurásico del Código',
-    template: '%s · Alexandra Fiallo',
+    default: 'Alexandra Fiallo Carrillo — Full Stack en formación',
+    template: '%s · Alexandra Fiallo Carrillo',
   },
   description:
-    'Portafolio de Alexandra Fiallo: Desarrolladora de Software Full-Stack / Backend & Mobile. Una experiencia inmersiva donde dinosaurios de estilos artísticos coexisten con código de verdad.',
+    'Portafolio de Alexandra Fiallo Carrillo, desarrolladora en etapa práctica ADSO: APIs, bases de datos, apps web y móviles, EffiAdmi, videojuegos formativos y formación en el SENA.',
   keywords: [
-    'Alexandra Fiallo',
+    'Alexandra Fiallo Carrillo',
+    'ADSO',
+    'SENA',
     'Full Stack Developer',
-    'Backend Developer',
-    'Mobile Developer',
     'Django',
-    'Node.js',
-    'React',
+    'Django REST Framework',
+    'Flutter',
+    'Three.js',
+    'Videojuegos formativos',
     'Portafolio',
-    'Multiverso Jurásico',
   ],
-  authors: [{ name: 'Alexandra Fiallo' }],
-  creator: 'Alexandra Fiallo',
+  authors: [{ name: 'Alexandra Fiallo Carrillo' }],
+  creator: 'Alexandra Fiallo Carrillo',
   openGraph: {
     type: 'website',
     locale: 'es_ES',
-    siteName: 'Alexandra Fiallo — Multiverso Jurásico del Código',
-    title: 'Alexandra Fiallo — El Multiverso Jurásico del Código',
+    siteName: 'Alexandra Fiallo Carrillo — Full Stack en formación',
+    title: 'Alexandra Fiallo Carrillo — Full Stack en formación',
     description:
-      'Software útil, eficiente y con personalidad. Explora mi stack entre dinosaurios de todo tipo de estilo.',
+      'APIs, bases de datos, apps móviles y videojuegos formativos. Explora el stack, los proyectos y la formación de Alexandra.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Alexandra Fiallo — El Multiverso Jurásico del Código',
-    description: 'Full-Stack / Backend & Mobile. Dinosaurios + código.',
+    title: 'Alexandra Fiallo Carrillo — Full Stack en formación',
+    description: 'ADSO, Full Stack, Flutter y videojuegos con proyectos reales.',
   },
   robots: { index: true, follow: true },
 };
@@ -54,7 +55,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#F4F4F7',
+  themeColor: '#F6F3FB',
 };
 
 export default function RootLayout({

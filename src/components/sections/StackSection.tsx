@@ -6,12 +6,13 @@ import { motion, useInView } from 'framer-motion';
 import { STACK } from '@/data/skillsData';
 import FossilIcon from '@/components/dino/FossilIcons';
 import CanvasLoader from '@/components/3d/CanvasLoader';
-import { pct } from '@/lib/utils';
+import ExcavationGame from '@/components/games/excavation/ExcavationGame';
+import { cn, pct } from '@/lib/utils';
 import type { SkillGroup } from '@/types';
 
-const FossilStudio3D = dynamic(() => import('@/components/dino/FossilStudio3D'), {
+const RobotTRexVitrina = dynamic(() => import('@/components/dino/RobotTRexVitrina'), {
   ssr: false,
-  loading: () => <CanvasLoader label="Preparando el fósil…" />,
+  loading: () => <CanvasLoader label="Ensamblando al robot T-Rex…" />,
 });
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -55,7 +56,21 @@ function SkillBadge({
             </span>
           </div>
           {skill.hint && (
-            <p className="mt-1 truncate text-[12px] text-studio-slate">{skill.hint}</p>
+            <div className="mt-1.5 flex min-w-0 items-center gap-2">
+              {skill.stage && (
+                <span
+                  className={cn(
+                    'shrink-0 rounded border px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.1em]',
+                    skill.stage === 'aplico'
+                      ? 'border-studio-green/35 bg-studio-green/10 text-studio-green-deep'
+                      : 'border-studio-gold/45 bg-studio-gold/15 text-studio-ink',
+                  )}
+                >
+                  {skill.stage === 'aplico' ? 'Aplico' : 'En desarrollo'}
+                </span>
+              )}
+              <span className="truncate text-[12px] text-studio-slate">{skill.hint}</span>
+            </div>
           )}
         </div>
       </div>
@@ -76,12 +91,12 @@ function SkillBadge({
 }
 
 /**
- * Sección de Stack Tecnológico (Estilo Fósil / Blueprint):
- * Tarjetas blancas #FFFFFF con fósiles y huellas line-art en morado y verde.
+ * Stack tecnológico: el minijuego de excavación como acento creativo y el
+ * inventario real de herramientas que uso para construir productos full-stack.
  */
 export default function StackSection() {
-  const fossilRef = useRef<HTMLDivElement>(null);
-  const fossilInView = useInView(fossilRef, { once: true, margin: '-80px' });
+  const robotRef = useRef<HTMLDivElement>(null);
+  const robotInView = useInView(robotRef, { once: true, margin: '-80px' });
 
   return (
     <section id="stack" className="relative py-20 sm:py-28">
@@ -108,45 +123,57 @@ export default function StackSection() {
           className="mt-6 max-w-2xl"
         >
           <h2 className="font-display text-3xl font-bold leading-tight text-studio-ink sm:text-4xl lg:text-[2.6rem]">
-            Fósiles &amp; herramientas en{' '}
-            <span className="text-studio-gradient">blueprint</span>
+            Herramientas que uso y estoy{' '}
+            <span className="text-studio-gradient">aprendiendo</span>
           </h2>
           <p className="mt-3 text-base text-studio-slate">
-            Pasa el cursor sobre cada tecnología para iluminar y ensamblar su ilustración fósil en
-            línea fina morada y verde.
+            Excava con el mouse para descubrir un fósil y revisa las categorías de siempre: Backend,
+            Frontend, Móvil, Datos, DevOps y Videojuegos &amp; IA. Cada herramienta indica si ya la
+            aplico o si está en desarrollo. Los esqueletos en línea fina son solo el detalle visual.
           </p>
         </motion.div>
 
-        {/* ---------- Fósil 3D: GLB cuando existe, cráneo procedural si no ---------- */}
+        {/* ---------- Mini-juego: excavación de fósiles con el mouse ---------- */}
         <motion.div
-          ref={fossilRef}
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.7, delay: 0.1, ease: EASE }}
-          className="relative mt-8 grid overflow-hidden rounded-3xl border border-studio-border bg-studio-card shadow-studio lg:grid-cols-[1fr_280px]"
+        >
+          <ExcavationGame />
+        </motion.div>
+
+        {/* ---------- Robot T-Rex: vuelve a la vitrina que ocupaba el cráneo ---------- */}
+        <motion.div
+          ref={robotRef}
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.7, delay: 0.11, ease: EASE }}
+          className="relative mt-6 grid overflow-hidden rounded-3xl border border-studio-border bg-studio-card shadow-studio lg:grid-cols-[1fr_360px]"
         >
           <div className="p-6 sm:p-8">
-            <span className="rounded-full border border-studio-purple/30 bg-studio-purple/10 px-3 py-1 font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-studio-purple-deep">
-              03 — Fósil en vivo
+            <span className="rounded-full border border-studio-gold/45 bg-studio-gold/15 px-3 py-1 font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-studio-ink">
+              03 — Robot T-Rex
             </span>
             <h3 className="mt-4 font-display text-2xl font-bold text-studio-ink sm:text-3xl">
-              Del fósil al modelo anatómico
+              El compañero mecánico
             </h3>
             <p className="mt-3 max-w-xl text-sm leading-relaxed text-studio-slate">
-              Esta vitrina usa <code className="font-mono text-studio-purple-deep">fossil_skull.glb</code>{' '}
-              con iluminación de estudio cuando el archivo está disponible; mientras tanto, el
-              cráneo procedural mantiene la escena viva.
+              El robot T-Rex esquelético que antes presidía el hero vuelve aquí, en la vitrina que
+              ocupaba el cráneo fósil. Usa el GLB real exportado desde Blender (8,82 MB, 114 mallas),
+              con arrastre manual, rugido, pupilas reactivas, acabado metálico, encuadre automático y
+              zoom seguro.
             </p>
-            <p className="mt-4 font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-studio-green-deep">
-              → Mueve el cursor para girar la pieza
+            <p className="mt-4 font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-studio-purple-deep">
+              → Clic para girarlo 360° y rugir · usa el zoom sin recortarlo
             </p>
           </div>
 
-          <div className="studio-grid relative h-56 border-t border-studio-border bg-studio-pearl/40 lg:border-l lg:border-t-0">
-            {fossilInView && <FossilStudio3D className="h-full w-full" />}
+          <div className="studio-grid relative h-80 border-t border-studio-border bg-studio-pearl/40 lg:border-l lg:border-t-0">
+            {robotInView && <RobotTRexVitrina className="h-full w-full" />}
             <span className="pointer-events-none absolute bottom-3 left-3 rounded-md border border-studio-border bg-studio-card/90 px-2.5 py-1 font-mono text-[10px] font-semibold text-studio-slate shadow-sm">
-              fossil_skull.glb · R3F
+              trex_hero.glb · R3F
             </span>
           </div>
         </motion.div>
@@ -160,7 +187,7 @@ export default function StackSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-80px' }}
               transition={{ duration: 0.65, delay: gi * 0.05, ease: EASE }}
-              className="studio-grid relative overflow-hidden rounded-3xl border border-studio-border bg-studio-card p-5 shadow-studio sm:p-7 lg:last:col-span-2"
+              className="studio-grid relative overflow-hidden rounded-3xl border border-studio-border bg-studio-card p-5 shadow-studio sm:p-7"
             >
               <div className="relative flex items-start gap-4">
                 <span
@@ -181,7 +208,7 @@ export default function StackSection() {
                   </h3>
                 </div>
                 <span className="ml-auto rounded-full border border-studio-border bg-studio-pearl px-2.5 py-1 font-mono text-[10px] font-semibold text-studio-slate">
-                  {group.skills.length} fósiles
+                  {group.skills.length} herramientas
                 </span>
               </div>
 

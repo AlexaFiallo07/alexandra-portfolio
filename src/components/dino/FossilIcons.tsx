@@ -122,7 +122,20 @@ export default function FossilIcon({ kind, className }: FossilIconProps) {
       className={cn('fossil-icon', className)}
       aria-hidden
     >
-      {PATHS[kind]}
+      <defs>
+        {/* Degradado hueso: blanco + color de acento + sombra morada */}
+        <linearGradient id={`fossil-bone-${kind}`} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#FFFFFF" />
+          <stop offset="45%" stopColor="currentColor" />
+          <stop offset="100%" stopColor="#3A2370" />
+        </linearGradient>
+        <filter id={`fossil-depth-${kind}`} x="-25%" y="-25%" width="150%" height="150%">
+          <feDropShadow dx="0.7" dy="1" stdDeviation="0.55" floodColor="#3A2370" floodOpacity="0.3" />
+        </filter>
+      </defs>
+      <g stroke={`url(#fossil-bone-${kind})`} filter={`url(#fossil-depth-${kind})`}>
+        {PATHS[kind]}
+      </g>
     </svg>
   );
 }

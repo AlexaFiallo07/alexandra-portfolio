@@ -1,34 +1,33 @@
 # Modelos 3D (`.glb`)
 
-Esta carpeta contiene tres modelos en **glTF Binary (`.glb`)** generados con `npm run generate:models` (geometría procedural + animaciones reales). La app comprueba su presencia con `/api/models/status?file=...` y, si faltan o fallan, usa automáticamente los modelos procedurales de React Three Fiber. Puedes reemplazar cualquiera por una escultura exportada desde Blender con el mismo nombre, sin tocar el código.
+Esta carpeta contiene **dos modelos**: `trex_hero.glb` (robot T-Rex de la vitrina de Stack) y `fossil_skull.glb` (cráneo fósil usado por la vitrina procedural y como respaldo del minijuego). El resto de las figuras —T-Rex con gafas del hero, Stego programador, pterodáctilos, dinosaurios de las tarjetas y PixelRaptor— son procedurales o SVG.
 
-## Archivos y clips esperados
-
-| Archivo | Uso | Clips | Objetos opcionales |
+| Archivo | Uso | Clips | Objetos / respaldo |
 | --- | --- | --- | --- |
-| `theropod_run.glb` | Terópodo que corre en *Sobre mí* | `Idle`, `Run`, `Jump` | — |
-| `fossil_skull.glb` | Fósil/cráneo en *Tech Stack* | `Idle` (opcional) | — |
-| `trex_hero.glb` | T-Rex del hero | `Idle`, `Roar` | `PupilL`, `PupilR` |
+| `trex_hero.glb` | Vitrina del robot T-Rex en *Stack* | `Idle`, `Roar` | Pupilas `PupilL`/`PupilR`; respaldo SVG `HeroTRexFallback` |
+| `fossil_skull.glb` | Vitrina del fósil y respaldo de la excavación | `Idle` (opcional) | Cráneo procedural en `FossilStudio3D.tsx` |
 
-Los nombres de clips se buscan por coincidencia (mayúsculas/minúsculas y partial match). Si falta un clip, se usa el primero disponible; en el caso de `Jump`/`Roar` simplemente no se reproduce y la interacción sigue activa por código.
+La app comprueba cada archivo con `/api/models/status?file=...`. `ModelGate` precarga el GLB y, si falta o falla, monta el respaldo correspondiente. `src/lib/modelFiles.ts` es la única lista blanca de modelos y `npm run validate:models` verifica que ambos carguen con jerarquía, escala, clips y pupilas válidas.
 
-## Convención Blender → Web
+## Regeneración
 
-- Exportar con **glTF Binary (`.glb`)**, `+Y Up` y `Apply Modifiers`.
-- Incluir animaciones, **skinning** y **shape keys** si los hay; incrustar texturas dentro del GLB.
-- Orientación: **+X hacia delante**, modelo centrado y apoyado en `Y = 0`.
-- Escala aproximada: el código reencuadra cada modelo automáticamente (`fitModel`), pero conviene exportar cerca de estas medidas:
-  - Terópodo: longitud ~2.2 unidades.
-  - Fósil: longitud ~1.9 unidades.
-  - T-Rex del hero: altura ~2.6 unidades.
-- Triángulos objetivo para esculturas definitivas: **30k–50k por modelo** para mantener 60 fps. Los GLB incluidos son versiones funcionales ligeras (~8k, ~5.7k y ~12.6k triángulos) para que la integración se vea activa desde ya.
-- Materiales PBR suaves (rugosidad alta en piel/hueso, metálico bajo en detalles) para que la iluminación `studio` de drei lea bien sobre `#F4F4F7`.
+```bash
+npm run generate:models   # regenera solo fossil_skull.glb desde geometría procedural
+npm run validate:models   # comprueba los dos GLB incluidos
+```
 
-## Integración en código
+`trex_hero.glb` es el GLB real del modelo [Robot T-Rex #23140](https://blendswap.com/blend/23140) (licencia CC0 declarada por el uploader, no verificada por BlendSwap), preparado con Blender 5.3: 8,82 MB, 116 nodos, 114 mallas, materiales `Robo_*`, clips `Idle`/`Roar` y pupilas `PupilL`/`PupilR`. Está incluido para que la web funcione sin Blender; si quieres regenerarlo:
 
-- `useGLTF` carga el archivo y `useAnimations` reproduce los clips.
-- `<Environment preset="studio" />` se monta **solo en la rama GLB**, con canvas `alpha: true`.
-- `src/lib/useModelAvailable.ts` consulta el estado del archivo; `src/components/3d/ModelGate.tsx` precarga y captura errores.
-- Si no hay GLB: T-Rex → `HeroTRex3D` procedural; terópodo → `DinoPet3D` procedural; fósil → cráneo procedural en `FossilStudio3D`.
+```powershell
+& "C:\Program Files\Blender Foundation\Blender 5.3\blender.exe" -b --python scripts\prepare-blendswap.py -- "assets\blendswap\Robot-T-Rex.blend" "public\models\trex_hero.glb"
+```
 
-> Estado actual: los tres GLB ya están incluidos, con clips `Idle`/`Run`/`Jump` en el terópodo, `Idle` en el fósil y `Idle`/`Roar` en el T-Rex. `npm run validate:models` comprueba que cargan, que las escalas son válidas y que `PupilL`/`PupilR` existen en el hero.
+El `.blend` es un archivo local ignorado por Git. Si sustituyes cualquiera de los dos GLB, exporta con **glTF Binary (`.glb`)**, `+Y Up`, modifiers aplicados y texturas incrustadas.
+
+## Encuadre
+
+Ningún componente depende de posiciones de cámara hardcodeadas. `src/lib/framing.ts` calcula `Box3` + `boundingSphere` y `src/components/3d/AutoFrameRig.tsx` centra la cámara, ajusta `near`/`far` y mantiene la figura completa en todo el rango de zoom (`0.62`–`1.75`). El robot T-Rex mide 2,25 × 4,34 × 12,68 unidades en su escala original, así que el rig aleja la cámara en consecuencia. Se conserva además el override de materiales que tenía en el hero (carcasa grafito, juntas moradas y LED esmeralda en las pupilas), respetando los materiales `Robo_*` del GLB.
+
+## Histórico
+
+Los antiguos GLB de BlendSwap (Plesiosaurus, Gallimimus, Brachiosaurus, compañero robótico y Parasaurolophus) y sus scripts de conversión se retiraron junto con los personajes que ya no aparecen. Las licencias declaradas por sus uploaders no fueron verificadas por BlendSwap y las descargas se hicieron dentro de la cuota gratuita (0 créditos). No quedan credenciales ni esos archivos en el proyecto.

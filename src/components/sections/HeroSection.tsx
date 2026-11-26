@@ -1,14 +1,25 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { motion } from 'framer-motion';
-import HeroTRexStudio from '@/components/dino/HeroTRexStudio';
+
+const HeroTRex3D = dynamic(() => import('@/components/dino/HeroTRex3D'), {
+  ssr: false,
+  loading: () => (
+    <div className="studio-grid flex h-full w-full flex-col items-center justify-center gap-4 bg-studio-bg">
+      <span className="h-10 w-10 animate-spin rounded-full border-2 border-studio-border border-t-studio-purple" />
+      <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-studio-purple-deep">
+        Cargando T-Rex 3D…
+      </p>
+    </div>
+  ),
+});
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 /**
- * Hero luminoso estilo estudio interactivo / brutalismo suave:
- * titular de alto contraste (#18181B), CTAs morados (#7C3AED / #5B21B6),
- * acentos verdes (#10B981) y escena ilustrada interactiva del T-Rex con gafas moradas.
+ * Hero luminoso: Alexandra Fiallo Carrillo, perfil Full Stack en etapa práctica,
+ * con el T-Rex con gafas como único personaje del encabezado (acento creativo).
  */
 export default function HeroSection() {
   return (
@@ -32,7 +43,7 @@ export default function HeroSection() {
         className="absolute left-5 top-1/2 hidden -translate-y-1/2 rotate-180 font-mono text-[10px] font-semibold uppercase tracking-[0.42em] text-studio-slate/60 xl:block"
         style={{ writingMode: 'vertical-rl' }}
       >
-        Multiverso Jurásico · Studio 2026
+        Alexandra Fiallo Carrillo · ADSO · Full Stack
       </span>
 
       <div className="relative z-10 mx-auto grid w-full max-w-6xl items-center gap-10 px-5 sm:px-8 lg:grid-cols-[1.05fr_1fr] lg:gap-10">
@@ -46,7 +57,7 @@ export default function HeroSection() {
           >
             <span className="h-2 w-2 animate-pulse rounded-full bg-studio-green" />
             <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-studio-purple-deep">
-              El Multiverso Jurásico del Código
+              ADSO · Full Stack &amp; Videojuegos
             </span>
           </motion.div>
 
@@ -67,9 +78,9 @@ export default function HeroSection() {
             transition={{ duration: 0.75, delay: 0.16, ease: EASE }}
             className="mt-6 max-w-xl font-mono text-[13px] font-semibold uppercase leading-relaxed tracking-[0.14em] text-studio-purple-deep sm:text-sm"
           >
-            Desarrolladora de Software Full-Stack
+            Desarrolladora de Software · Etapa práctica ADSO
             <span className="mx-2 text-studio-green">|</span>
-            Backend &amp; Mobile
+            Full Stack &amp; Videojuegos
           </motion.p>
 
           <motion.p
@@ -78,13 +89,11 @@ export default function HeroSection() {
             transition={{ duration: 0.75, delay: 0.24, ease: EASE }}
             className="mt-5 max-w-xl text-base leading-relaxed text-studio-slate sm:text-lg"
           >
-            Creo software útil que{' '}
-            <strong className="font-semibold text-studio-ink">capacita a las personas</strong>,
-            optimiza sus habilidades cotidianas y convierte el código en{' '}
-            <span className="font-semibold text-studio-purple-deep">
-              experiencias interactivas y videojuegos impactantes
-            </span>
-            .
+            Estoy en la etapa práctica del Tecnólogo en Análisis y Desarrollo de Software. Construyo
+            un perfil <strong className="font-semibold text-studio-ink">Full Stack</strong> desde la
+            base de datos y la API hasta la interfaz, y me proyecto hacia los{' '}
+            <span className="font-semibold text-studio-purple-deep">videojuegos formativos</span>:
+            experiencias creativas que ayuden a entrenar habilidades y conocimientos.
           </motion.p>
 
           {/* CTAs */}
@@ -122,10 +131,13 @@ export default function HeroSection() {
               Backend
             </span>
             <span className="rounded-md border border-studio-green/30 bg-studio-green/10 px-2.5 py-1 text-studio-green-deep">
-              Frontend
+              Apps web &amp; móviles
             </span>
             <span className="rounded-md border border-studio-border bg-studio-pearl px-2.5 py-1 text-studio-ink">
-              Mobile
+              Datos
+            </span>
+            <span className="rounded-md border border-studio-gold/45 bg-studio-gold/15 px-2.5 py-1 text-studio-ink">
+              Videojuegos
             </span>
           </motion.div>
         </div>
@@ -146,7 +158,7 @@ export default function HeroSection() {
                 <span className="h-2.5 w-2.5 rounded-full bg-studio-border" />
               </div>
               <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-studio-slate">
-                trex_studio.tsx
+                alexandra.dev.tsx
               </span>
               <span className="inline-flex items-center gap-1.5 rounded-full bg-studio-green/15 px-2.5 py-0.5 font-mono text-[10px] font-semibold text-studio-green-deep">
                 <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-studio-green" />
@@ -154,23 +166,23 @@ export default function HeroSection() {
               </span>
             </div>
 
-            {/* Escena ilustrada interactiva */}
+            {/* Escena 3D interactiva del T-Rex con gafas */}
             <div className="absolute inset-0 pt-10">
-              <HeroTRexStudio />
+              <HeroTRex3D />
             </div>
 
             {/* Pie de tarjeta */}
             <div className="pointer-events-none absolute inset-x-4 bottom-4 z-30 flex items-center justify-between rounded-2xl border border-studio-border bg-studio-card/95 px-4 py-2.5 shadow-studio backdrop-blur-sm">
               <div>
                 <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-studio-purple-deep">
-                  Espécimen 001
+                  Acento creativo · Three.js
                 </p>
                 <p className="font-display text-xs font-semibold text-studio-ink sm:text-sm">
-                  T-Rex Dev · Gafas moradas &amp; stickers
+                  T-Rex con gafas · rotación 360°
                 </p>
               </div>
               <span className="rounded-lg bg-studio-pearl px-2.5 py-1 font-mono text-[10px] font-medium text-studio-slate">
-                Mueve el mouse · clic
+                Clic o arrastra
               </span>
             </div>
           </div>

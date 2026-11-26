@@ -26,14 +26,6 @@ function MailIcon({ className }: { className?: string }) {
   );
 }
 
-function LinkedInIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden className={className} fill="currentColor">
-      <path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm7 0h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05C21.4 8.65 22 11 22 14.1V21h-4v-6.1c0-1.45-.03-3.32-2.02-3.32-2.02 0-2.33 1.58-2.33 3.21V21h-4V9Z" />
-    </svg>
-  );
-}
-
 function CopyIcon({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" aria-hidden className={className} fill="none" stroke="currentColor" strokeWidth={1.8}>
@@ -126,7 +118,7 @@ export default function ContactSection() {
           className="flex items-center gap-4"
         >
           <span className="rounded-full border border-studio-green/35 bg-studio-green/10 px-3 py-1 font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-studio-green-deep">
-            04 — Contacto
+            05 — Contacto
           </span>
           <span aria-hidden className="h-px flex-1 bg-studio-border" />
         </motion.div>
@@ -327,33 +319,6 @@ export default function ContactSection() {
               </AmberCard>
             </a>
 
-            <a
-              href={CONTACT.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group block"
-            >
-              <AmberCard className="flex items-center gap-4 p-5">
-                <span className="grid h-13 w-13 shrink-0 place-items-center rounded-xl border border-studio-border bg-studio-bg p-3 text-studio-purple-deep transition-colors group-hover:border-studio-purple group-hover:text-studio-purple">
-                  <LinkedInIcon className="h-6 w-6" />
-                </span>
-                <span className="min-w-0">
-                  <span className="block font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-studio-slate">
-                    LinkedIn
-                  </span>
-                  <span className="mt-0.5 block truncate font-display text-lg font-bold text-studio-ink transition-colors group-hover:text-studio-purple-deep">
-                    {CONTACT.linkedinHandle}
-                  </span>
-                </span>
-                <span
-                  aria-hidden
-                  className="ml-auto text-studio-slate transition-all group-hover:translate-x-1 group-hover:text-studio-purple"
-                >
-                  ↗
-                </span>
-              </AmberCard>
-            </a>
-
             <AmberCard className="p-5">
               <div className="flex items-center gap-4">
                 <span className="grid h-13 w-13 shrink-0 place-items-center rounded-xl border border-studio-border bg-studio-bg p-3 text-studio-green-deep">
@@ -385,8 +350,8 @@ export default function ContactSection() {
                     Disponible para proyectos
                   </p>
                   <p className="mt-1.5 text-sm leading-relaxed text-studio-slate">
-                    Abierta a desarrollo web Full-Stack, backend con Django/Node, apps móviles y
-                    experiencias interactivas.
+                    Abierta a apoyar desarrollos web Full Stack, backend con Django/Node, apps
+                    móviles y prototipos de videojuegos formativos.
                   </p>
                   <p className="mt-2.5 font-mono text-[10px] font-medium tracking-[0.16em] text-studio-purple-deep">
                     Respuesta estimada: 24–48 h

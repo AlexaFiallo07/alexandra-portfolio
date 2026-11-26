@@ -3,7 +3,10 @@ import path from 'node:path';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
-const files = ['theropod_run.glb', 'fossil_skull.glb', 'trex_hero.glb'];
+/* GLTFLoader usa `self` al decodificar imágenes; en Node no existe por defecto. */
+globalThis.self = globalThis;
+
+const files = ['trex_hero.glb', 'fossil_skull.glb'];
 const loader = new GLTFLoader();
 
 for (const file of files) {
@@ -15,7 +18,7 @@ for (const file of files) {
 
   let nodes = 0;
   let meshes = 0;
-  let invalid = 0;
+  const invalidNames = [];
   const names = [];
   gltf.scene.traverse((node) => {
     nodes += 1;
@@ -24,9 +27,10 @@ for (const file of files) {
     meshes += 1;
     const scale = node.scale;
     if (![scale.x, scale.y, scale.z].every((value) => Number.isFinite(value) && value > 0)) {
-      invalid += 1;
+      invalidNames.push(node.name || '(sin nombre)');
     }
   });
+  const invalid = invalidNames.length;
 
   const box = new THREE.Box3().setFromObject(gltf.scene);
   const size = box.getSize(new THREE.Vector3());
@@ -40,7 +44,7 @@ for (const file of files) {
       `${gltf.animations.length} clips (${gltf.animations.map((clip) => clip.name).join(', ')})`,
       `tamano ${size.x.toFixed(2)}x${size.y.toFixed(2)}x${size.z.toFixed(2)}`,
       pupils.length ? `pupilas ${pupils.join('+')}` : '',
-      invalid ? `ESCALAS INVALIDAS: ${invalid}` : 'escalas OK',
+      invalid ? `ESCALAS INVALIDAS: ${invalid} (${invalidNames.join(', ')})` : 'escalas OK',
     ]
       .filter(Boolean)
       .join(' | '),

@@ -4,10 +4,11 @@ import * as THREE from 'three';
 
 /** Paleta compartida por las escenas 3D (coherente con el Studio Light). */
 export const DINO_SKIN = {
-  skin: '#3E9E70',
-  dark: '#2E7D57',
-  belly: '#D1FAE5',
-  claw: '#18181B',
+  skin: '#3E9D7B',
+  dark: '#2B775D',
+  belly: '#E2F3EA',
+  claw: '#1F1433',
+  plate: '#6A4DAB',
 } as const;
 
 /* Textura procedural de escamas: da relieve a la piel sin assets externos. */
@@ -37,10 +38,45 @@ function getSkinBump() {
   return texture;
 }
 
+/** Paleta del T-Rex robótico: carcasa grafito, paneles esmeralda y juntas moradas. */
+export const ROBO_DINO_SKIN = {
+  shell: '#334155',
+  plate: '#0F766E',
+  dark: '#0F172A',
+  joint: '#6A4DAB',
+  glow: '#5FB794',
+  lens: '#A98FD6',
+} as const;
+
+/** Material metálico para paneles, bisagras y sensores del T-Rex robótico. */
+export function RobotMat({
+  color = ROBO_DINO_SKIN.shell,
+  metalness = 0.78,
+  roughness = 0.28,
+  emissive,
+  emissiveIntensity = 0,
+}: {
+  color?: string;
+  metalness?: number;
+  roughness?: number;
+  emissive?: string;
+  emissiveIntensity?: number;
+}) {
+  return (
+    <meshStandardMaterial
+      color={color}
+      metalness={metalness}
+      roughness={roughness}
+      emissive={emissive ?? '#000000'}
+      emissiveIntensity={emissiveIntensity}
+    />
+  );
+}
+
 /** Material de piel con relieve de escamas y acabado semimate. */
 export default function SkinMat({
   color = DINO_SKIN.skin,
-  roughness = 0.88,
+  roughness = 0.58,
 }: {
   color?: string;
   roughness?: number;
@@ -49,8 +85,9 @@ export default function SkinMat({
     <meshStandardMaterial
       color={color}
       roughness={roughness}
+      metalness={0.16}
       bumpMap={getSkinBump() ?? undefined}
-      bumpScale={0.035}
+      bumpScale={0.045}
     />
   );
 }

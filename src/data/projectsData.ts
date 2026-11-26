@@ -4,115 +4,96 @@ export const PROJECTS: Project[] = [
   {
     id: 'effiadmi',
     title: 'EffiAdmi',
-    subtitle: 'Gestión de Inventario Inteligente en Tiempo Real',
+    subtitle: 'En desarrollo · Sistema de gestión administrativa para PYMES',
     description:
-      'Proyecto de grado: sistema web de control de inventarios automatizado con kardex, pedidos, facturación y reportes, integrado con EFFI — un asistente de IA (Google Gemini) para la toma estratégica de decisiones. Incluye versión portada a Node.js + MongoDB.',
+      'Sistema de gestión administrativa web y móvil para PYMES (inventarios, productos, pedidos, facturación, proveedores, atención al cliente, alertas y reportes) enfocado en aliviar la carga operativa empresarial.',
     category: 'pyme',
     status: 'destacado',
     year: '2025',
-    stack: [
-      'Python',
-      'Django 6',
-      'Django REST + JWT',
-      'SQLite / PostgreSQL',
-      'Gemini IA (SDK OpenAI)',
-      'Chart.js',
-    ],
+    stack: ['Python', 'Django', 'Django REST Framework', 'Flutter', 'Bases de datos relacionales'],
     highlights: [
-      'Inventario multi-sucursal con kardex trazable y alertas de stock bajo con recomendación IA',
-      'Flujo completo pedidos → facturación con anulación y devolución automática de stock',
-      'EFFI: chat con contexto real del negocio, borradores de correo y frases de alerta con IA',
-      'Landing pública, API REST con JWT y roles admin/operador con auditoría de accesos',
-      '≈305 tests + CI en GitHub Actions + pruebas de carga con Locust',
-      'Port a Express + MongoDB con backup automático por cron (PM2)',
+      'Inventario y kardex con productos, entradas, salidas y alertas de stock bajo',
+      'Pedidos, facturación y proveedores integrados en un mismo flujo',
+      'Atención al cliente y reportes para reducir tareas repetitivas',
+      'Acceso web y móvil para operar desde la oficina o en campo',
     ],
     architecture: [
       {
-        layer: 'Cliente',
+        layer: 'Web',
         detail:
-          'Plantillas Django con HTML/CSS/JS + Chart.js (SSR), landing pública de 7 páginas, íconos Material Symbols y estilos propios. Sin framework JS: el frontend se sirve desde el backend.',
+          'Panel administrativo con inventario, productos, pedidos, facturación, proveedores y reportes.',
       },
       {
         layer: 'API',
         detail:
-          'Django REST Framework con SimpleJWT (rotación y blacklist de tokens), CORS, throttling y ~77 vistas organizadas en módulos de negocio.',
+          'Django REST Framework para operaciones CRUD, validaciones, autenticación y permisos por rol.',
       },
       {
-        layer: 'Dominio',
+        layer: 'Móvil',
         detail:
-          'Inventario + kardex (entrada/salida/ajuste), pedidos → facturación, clientes y proveedores, reportes operador→admin, notificaciones, correos con adjuntos y facturas de compra con exportación a Excel.',
-      },
-      {
-        layer: 'IA (EFFI)',
-        detail:
-          'Servicio con SDK OpenAI contra Google Gemini (gemini-3.1-flash-lite): chat con contexto real del inventario y ventas, borradores de correo y recomendaciones de stock, con lista de temas bloqueados y defensa anti prompt-injection.',
+          'Flutter para consultar inventario, pedidos y alertas desde el teléfono.',
       },
       {
         layer: 'Datos',
         detail:
-          'SQLite por defecto, PostgreSQL/Supabase opcional vía psycopg, Redis opcional para caché/throttling y respaldos JSON exportables y restaurables desde comandos propios.',
+          'Bases de datos relacionales con kardex, transacciones y trazabilidad de la operación.',
       },
       {
-        layer: 'Ops',
+        layer: 'Procesos',
         detail:
-          'Waitress + WhiteNoise, seguridad endurecida (CSP, admin por IP, /media/ autenticado, rate-limit de IA), CI con chequeo --deploy, pruebas Locust y guía de despliegue en PythonAnywhere.',
+          'Alertas de stock y reportes operativos pensados para simplificar la rutina diaria.',
       },
     ],
     repoUrl: 'https://github.com/AlexaFiallo07/EFFIADMI_1.git',
-    emoji: '🦴',
+    emoji: '📊',
   },
   {
-    id: 'multiverso',
-    title: 'Multiverso Jurásico',
-    subtitle: 'Portafolio interactivo estilo estudio luminoso',
+    id: 'excavacion-3d',
+    title: 'Excavación Paleontológica 3D',
+    subtitle: 'Prototipo interactivo · Three.js + Blender',
     description:
-      'Este mismo sitio: una experiencia de portafolio luminosa donde un T-Rex verde con gafas moradas reacciona al cursor, un Velociraptor pixel art salta obstáculos al hacer scroll y dinosaurios chibi celebran tus clics.',
+      'Minijuego integrado en el portafolio, construido con Three.js y Blender, para descubrir fósiles 3D usando herramientas de campo.',
     category: 'web',
-    status: 'destacado',
+    status: 'en-excavacion',
     year: '2026',
-    stack: ['Next.js 15', 'TypeScript', 'Tailwind CSS', 'SVG Interactivo', 'Framer Motion'],
+    stack: ['Three.js', 'React Three Fiber', 'Blender', 'GLB'],
     highlights: [
-      'Escena interactiva del Hero con seguimiento de cursor, parallax y stickers dev',
-      'Velociraptor pixel art sincronizado con el porcentaje de scroll y cactus/tags',
-      'IntersectionObserver + animaciones suaves a 60fps solo con transform/opacity',
-      'Formulario de contacto con API route y validación serverless',
+      'Excavación con mouse sobre un yacimiento 3D',
+      'Herramientas de campo como acento interactivo',
+      'Fósiles modelados y exportados desde Blender',
     ],
     architecture: [
       {
-        layer: 'Cliente',
+        layer: 'Escena',
         detail:
-          'Next.js 15 (App Router) con React, Tailwind CSS y Framer Motion bajo una paleta clara de estudio (#F4F4F7, #FFFFFF, #7C3AED, #10B981).',
+          'React Three Fiber con Box3, boundingSphere y zoom acotado para mantener la figura completa.',
       },
       {
-        layer: 'Interactividad',
+        layer: 'Modelos',
         detail:
-          'SVG animado reactivo al puntero (T-Rex con gafas moradas, ventanas flotantes en parallax, dino chibi bailarín y fósiles blueprint).',
+          'Piezas preparadas en Blender y exportadas como GLB con materiales y animaciones ligeras.',
       },
       {
-        layer: 'Animación',
+        layer: 'Interacción',
         detail:
-          'Keyframes CSS para el elenco (correr, volar, bailar, flotar) + framer-motion para entradas escalonadas a 60fps.',
-      },
-      {
-        layer: 'Servidor',
-        detail: 'API route /api/contact en Next.js con validación, honeypot y rate-limit básico.',
+          'Herramientas de campo y descubrimiento progresivo del fósil sin recargar la página.',
       },
     ],
-    emoji: '🌌',
+    emoji: '🦴',
   },
   {
     id: 'tienda-virtual',
     title: 'Tienda Virtual',
-    subtitle: 'Espacio reservado para tu próximo e-commerce',
+    subtitle: 'Próximamente · Desarrollo empresarial',
     description:
-      'Ficha plantilla lista para alojar tu desarrollo real de tienda virtual: sustituye este texto por el resumen verdadero del proyecto y añade los enlaces a GitHub y a la demo en vivo.',
+      'Espacio reservado para un futuro e-commerce dentro de la línea de desarrollos empresariales.',
     category: 'tienda',
     status: 'en-excavacion',
     year: '2026',
-    stack: ['Carrito', 'Catálogo', 'Pagos', 'Panel de pedidos'],
+    stack: ['Catálogo', 'Carrito', 'Pedidos', 'Panel'],
     highlights: [
-      'Plantilla pendiente: describe aquí las pantallas y flujos que sí construiste',
-      'Añade repoUrl y liveUrl para que el botón lleve a GitHub y a la demo',
+      'Plantilla pendiente: describe aquí las pantallas y flujos que construyas',
+      'Añade repoUrl y liveUrl cuando el proyecto esté listo',
     ],
     emoji: '🛒',
     isPlaceholder: true,
@@ -120,18 +101,35 @@ export const PROJECTS: Project[] = [
   {
     id: 'api-rest',
     title: 'API REST',
-    subtitle: 'Espacio reservado para tu próximo servicio',
+    subtitle: 'Próximamente · Desarrollo empresarial',
     description:
-      'Ficha plantilla lista para alojar una de tus APIs REST: documenta endpoints, autenticación y despliegue reales, y enlaza el repositorio de GitHub con la documentación viva.',
+      'Espacio reservado para un próximo servicio REST con documentación y despliegue reales.',
     category: 'api',
     status: 'en-excavacion',
     year: '2026',
-    stack: ['Endpoints', 'JWT', 'Validación', 'Documentación'],
+    stack: ['Endpoints', 'Validación', 'Autenticación', 'Documentación'],
     highlights: [
-      'Plantilla pendiente: lista los módulos y verbos que sí implementaste',
-      'Añade repoUrl y liveUrl (docs Swagger/Postman, por ejemplo)',
+      'Plantilla pendiente: lista los módulos y verbos que implementes',
+      'Añade repoUrl y liveUrl con la documentación de la API',
     ],
     emoji: '🔌',
+    isPlaceholder: true,
+  },
+  {
+    id: 'videojuegos-formativos',
+    title: 'Videojuegos formativos',
+    subtitle: 'En desarrollo · Aprendizaje y agilidad mental',
+    description:
+      'Espacio reservado para prototipos de videojuegos que entrenen habilidades y conocimientos de forma intuitiva y divertida.',
+    category: 'web',
+    status: 'en-excavacion',
+    year: '2026',
+    stack: ['Prototipo', 'Mecánicas', '3D'],
+    highlights: [
+      'Plantilla pendiente: describe aquí la mecánica y el objetivo de aprendizaje',
+      'Ruta de aprendizaje en C# y Rust para videojuegos',
+    ],
+    emoji: '🎮',
     isPlaceholder: true,
   },
 ];

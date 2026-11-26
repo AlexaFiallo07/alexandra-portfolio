@@ -5,3 +5,14 @@ out/
 next-env.d.ts
 .env*.local
 .DS_Store
+
+# Referencias pesadas de BlendSwap (se pueden re-descargar; ver assets/blendswap/README.md)
+assets/blendswap/Robot-T-Rex.blend
+assets/blendswap/Robot-T-Rex.glb
+assets/blendswap/Robot-T-Rex-web.glb
+assets/blendswap/jikz_dinosaurrobot.glb
+assets/blendswap/Parasaurolophus.blend
+assets/blendswap/Plesiosaurus.blend
+assets/blendswap/Gallimimus.blend
+assets/blendswap/Brachiosaurus.blend
+assets/blendswap/textures/
