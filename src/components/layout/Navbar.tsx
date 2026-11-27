@@ -48,19 +48,12 @@ export default function Navbar() {
 
   return (
     <div className="pointer-events-none fixed inset-x-0 top-0 z-50 w-screen">
-      {/* Contenedor único: cristal transparente a lo ancho de la pantalla */}
-      <div className="w-full border-b border-studio-border bg-studio-card/70 backdrop-blur-xl">
-        {/* Barra de progreso: sigue arriba del todo, ahora dentro del contenedor */}
-        <motion.div
-          aria-hidden
-          style={{ scaleX: progress }}
-          className="h-[3px] origin-left bg-gradient-to-r from-studio-purple-deep via-studio-purple to-studio-green"
-        />
-
-        <header className="pointer-events-auto mt-3 flex justify-center px-3 pb-2 sm:px-4">
+      {/* Contenedor único: cristal translúcido a lo ancho de la pantalla */}
+      <div className="w-full border-b border-white/30 bg-gradient-to-b from-white/35 to-studio-pearl/20 backdrop-blur-2xl backdrop-saturate-150">
+        <header className="pointer-events-auto flex justify-center px-3 pb-1.5 pt-2 sm:px-4">
           <nav
             aria-label="Navegación principal"
-            className="relative flex w-full max-w-6xl items-center justify-between gap-3 rounded-full border border-studio-border/80 bg-studio-card/60 px-3 py-2 shadow-studio sm:gap-4 sm:px-4"
+            className="relative flex w-full max-w-6xl items-center justify-between gap-3 rounded-full border border-white/50 bg-white/35 px-3 py-2 shadow-studio backdrop-blur-md sm:gap-4 sm:px-4"
           >
           {/* ---------- Izquierda: marca ---------- */}
           <button
@@ -163,6 +156,13 @@ export default function Navbar() {
           )}
           </nav>
         </header>
+
+        {/* Barra de progreso: dentro del contenedor, justo debajo de la navbar */}
+        <motion.div
+          aria-hidden
+          style={{ scaleX: progress }}
+          className="h-[3px] origin-left bg-gradient-to-r from-studio-purple-deep via-studio-purple to-studio-green"
+        />
       </div>
     </div>
   );
