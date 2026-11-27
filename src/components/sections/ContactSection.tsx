@@ -281,6 +281,25 @@ export default function ContactSection() {
                   </p>
                 </form>
               )}
+
+              {/* Disponibilidad: justo debajo del botón de envío, máxima visibilidad */}
+              <div className="mt-6 rounded-2xl border border-studio-green/35 bg-studio-green/10 p-4">
+                <div className="flex items-start gap-3">
+                  <span className="mt-1.5 h-2.5 w-2.5 shrink-0 animate-pulse rounded-full bg-studio-green" />
+                  <div>
+                    <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-studio-green-deep">
+                      Disponible para proyectos
+                    </p>
+                    <p className="mt-1.5 text-sm leading-relaxed text-studio-slate">
+                      Abierta a apoyar desarrollos web Full Stack, backend con Django/Node, apps
+                      móviles y prototipos de videojuegos formativos.
+                    </p>
+                    <p className="mt-2.5 font-mono text-[10px] font-medium tracking-[0.16em] text-studio-purple-deep">
+                      Respuesta estimada: 24–48 h
+                    </p>
+                  </div>
+                </div>
+              </div>
             </AmberCard>
           </motion.div>
 
@@ -342,23 +361,6 @@ export default function ContactSection() {
               </button>
             </AmberCard>
 
-            <AmberCard className="bg-studio-pearl/80 p-5" glow={false}>
-              <div className="flex items-start gap-3">
-                <span className="mt-1.5 h-2.5 w-2.5 shrink-0 animate-pulse rounded-full bg-studio-green" />
-                <div>
-                  <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-studio-green-deep">
-                    Disponible para proyectos
-                  </p>
-                  <p className="mt-1.5 text-sm leading-relaxed text-studio-slate">
-                    Abierta a apoyar desarrollos web Full Stack, backend con Django/Node, apps
-                    móviles y prototipos de videojuegos formativos.
-                  </p>
-                  <p className="mt-2.5 font-mono text-[10px] font-medium tracking-[0.16em] text-studio-purple-deep">
-                    Respuesta estimada: 24–48 h
-                  </p>
-                </div>
-              </div>
-            </AmberCard>
           </motion.div>
         </div>
       </div>
