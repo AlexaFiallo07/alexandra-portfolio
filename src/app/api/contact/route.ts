@@ -1,3 +1,4 @@
+import nodemailer from 'nodemailer';
 import { NextResponse } from 'next/server';
 
 export const runtime = 'nodejs';
@@ -19,9 +20,10 @@ const badRequest = (error: string) =>
  * Endpoint de envío del formulario de contacto.
  *
  * - Valida los campos en el servidor.
- * - Si existen `RESEND_API_KEY` y `CONTACT_TO_EMAIL`, envía el correo con Resend.
- * - En caso contrario, registra la señal en consola y responde éxito
- *   (útil durante el desarrollo sin credenciales).
+ * - Envía por Gmail SMTP usando un App Password de Google
+ *   (GMAIL_USER + GMAIL_APP_PASSWORD) y CONTACT_TO_EMAIL como destino.
+ * - Sin credenciales, en desarrollo solo registra la señal; en producción
+ *   responde 503 para no simular un envío que no ocurrió.
  */
 export async function POST(request: Request) {
   let payload: ContactPayload;
@@ -51,44 +53,47 @@ export async function POST(request: Request) {
     return badRequest('El mensaje debe tener entre 10 y 2000 caracteres.');
   }
 
-  const apiKey = process.env.RESEND_API_KEY;
-  const to = process.env.CONTACT_TO_EMAIL;
+  const user = process.env.GMAIL_USER;
+  const pass = process.env.GMAIL_APP_PASSWORD;
+  const to = process.env.CONTACT_TO_EMAIL ?? user;
 
-  if (apiKey && to) {
-    try {
-      const res = await fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${apiKey}`,
-        },
-        body: JSON.stringify({
-          from: process.env.CONTACT_FROM_EMAIL ?? 'Portfolio <onboarding@resend.dev>',
-          to: [to],
-          reply_to: email,
-          subject: `Nueva señal de ${name} — Portafolio`,
-          text: `Nombre: ${name}\nCorreo: ${email}\n\nMensaje:\n${message}`,
-        }),
-      });
-
-      if (!res.ok) {
-        const detail = await res.text().catch(() => '');
-        console.error('[contacto] Error de Resend:', res.status, detail);
-        return NextResponse.json(
-          { ok: false, error: 'No se pudo enviar la señal. Inténtalo más tarde.' },
-          { status: 502 },
-        );
-      }
-    } catch (err) {
-      console.error('[contacto] Excepción al enviar:', err);
+  if (!user || !pass || !to) {
+    console.warn('[contacto] Falta GMAIL_USER, GMAIL_APP_PASSWORD o CONTACT_TO_EMAIL');
+    if (process.env.NODE_ENV === 'production') {
       return NextResponse.json(
-        { ok: false, error: 'No se pudo enviar la señal. Inténtalo más tarde.' },
-        { status: 502 },
+        { ok: false, error: 'El formulario aún no está configurado.' },
+        { status: 503 },
       );
     }
-  } else {
     console.log(
-      `[contacto] Señal recibida (sin RESEND_API_KEY/CONTACT_TO_EMAIL)\n  De: ${name} <${email}>\n  Mensaje: ${message.slice(0, 160)}…`,
+      `[contacto] Señal recibida (sin envío real)\n  De: ${name} <${email}>\n  Mensaje: ${message.slice(0, 160)}…`,
+    );
+    return NextResponse.json({
+      ok: true,
+      message: 'Señal recibida. Te responderé pronto.',
+    });
+  }
+
+  try {
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true,
+      auth: { user, pass },
+    });
+
+    await transporter.sendMail({
+      from: process.env.CONTACT_FROM_EMAIL ?? `Portafolio <${user}>`,
+      to,
+      replyTo: email,
+      subject: `Nueva señal de ${name} — Portafolio`,
+      text: `Nombre: ${name}\nCorreo: ${email}\n\nMensaje:\n${message}`,
+    });
+  } catch (err) {
+    console.error('[contacto] Error al enviar por Gmail:', err);
+    return NextResponse.json(
+      { ok: false, error: 'No se pudo enviar la señal. Inténtalo más tarde.' },
+      { status: 502 },
     );
   }
 
