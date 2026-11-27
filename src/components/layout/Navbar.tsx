@@ -47,19 +47,21 @@ export default function Navbar() {
   };
 
   return (
-    <>
-      {/* Barra superior de progreso */}
-      <motion.div
-        aria-hidden
-        style={{ scaleX: progress }}
-        className="fixed inset-x-0 top-0 z-[60] h-[3px] origin-left bg-gradient-to-r from-studio-purple-deep via-studio-purple to-studio-green"
-      />
+    <div className="pointer-events-none fixed inset-x-0 top-0 z-50 w-screen">
+      {/* Contenedor único: cristal transparente a lo ancho de la pantalla */}
+      <div className="w-full border-b border-studio-border bg-studio-card/70 backdrop-blur-xl">
+        {/* Barra de progreso: sigue arriba del todo, ahora dentro del contenedor */}
+        <motion.div
+          aria-hidden
+          style={{ scaleX: progress }}
+          className="h-[3px] origin-left bg-gradient-to-r from-studio-purple-deep via-studio-purple to-studio-green"
+        />
 
-      <header className="fixed inset-x-0 top-4 z-50 flex justify-center px-3 sm:px-4">
-        <nav
-          aria-label="Navegación principal"
-          className="studio-glass relative flex w-full max-w-6xl items-center justify-between gap-3 rounded-full px-3 py-2 sm:gap-4 sm:px-4"
-        >
+        <header className="pointer-events-auto mt-3 flex justify-center px-3 pb-2 sm:px-4">
+          <nav
+            aria-label="Navegación principal"
+            className="relative flex w-full max-w-6xl items-center justify-between gap-3 rounded-full border border-studio-border/80 bg-studio-card/60 px-3 py-2 shadow-studio sm:gap-4 sm:px-4"
+          >
           {/* ---------- Izquierda: marca ---------- */}
           <button
             onClick={() => go('inicio')}
@@ -159,8 +161,9 @@ export default function Navbar() {
               ))}
             </motion.ul>
           )}
-        </nav>
-      </header>
-    </>
+          </nav>
+        </header>
+      </div>
+    </div>
   );
 }
