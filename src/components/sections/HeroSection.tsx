@@ -25,7 +25,7 @@ export default function HeroSection() {
   return (
     <section
       id="inicio"
-      className="relative flex min-h-[100svh] items-center overflow-hidden pb-12 pt-28 sm:pb-16 sm:pt-36"
+      className="relative flex min-h-[100svh] items-center overflow-hidden pb-12 pt-32 sm:pb-16 sm:pt-36"
     >
       {/* Acentos geométricos suaves en el fondo */}
       <div

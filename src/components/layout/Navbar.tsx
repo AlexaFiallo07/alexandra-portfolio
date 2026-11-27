@@ -46,9 +46,6 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Velociraptor pixel art verde y morado corriendo sobre línea punteada */}
-      <PixelRaptor />
-
       {/* Barra superior de progreso */}
       <motion.div
         aria-hidden
@@ -59,7 +56,7 @@ export default function Navbar() {
       <header className="fixed inset-x-0 top-4 z-50 flex justify-center px-4">
         <nav
           aria-label="Navegación principal"
-          className="studio-glass relative flex w-full max-w-3xl items-center gap-2 rounded-full px-3 py-2"
+          className="studio-glass relative flex w-full max-w-3xl flex-wrap items-center gap-2 rounded-[1.75rem] px-3 py-2"
         >
           {/* Monograma */}
           <button
@@ -155,6 +152,11 @@ export default function Navbar() {
               ))}
             </motion.ul>
           )}
+
+          {/* Velociraptor integrado en el mismo cristal de la navbar */}
+          <div className="w-full border-t border-studio-border/60 pt-2">
+            <PixelRaptor />
+          </div>
         </nav>
       </header>
     </>

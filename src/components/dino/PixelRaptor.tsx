@@ -60,7 +60,7 @@ function RaptorSprite() {
   return (
     <svg
       viewBox="0 0 16 15"
-      className="h-7 w-auto drop-shadow-[0_2px_4px_rgba(91,33,182,0.22)]"
+      className="h-7 w-auto drop-shadow-[0_2px_5px_rgba(58,35,112,0.35)] sm:h-8"
       shapeRendering="crispEdges"
       aria-hidden
     >
@@ -195,10 +195,13 @@ export default function PixelRaptor() {
   return (
     <div
       aria-hidden
-      className="pointer-events-none fixed inset-x-0 top-[74px] z-40 px-4 sm:px-8"
+      className="pointer-events-none w-full"
     >
-      <div className="mx-auto flex max-w-5xl items-center gap-3">
-        <div ref={railRef} className="relative h-8 flex-1">
+      <div className="flex w-full items-center gap-3">
+        <div
+          ref={railRef}
+          className="relative h-8 flex-1 rounded-full border border-studio-border/50 bg-studio-card/50 px-2"
+        >
           {/* Línea punteada estilo Chrome Dino */}
           <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 border-t-2 border-dotted border-studio-border" />
           {/* Progreso recorrido en morado → verde */}

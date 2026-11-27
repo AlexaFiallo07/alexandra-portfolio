@@ -24,7 +24,7 @@ html {
 
 /* Los anclajes nunca quedan tapados por la navbar flotante. */
 section[id] {
-  scroll-margin-top: 7.25rem;
+  scroll-margin-top: 8rem;
 }
 
 body {
