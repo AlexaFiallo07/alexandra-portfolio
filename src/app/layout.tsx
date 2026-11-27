@@ -36,6 +36,9 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: 'Alexandra Fiallo Carrillo' }],
   creator: 'Alexandra Fiallo Carrillo',
+  icons: {
+    icon: [{ url: '/favicon.svg', type: 'image/svg+xml', sizes: 'any' }],
+  },
   openGraph: {
     type: 'website',
     locale: 'es_ES',
