@@ -107,7 +107,7 @@ export default function ContactSection() {
   };
 
   return (
-    <section id="contacto" className="relative py-20 sm:py-28">
+    <section id="contacto" className="relative py-14 sm:py-28">
       <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
         {/* Encabezado */}
         <motion.div
@@ -140,7 +140,7 @@ export default function ContactSection() {
           </p>
         </motion.div>
 
-        <div className="mt-12 grid gap-6 lg:grid-cols-[1.15fr_1fr]">
+        <div className="mt-8 grid gap-6 sm:mt-12 lg:grid-cols-[1.15fr_1fr]">
           {/* ---------- Formulario ---------- */}
           <motion.div
             initial={{ opacity: 0, y: 28 }}
@@ -292,7 +292,7 @@ export default function ContactSection() {
                     </p>
                     <p className="mt-1.5 text-sm leading-relaxed text-studio-slate">
                       Abierta a apoyar desarrollos web Full Stack, backend con Django/Node, apps
-                      móviles y prototipos de videojuegos formativos.
+                      móviles y prototipos de videojuegos.
                     </p>
                     <p className="mt-2.5 font-mono text-[10px] font-medium tracking-[0.16em] text-studio-purple-deep">
                       Respuesta estimada: 24–48 h
@@ -318,7 +318,7 @@ export default function ContactSection() {
               className="group block"
             >
               <AmberCard className="flex items-center gap-4 p-5">
-                <span className="grid h-13 w-13 shrink-0 place-items-center rounded-xl border border-studio-border bg-studio-bg p-3 text-studio-ink transition-colors group-hover:border-studio-purple group-hover:text-studio-purple">
+                <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl border border-studio-border bg-studio-bg p-2.5 text-studio-ink sm:h-14 sm:w-14 sm:p-3 transition-colors group-hover:border-studio-purple group-hover:text-studio-purple">
                   <GitHubIcon className="h-6 w-6" />
                 </span>
                 <span className="min-w-0">
@@ -340,14 +340,14 @@ export default function ContactSection() {
 
             <AmberCard className="p-5">
               <div className="flex items-center gap-4">
-                <span className="grid h-13 w-13 shrink-0 place-items-center rounded-xl border border-studio-border bg-studio-bg p-3 text-studio-green-deep">
+                <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl border border-studio-border bg-studio-bg p-2.5 text-studio-green-deep sm:h-14 sm:w-14 sm:p-3">
                   <MailIcon className="h-6 w-6" />
                 </span>
                 <span className="min-w-0">
                   <span className="block font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-studio-slate">
                     Correo directo
                   </span>
-                  <span className="mt-0.5 block truncate font-display text-base font-bold text-studio-ink sm:text-lg">
+                  <span className="mt-0.5 block break-all font-display text-sm font-bold text-studio-ink sm:truncate sm:text-lg">
                     {CONTACT.email}
                   </span>
                 </span>

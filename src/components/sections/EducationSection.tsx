@@ -29,7 +29,7 @@ const EDUCATION = [
 /** Formación real en tecnología, en tarjetas limpias y sin elementos 3D. */
 export default function EducationSection() {
   return (
-    <section id="formacion" className="relative scroll-mt-24 py-20 sm:py-28">
+    <section id="formacion" className="relative py-14 sm:py-28">
       <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -60,7 +60,7 @@ export default function EducationSection() {
           </p>
         </motion.div>
 
-        <div className="mt-10 grid gap-5 sm:grid-cols-3">
+        <div className="mt-8 grid gap-5 sm:grid-cols-2 sm:mt-10 lg:grid-cols-3">
           {EDUCATION.map((item, i) => (
             <AmberCard key={item.index} delay={0.08 * i} className="p-6">
               <div className="flex items-center justify-between gap-3">

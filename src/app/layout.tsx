@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     template: '%s · Alexandra Fiallo Carrillo',
   },
   description:
-    'Portafolio de Alexandra Fiallo Carrillo, desarrolladora en etapa práctica ADSO: APIs, bases de datos, apps web y móviles, EffiAdmi, videojuegos formativos y formación en el SENA.',
+    'Portafolio de Alexandra Fiallo Carrillo, desarrolladora en etapa práctica ADSO: APIs, bases de datos, apps web y móviles, EffiAdmi, videojuegos y formación en el SENA.',
   keywords: [
     'Alexandra Fiallo Carrillo',
     'ADSO',
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     'Django REST Framework',
     'Flutter',
     'Three.js',
-    'Videojuegos formativos',
+    'Videojuegos',
     'Portafolio',
   ],
   authors: [{ name: 'Alexandra Fiallo Carrillo' }],
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     siteName: 'Alexandra Fiallo Carrillo — Full Stack en formación',
     title: 'Alexandra Fiallo Carrillo — Full Stack en formación',
     description:
-      'APIs, bases de datos, apps móviles y videojuegos formativos. Explora el stack, los proyectos y la formación de Alexandra.',
+      'APIs, bases de datos, apps móviles y videojuegos. Explora el stack, los proyectos y la formación de Alexandra.',
   },
   twitter: {
     card: 'summary_large_image',

@@ -26,7 +26,7 @@ const VALUES = [
 /** Sobre mí: perfil honesto de Alexandra en etapa ADSO, sin personajes accesorios. */
 export default function AboutSection() {
   return (
-    <section id="sobre-mi" className="relative py-20 sm:py-28">
+    <section id="sobre-mi" className="relative py-14 sm:py-28">
       <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
         {/* Encabezado de sección */}
         <motion.div
@@ -98,7 +98,7 @@ export default function AboutSection() {
         </motion.div>
 
         {/* Pilares de trabajo */}
-        <div className="mt-8 grid gap-5 sm:grid-cols-3">
+        <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {VALUES.map((v, i) => (
             <AmberCard key={v.index} delay={0.1 + i * 0.08} className="p-6">
               <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-studio-purple/30 bg-studio-purple/10 font-mono text-xs font-bold text-studio-purple-deep">

@@ -209,7 +209,7 @@ export default function RobotTRexVitrina({ className }: RobotTRexVitrinaProps) {
       onPointerDown={onPointerDown}
       onKeyDown={onKeyDownActivate}
       className={cn(
-        'relative h-full w-full cursor-grab select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-studio-purple',
+        'relative h-full w-full touch-pan-y cursor-grab select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-studio-purple',
         dragging ? 'cursor-grabbing' : selected ? 'cursor-move' : '',
         className,
       )}

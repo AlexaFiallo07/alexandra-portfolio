@@ -18,7 +18,9 @@ export function useStudioPointer(onActivate?: () => void) {
   useEffect(() => {
     const onPointerMove = (event: PointerEvent) => {
       pointerNorm.current.x = (event.clientX / window.innerWidth) * 2 - 1;
-      pointerNorm.current.y = -((event.clientY / window.innerHeight) * 2 - 1);
+      // En táctil el eje Y queda neutro: el dedo no debe dejar el modelo inclinado.
+      pointerNorm.current.y =
+        event.pointerType === 'touch' ? 0 : -((event.clientY / window.innerHeight) * 2 - 1);
 
       if (!dragging) return;
       const dx = event.clientX - dragStart.current.x;
@@ -29,14 +31,18 @@ export function useStudioPointer(onActivate?: () => void) {
       lastPos.current = { x: event.clientX, y: event.clientY };
     };
 
-    const onPointerUp = () => {
+    const finishDrag = (activate: boolean) => {
       if (!dragging) return;
       setDragging(false);
-      if (!dragStart.current.moved) {
+      if (activate && !dragStart.current.moved) {
         setSelected((prev) => !prev);
         activateRef.current?.();
       }
     };
+
+    const onPointerUp = () => finishDrag(true);
+    // Si el navegador toma el gesto como scroll, cancelamos sin activar nada.
+    const onPointerCancel = () => finishDrag(false);
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -47,15 +53,18 @@ export function useStudioPointer(onActivate?: () => void) {
 
     window.addEventListener('pointermove', onPointerMove, { passive: true });
     window.addEventListener('pointerup', onPointerUp);
+    window.addEventListener('pointercancel', onPointerCancel);
     window.addEventListener('keydown', onKeyDown);
     return () => {
       window.removeEventListener('pointermove', onPointerMove);
       window.removeEventListener('pointerup', onPointerUp);
+      window.removeEventListener('pointercancel', onPointerCancel);
       window.removeEventListener('keydown', onKeyDown);
     };
   }, [dragging]);
 
   const onPointerDown = useCallback((event: ReactPointerEvent<HTMLDivElement>) => {
+    if (event.pointerType === 'touch') pointerNorm.current.y = 0;
     dragStart.current = { x: event.clientX, y: event.clientY, moved: false };
     lastPos.current = { x: event.clientX, y: event.clientY };
     dragDelta.current = { x: 0, y: 0 };

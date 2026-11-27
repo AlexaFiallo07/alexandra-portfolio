@@ -25,16 +25,16 @@ export default function HeroSection() {
   return (
     <section
       id="inicio"
-      className="relative flex min-h-[100svh] items-center overflow-hidden pb-16 pt-32 sm:pt-36"
+      className="relative flex min-h-[100svh] items-center overflow-hidden pb-12 pt-28 sm:pb-16 sm:pt-36"
     >
       {/* Acentos geométricos suaves en el fondo */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -right-28 top-24 h-[420px] w-[420px] rounded-full bg-studio-purple/10 blur-3xl"
+        className="pointer-events-none absolute -right-28 top-24 hidden h-[420px] w-[420px] rounded-full bg-studio-purple/10 blur-3xl sm:block"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute -left-24 bottom-12 h-[360px] w-[360px] rounded-full bg-studio-green/10 blur-3xl"
+        className="pointer-events-none absolute -left-24 bottom-12 hidden h-[360px] w-[360px] rounded-full bg-studio-green/10 blur-3xl sm:block"
       />
 
       {/* Etiqueta vertical lateral */}
@@ -46,7 +46,7 @@ export default function HeroSection() {
         Alexandra Fiallo Carrillo · ADSO · Full Stack
       </span>
 
-      <div className="relative z-10 mx-auto grid w-full max-w-6xl items-center gap-10 px-5 sm:px-8 lg:grid-cols-[1.05fr_1fr] lg:gap-10">
+      <div className="relative z-10 mx-auto grid w-full max-w-6xl items-center gap-8 px-5 sm:px-8 sm:gap-10 lg:grid-cols-[1.05fr_1fr]">
         {/* ---------- Columna editorial ---------- */}
         <div>
           <motion.div
@@ -92,7 +92,7 @@ export default function HeroSection() {
             Estoy en la etapa práctica del Tecnólogo en Análisis y Desarrollo de Software. Construyo
             un perfil <strong className="font-semibold text-studio-ink">Full Stack</strong> desde la
             base de datos y la API hasta la interfaz, y me proyecto hacia los{' '}
-            <span className="font-semibold text-studio-purple-deep">videojuegos formativos</span>:
+            <span className="font-semibold text-studio-purple-deep">videojuegos</span>:
             experiencias creativas que ayuden a entrenar habilidades y conocimientos.
           </motion.p>
 
@@ -101,7 +101,7 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.75, delay: 0.32, ease: EASE }}
-            className="mt-9 flex flex-wrap items-center gap-4"
+            className="mt-7 flex flex-wrap items-center gap-4 sm:mt-9"
           >
             <a
               href="#proyectos"
@@ -125,7 +125,7 @@ export default function HeroSection() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.9, delay: 0.5 }}
-            className="mt-10 flex flex-wrap items-center gap-3 font-mono text-[11px] font-semibold uppercase tracking-[0.2em]"
+            className="mt-7 flex flex-wrap items-center gap-3 font-mono text-[11px] font-semibold uppercase tracking-[0.2em] sm:mt-10"
           >
             <span className="rounded-md border border-studio-purple/25 bg-studio-purple/10 px-2.5 py-1 text-studio-purple-deep">
               Backend
@@ -149,15 +149,15 @@ export default function HeroSection() {
           transition={{ duration: 0.85, delay: 0.25, ease: EASE }}
           className="relative"
         >
-          <div className="relative aspect-[4/4.3] w-full overflow-hidden rounded-3xl border border-studio-border bg-studio-card shadow-studio-lg sm:aspect-square lg:aspect-[4/4.4]">
+          <div className="relative aspect-[4/4.3] w-full overflow-hidden rounded-3xl border border-studio-border bg-studio-card shadow-studio-lg sm:aspect-[16/10] lg:aspect-[4/4.4]">
             {/* Barra superior tipo ventana de estudio */}
-            <div className="absolute inset-x-0 top-0 z-30 flex items-center justify-between border-b border-studio-border bg-studio-card/90 px-5 py-3 backdrop-blur-sm">
+            <div className="absolute inset-x-0 top-0 z-30 flex items-center justify-between border-b border-studio-border bg-studio-card/90 px-3 py-2 backdrop-blur-sm sm:px-5 sm:py-3">
               <div className="flex items-center gap-1.5">
                 <span className="h-2.5 w-2.5 rounded-full bg-studio-purple" />
                 <span className="h-2.5 w-2.5 rounded-full bg-studio-green" />
                 <span className="h-2.5 w-2.5 rounded-full bg-studio-border" />
               </div>
-              <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-studio-slate">
+              <span className="hidden font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-studio-slate min-[400px]:inline sm:inline">
                 alexandra.dev.tsx
               </span>
               <span className="inline-flex items-center gap-1.5 rounded-full bg-studio-green/15 px-2.5 py-0.5 font-mono text-[10px] font-semibold text-studio-green-deep">
@@ -172,16 +172,16 @@ export default function HeroSection() {
             </div>
 
             {/* Pie de tarjeta */}
-            <div className="pointer-events-none absolute inset-x-4 bottom-4 z-30 flex items-center justify-between rounded-2xl border border-studio-border bg-studio-card/95 px-4 py-2.5 shadow-studio backdrop-blur-sm">
-              <div>
-                <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-studio-purple-deep">
+            <div className="pointer-events-none absolute inset-x-3 bottom-3 z-30 flex items-center justify-between rounded-2xl border border-studio-border bg-studio-card/95 px-3 py-2 shadow-studio backdrop-blur-sm sm:inset-x-4 sm:bottom-4 sm:px-4 sm:py-2.5">
+              <div className="min-w-0">
+                <p className="font-mono text-[9px] font-semibold uppercase tracking-[0.14em] text-studio-purple-deep sm:text-[10px] sm:tracking-[0.2em]">
                   Acento creativo · Three.js
                 </p>
-                <p className="font-display text-xs font-semibold text-studio-ink sm:text-sm">
+                <p className="truncate font-display text-[11px] font-semibold text-studio-ink sm:text-sm">
                   T-Rex con gafas · rotación 360°
                 </p>
               </div>
-              <span className="rounded-lg bg-studio-pearl px-2.5 py-1 font-mono text-[10px] font-medium text-studio-slate">
+              <span className="hidden min-[380px]:inline-flex shrink-0 rounded-lg bg-studio-pearl px-2.5 py-1 font-mono text-[10px] font-medium text-studio-slate">
                 Clic o arrastra
               </span>
             </div>

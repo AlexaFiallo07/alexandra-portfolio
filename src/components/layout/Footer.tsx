@@ -61,7 +61,7 @@ export default function Footer() {
     <footer className="relative overflow-hidden border-t border-studio-border bg-studio-card">
       <Meteorite />
 
-      <div className="relative mx-auto grid max-w-6xl gap-10 px-5 py-14 sm:px-8 md:grid-cols-[1.4fr_1fr_1fr]">
+      <div className="relative mx-auto grid max-w-6xl gap-8 px-5 py-10 sm:gap-10 sm:px-8 sm:py-14 md:grid-cols-[1.4fr_1fr_1fr]">
         {/* Marca */}
         <div>
           <div>
@@ -112,7 +112,7 @@ export default function Footer() {
                 href={CONTACT.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2.5 text-sm font-medium text-studio-slate transition-colors hover:text-studio-purple"
+                className="group inline-flex max-w-full items-center gap-2.5 break-all text-sm font-medium text-studio-slate transition-colors hover:text-studio-purple sm:break-normal"
               >
                 <GitHubIcon className="h-4 w-4 text-studio-ink" />
                 {CONTACT.githubHandle}
@@ -121,7 +121,7 @@ export default function Footer() {
             <li>
               <a
                 href={`mailto:${CONTACT.email}`}
-                className="group inline-flex items-center gap-2.5 text-sm font-medium text-studio-slate transition-colors hover:text-studio-green-deep"
+                className="group inline-flex max-w-full items-center gap-2.5 break-all text-sm font-medium text-studio-slate transition-colors hover:text-studio-green-deep sm:break-normal"
               >
                 <MailIcon className="h-4 w-4 text-studio-green-deep" />
                 {CONTACT.email}

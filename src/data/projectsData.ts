@@ -116,8 +116,8 @@ export const PROJECTS: Project[] = [
     isPlaceholder: true,
   },
   {
-    id: 'videojuegos-formativos',
-    title: 'Videojuegos formativos',
+    id: 'videojuegos',
+    title: 'Videojuegos',
     subtitle: 'En desarrollo · Aprendizaje y agilidad mental',
     description:
       'Espacio reservado para prototipos de videojuegos que entrenen habilidades y conocimientos de forma intuitiva y divertida.',

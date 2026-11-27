@@ -773,7 +773,8 @@ export default function HeroTRex3D({ roarSignal = 0, spinSignal = 0 }: { roarSig
   useEffect(() => {
     const onPointerMove = (e: PointerEvent) => {
       pointerNorm.current.x = (e.clientX / window.innerWidth) * 2 - 1;
-      pointerNorm.current.y = -((e.clientY / window.innerHeight) * 2 - 1);
+      // En táctil el eje Y queda neutro para que el T-Rex no quede torcido.
+      pointerNorm.current.y = e.pointerType === 'touch' ? 0 : -((e.clientY / window.innerHeight) * 2 - 1);
 
       if (dragging) {
         const dx = e.clientX - dragStart.current.x;
@@ -785,14 +786,17 @@ export default function HeroTRex3D({ roarSignal = 0, spinSignal = 0 }: { roarSig
       }
     };
 
-    const onPointerUp = () => {
-      if (dragging) {
-        setDragging(false);
-        if (!dragStart.current.moved) {
-          setSelected((prev) => !prev);
-        }
+    const finishDrag = (activate: boolean) => {
+      if (!dragging) return;
+      setDragging(false);
+      if (activate && !dragStart.current.moved) {
+        setSelected((prev) => !prev);
       }
     };
+
+    const onPointerUp = () => finishDrag(true);
+    // Si el navegador interpreta el gesto como scroll, cancelamos sin activar.
+    const onPointerCancel = () => finishDrag(false);
 
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -803,10 +807,12 @@ export default function HeroTRex3D({ roarSignal = 0, spinSignal = 0 }: { roarSig
 
     window.addEventListener('pointermove', onPointerMove, { passive: true });
     window.addEventListener('pointerup', onPointerUp);
+    window.addEventListener('pointercancel', onPointerCancel);
     window.addEventListener('keydown', onKeyDown);
     return () => {
       window.removeEventListener('pointermove', onPointerMove);
       window.removeEventListener('pointerup', onPointerUp);
+      window.removeEventListener('pointercancel', onPointerCancel);
       window.removeEventListener('keydown', onKeyDown);
     };
   }, [dragging]);
@@ -818,12 +824,13 @@ export default function HeroTRex3D({ roarSignal = 0, spinSignal = 0 }: { roarSig
       <div
         ref={containerRef}
         onPointerDown={(e) => {
+          if (e.pointerType === 'touch') pointerNorm.current.y = 0;
           dragStart.current = { x: e.clientX, y: e.clientY, moved: false };
           lastPos.current = { x: e.clientX, y: e.clientY };
           dragDelta.current = { x: 0, y: 0 };
           setDragging(true);
         }}
-        className={`relative h-full w-full select-none bg-gradient-to-br from-[#FFFFFF] via-[#F6F3FB] to-[#EFEAF7] ${
+        className={`relative h-full w-full touch-pan-y select-none bg-gradient-to-br from-[#FFFFFF] via-[#F6F3FB] to-[#EFEAF7] ${
           dragging ? 'cursor-grabbing' : selected ? 'cursor-move' : 'cursor-grab'
         }`}
       >
@@ -833,13 +840,13 @@ export default function HeroTRex3D({ roarSignal = 0, spinSignal = 0 }: { roarSig
         {/* Chips flotantes decorativos */}
         <div
           aria-hidden
-          className="pointer-events-none absolute left-4 top-6 z-20 rounded-xl border border-studio-border bg-studio-card/90 px-3 py-1.5 shadow-studio"
+          className="pointer-events-none absolute left-4 top-6 z-20 hidden rounded-xl border border-studio-border bg-studio-card/90 px-3 py-1.5 shadow-studio sm:block"
         >
           <span className="font-mono text-[10px] font-semibold text-studio-purple-deep">&lt;div&gt;</span>
         </div>
         <div
           aria-hidden
-          className="pointer-events-none absolute right-4 top-6 z-20 rounded-xl border border-studio-border bg-studio-card/90 px-3 py-1.5 shadow-studio"
+          className="pointer-events-none absolute right-4 top-6 z-20 hidden rounded-xl border border-studio-border bg-studio-card/90 px-3 py-1.5 shadow-studio sm:block"
         >
           <span className="font-mono text-[10px] font-semibold text-studio-green-deep">{'{ 3D: true }'}</span>
         </div>
@@ -849,7 +856,7 @@ export default function HeroTRex3D({ roarSignal = 0, spinSignal = 0 }: { roarSig
           type="button"
           onPointerDown={(e) => e.stopPropagation()}
           onClick={() => setSelected((s) => !s)}
-          className={`absolute left-1/2 top-5 z-30 -translate-x-1/2 rounded-full border px-3.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] transition-all ${
+          className={`absolute left-1/2 top-5 z-30 max-w-[calc(100%-1.5rem)] -translate-x-1/2 truncate rounded-full border px-2 py-1 font-mono text-[9px] font-semibold uppercase tracking-[0.1em] transition-all sm:max-w-none sm:px-3.5 sm:text-[10px] sm:tracking-[0.14em] ${
             selected
               ? 'border-studio-purple-deep bg-studio-purple text-white shadow-brutal'
               : 'border-studio-border bg-studio-card/95 text-studio-ink shadow-studio hover:border-studio-purple'

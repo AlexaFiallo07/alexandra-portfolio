@@ -67,7 +67,7 @@ export default function ProjectsGrid() {
   const secondary = PROJECTS.slice(1);
 
   return (
-    <section id="proyectos" className="relative scroll-mt-24 py-20 sm:py-28">
+    <section id="proyectos" className="relative scroll-mt-24 py-14 sm:py-28">
       <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
         {/* Encabezado */}
         <motion.div
@@ -95,7 +95,7 @@ export default function ProjectsGrid() {
           </h2>
           <p className="mt-3 text-base text-studio-slate">
             Abre cualquier ficha para ver el stack y la arquitectura por capas. También hay espacios
-            limpios para futuros desarrollos empresariales y prototipos de videojuegos formativos;
+            limpios para futuros desarrollos empresariales y prototipos de videojuegos;
             las plantillas esperan contenido real.
           </p>
         </motion.div>
@@ -106,7 +106,7 @@ export default function ProjectsGrid() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-90px' }}
           transition={{ duration: 0.7, ease: EASE }}
-          className="mt-12"
+          className="mt-8 sm:mt-12"
         >
           <AmberCard className="p-0">
             <div className="grid gap-8 p-6 sm:p-8 lg:grid-cols-[1.15fr_1fr] lg:gap-10 lg:p-10">
@@ -193,7 +193,7 @@ export default function ProjectsGrid() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.55, ease: EASE }}
-          className="mt-12 flex items-center gap-4"
+          className="mt-8 flex items-center gap-4 sm:mt-12"
         >
           <span className="rounded-full border border-studio-green/35 bg-studio-green/10 px-3 py-1 font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-studio-green-deep">
             Próximamente / En desarrollo
@@ -218,7 +218,7 @@ export default function ProjectsGrid() {
                 <AmberCard className="relative flex h-full w-full flex-col p-6">
                   {/* Pequeño dinosaurio distinto en la esquina superior derecha */}
                   <div className="absolute right-3 top-3 z-10 transition-transform duration-300 group-hover:rotate-6 group-hover:scale-105">
-                    <ProjectCornerDino variant={cornerVariant} className="h-16 w-16" />
+                    <ProjectCornerDino variant={cornerVariant} className="h-14 w-14 sm:h-16 sm:w-16" />
                   </div>
 
                   <button
@@ -227,13 +227,13 @@ export default function ProjectsGrid() {
                     className="flex flex-1 flex-col text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-studio-purple"
                     aria-label={`Ver ficha de ${project.title}`}
                   >
-                    <div className="flex items-center gap-2.5 pr-16">
+                    <div className="flex flex-wrap items-center gap-2 pr-14 sm:pr-16">
                       <span
                         className={`rounded-full border px-2.5 py-1 font-mono text-[9px] font-semibold uppercase tracking-[0.14em] ${status.className}`}
                       >
                         {status.label}
                       </span>
-                      <span className="font-mono text-[10px] font-medium text-studio-slate">
+                      <span className="hidden font-mono text-[10px] font-medium text-studio-slate min-[360px]:inline">
                         {project.year}
                       </span>
                       {project.isPlaceholder && (

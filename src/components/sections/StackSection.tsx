@@ -33,13 +33,13 @@ function SkillBadge({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-60px' }}
       transition={{ duration: 0.5, delay: 0.04 * index, ease: EASE }}
-      className="fossil-badge group/sk rounded-xl border border-studio-border bg-studio-bg/80 p-4 focus-within:border-studio-purple"
+      className="fossil-badge group/sk rounded-xl border border-studio-border bg-studio-bg/80 p-3 focus-within:border-studio-purple sm:p-4"
       tabIndex={0}
     >
-      <div className="flex items-start gap-3">
+      <div className="flex items-start gap-2 sm:gap-3">
         {/* Icono fósil / huella en línea fina morada y verde */}
         <span
-          className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border bg-studio-card transition-colors"
+          className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border bg-studio-card transition-colors sm:h-11 sm:w-11"
           style={{ borderColor: `${accent}55`, color: accent }}
         >
           <FossilIcon kind={skill.fossil} className="h-7 w-7" />
@@ -47,7 +47,7 @@ function SkillBadge({
 
         <div className="min-w-0 flex-1">
           <div className="flex items-baseline justify-between gap-2">
-            <span className="truncate text-sm font-bold text-studio-ink">{skill.name}</span>
+            <span className="break-words text-sm font-bold text-studio-ink sm:truncate">{skill.name}</span>
             <span
               className="rounded-md px-1.5 py-0.5 font-mono text-[10px] font-semibold"
               style={{ backgroundColor: `${accent}18`, color: accent }}
@@ -69,7 +69,7 @@ function SkillBadge({
                   {skill.stage === 'aplico' ? 'Aplico' : 'En desarrollo'}
                 </span>
               )}
-              <span className="truncate text-[12px] text-studio-slate">{skill.hint}</span>
+              <span className="break-words text-[12px] text-studio-slate sm:truncate">{skill.hint}</span>
             </div>
           )}
         </div>
@@ -99,7 +99,7 @@ export default function StackSection() {
   const robotInView = useInView(robotRef, { once: true, margin: '-80px' });
 
   return (
-    <section id="stack" className="relative py-20 sm:py-28">
+    <section id="stack" className="relative py-14 sm:py-28">
       <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
         {/* Encabezado */}
         <motion.div
@@ -170,16 +170,16 @@ export default function StackSection() {
             </p>
           </div>
 
-          <div className="studio-grid relative h-80 border-t border-studio-border bg-studio-pearl/40 lg:border-l lg:border-t-0">
+          <div className="studio-grid relative h-80 border-t border-studio-border bg-studio-pearl/40 sm:h-96 lg:h-full lg:border-l lg:border-t-0">
             {robotInView && <RobotTRexVitrina className="h-full w-full" />}
-            <span className="pointer-events-none absolute bottom-3 left-3 rounded-md border border-studio-border bg-studio-card/90 px-2.5 py-1 font-mono text-[10px] font-semibold text-studio-slate shadow-sm">
+            <span className="pointer-events-none absolute bottom-12 left-3 rounded-md border border-studio-border bg-studio-card/90 px-2.5 py-1 font-mono text-[10px] font-semibold text-studio-slate shadow-sm sm:bottom-3">
               trex_hero.glb · R3F
             </span>
           </div>
         </motion.div>
 
         {/* Categorías */}
-        <div className="mt-12 grid gap-6 lg:grid-cols-2">
+        <div className="mt-8 grid gap-6 sm:mt-12 lg:grid-cols-2">
           {STACK.map((group, gi) => (
             <motion.article
               key={group.id}
@@ -189,25 +189,25 @@ export default function StackSection() {
               transition={{ duration: 0.65, delay: gi * 0.05, ease: EASE }}
               className="studio-grid relative overflow-hidden rounded-3xl border border-studio-border bg-studio-card p-5 shadow-studio sm:p-7"
             >
-              <div className="relative flex items-start gap-4">
+              <div className="relative flex flex-wrap items-start gap-3 sm:gap-4">
                 <span
-                  className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl border bg-studio-bg"
+                  className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl border bg-studio-bg sm:h-14 sm:w-14"
                   style={{ borderColor: `${group.accent}55`, color: group.accent }}
                 >
                   <FossilIcon kind={group.icon} className="h-9 w-9" />
                 </span>
-                <div>
+                <div className="min-w-0 flex-1">
                   <p
                     className="font-mono text-[10px] font-semibold uppercase tracking-[0.2em]"
                     style={{ color: group.accent }}
                   >
                     {group.subtitle}
                   </p>
-                  <h3 className="mt-1 font-display text-2xl font-bold text-studio-ink">
+                  <h3 className="mt-1 font-display text-xl font-bold text-studio-ink sm:text-2xl">
                     {group.label}
                   </h3>
                 </div>
-                <span className="ml-auto rounded-full border border-studio-border bg-studio-pearl px-2.5 py-1 font-mono text-[10px] font-semibold text-studio-slate">
+                <span className="shrink-0 rounded-full border border-studio-border bg-studio-pearl px-2.5 py-1 font-mono text-[10px] font-semibold text-studio-slate sm:ml-auto">
                   {group.skills.length} herramientas
                 </span>
               </div>
