@@ -115,7 +115,7 @@ function RaptorSprite() {
 /** Cactus en pixel art verde esmeralda. */
 function CactusSprite() {
   return (
-    <svg viewBox="0 0 9 11" className="h-3.5 w-auto sm:h-4" shapeRendering="crispEdges" aria-hidden>
+    <svg viewBox="0 0 9 11" className="h-3 w-auto sm:h-3.5" shapeRendering="crispEdges" aria-hidden>
       {/* Flor morada y contorno oscuro */}
       <rect x="3" y="0" width="3" height="1" fill="#7C3AED" />
       <rect x="3" y="1" width="3" height="10" fill="#059669" />
@@ -236,16 +236,16 @@ export default function PixelRaptor() {
 
   return (
     <div aria-hidden className="pointer-events-none w-full">
-      <div className="flex w-full items-center gap-2">
+      <div className="flex w-full items-center gap-1.5">
         <div
           ref={railRef}
-          className="relative h-7 flex-1 rounded-full border border-studio-border/45 bg-studio-card/40 px-1.5"
+          className="relative h-8 flex-1 rounded-full border border-studio-border/45 bg-studio-card/40 px-1.5"
         >
           {/* Línea punteada y progreso morado */}
           <div className="absolute inset-x-1.5 top-1/2 border-t border-dotted border-studio-border" />
           <div
             ref={fillRef}
-            className="absolute inset-x-1.5 top-1/2 h-[2px] -translate-y-1/2 origin-left rounded-full bg-gradient-to-r from-studio-purple-deep via-studio-purple to-studio-green"
+            className="absolute inset-x-1.5 top-1/2 h-[2px] -translate-y-1/2 origin-left rounded-full bg-gradient-to-r from-studio-purple-deep via-studio-purple to-studio-lilac"
             style={{ transform: 'scaleX(0)' }}
           />
 
@@ -261,7 +261,7 @@ export default function PixelRaptor() {
               {o.kind === 'cactus' ? (
                 <CactusSprite />
               ) : (
-                <span className="block rounded border border-studio-purple/40 bg-studio-card px-1 py-0.5 font-mono text-[7px] font-semibold tracking-tight text-studio-purple-deep shadow-sm">
+                <span className="block rounded border border-studio-purple/40 bg-studio-card px-0.5 py-0 font-mono text-[6px] font-semibold tracking-tight text-studio-purple-deep shadow-sm sm:px-1 sm:py-0.5 sm:text-[7px]">
                   {o.kind === 'div' ? '<div>' : '</>'}
                 </span>
               )}
@@ -280,7 +280,7 @@ export default function PixelRaptor() {
 
         <span
           ref={pctRef}
-          className="w-8 shrink-0 rounded-md border border-studio-border/60 bg-studio-card/60 px-1 py-0.5 text-center font-mono text-[8px] font-semibold text-studio-purple-deep"
+          className="w-7 shrink-0 rounded-md border border-studio-border/60 bg-studio-card/60 px-0.5 py-0.5 text-center font-mono text-[8px] font-semibold text-studio-purple-deep"
         >
           0%
         </span>
