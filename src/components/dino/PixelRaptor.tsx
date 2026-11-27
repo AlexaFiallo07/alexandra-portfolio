@@ -3,17 +3,18 @@
 import { useEffect, useRef } from 'react';
 
 /**
- * Velociraptor pixel art verde y morado estilo Chrome Dino:
- * corre sobre una línea punteada justo debajo del navbar sincronizado con
- * el scroll de la página, saltando cactus y etiquetas HTML (<div>, </>).
+ * Velociraptor pixel art verde y morado estilo Chrome Dino.
+ * Corre sobre una pista delgada integrada en la navbar; su avance y los
+ * obstáculos se calculan desde el scroll real y las secciones de la página.
  */
 
-const OBSTACLES: Array<{ at: number; kind: 'cactus' | 'div' | 'code' }> = [
-  { at: 0.2, kind: 'cactus' },
-  { at: 0.44, kind: 'div' },
-  { at: 0.68, kind: 'cactus' },
-  { at: 0.88, kind: 'code' },
-];
+const SECTION_OBSTACLES = [
+  { id: 'sobre-mi', kind: 'cactus' },
+  { id: 'stack', kind: 'div' },
+  { id: 'proyectos', kind: 'cactus' },
+  { id: 'formacion', kind: 'code' },
+  { id: 'contacto', kind: 'div' },
+] as const;
 
 /* Sprite del raptor: 16 × 10 píxeles (verde esmeralda + detalles morados) */
 const BODY = [
@@ -60,7 +61,7 @@ function RaptorSprite() {
   return (
     <svg
       viewBox="0 0 16 15"
-      className="h-7 w-auto drop-shadow-[0_2px_5px_rgba(58,35,112,0.35)] sm:h-8"
+      className="h-6 w-auto drop-shadow-[0_2px_4px_rgba(58,35,112,0.32)] sm:h-7"
       shapeRendering="crispEdges"
       aria-hidden
     >
@@ -114,7 +115,7 @@ function RaptorSprite() {
 /** Cactus en pixel art verde esmeralda. */
 function CactusSprite() {
   return (
-    <svg viewBox="0 0 9 11" className="h-4 w-auto" shapeRendering="crispEdges" aria-hidden>
+    <svg viewBox="0 0 9 11" className="h-3.5 w-auto sm:h-4" shapeRendering="crispEdges" aria-hidden>
       {/* Flor morada y contorno oscuro */}
       <rect x="3" y="0" width="3" height="1" fill="#7C3AED" />
       <rect x="3" y="1" width="3" height="10" fill="#059669" />
@@ -139,18 +140,20 @@ export default function PixelRaptor() {
   const jumpRef = useRef<HTMLDivElement>(null);
   const fillRef = useRef<HTMLDivElement>(null);
   const pctRef = useRef<HTMLSpanElement>(null);
+  const obstacleRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const positionsRef = useRef<number[]>(SECTION_OBSTACLES.map(() => 0));
   const jumpLock = useRef<Set<number>>(new Set());
 
   useEffect(() => {
-    let raf = 0;
+    let frame = 0;
+    let running = false;
+    let targetPct = 0;
+    let currentPct = 0;
+    let previousPct = 0;
     const timeouts: number[] = [];
 
-    const update = () => {
-      raf = 0;
-      const doc = document.documentElement;
-      const max = doc.scrollHeight - window.innerHeight;
-      const pct = max > 0 ? Math.min(Math.max(window.scrollY / max, 0), 1) : 0;
-
+    const render = () => {
+      const pct = currentPct;
       const rail = railRef.current;
       const raptor = raptorRef.current;
       if (rail && raptor) {
@@ -160,12 +163,15 @@ export default function PixelRaptor() {
       if (fillRef.current) fillRef.current.style.transform = `scaleX(${pct})`;
       if (pctRef.current) pctRef.current.textContent = `${Math.round(pct * 100)}%`;
 
-      OBSTACLES.forEach((o, i) => {
-        const jumper = jumpRef.current;
-        if (Math.abs(pct - o.at) < 0.018 && !jumpLock.current.has(i) && jumper) {
+      // Salta al cruzar un obstáculo, hacia delante o hacia atrás.
+      const jumper = jumpRef.current;
+      positionsRef.current.forEach((at, i) => {
+        const crossed =
+          (previousPct < at && pct >= at) || (previousPct > at && pct <= at);
+        if (crossed && !jumpLock.current.has(i) && jumper) {
           jumpLock.current.add(i);
-          // El salto vive en un elemento hijo para no sobrescribir el
-          // translate3d horizontal que controla el scroll.
+          jumper.classList.remove('animate-raptor-jump');
+          void jumper.offsetWidth; // reinicia la animación si encadenan saltos
           jumper.classList.add('animate-raptor-jump');
           const id = window.setTimeout(() => {
             jumper.classList.remove('animate-raptor-jump');
@@ -174,61 +180,95 @@ export default function PixelRaptor() {
           timeouts.push(id);
         }
       });
+      previousPct = pct;
     };
 
-    const scheduleUpdate = () => {
-      if (!raf) raf = window.requestAnimationFrame(update);
+    const tick = () => {
+      // Interpolación suave hacia el scroll real, sin sacudidas.
+      currentPct += (targetPct - currentPct) * 0.16;
+      if (Math.abs(targetPct - currentPct) < 0.0005) currentPct = targetPct;
+      render();
+      if (currentPct !== targetPct) {
+        frame = window.requestAnimationFrame(tick);
+      } else {
+        running = false;
+      }
+    };
+
+    const schedule = () => {
+      if (!running) {
+        running = true;
+        frame = window.requestAnimationFrame(tick);
+      }
+    };
+
+    const update = () => {
+      const doc = document.documentElement;
+      const max = Math.max(doc.scrollHeight - window.innerHeight, 0);
+      targetPct = max > 0 ? Math.min(Math.max(window.scrollY / max, 0), 1) : 0;
+
+      // Cada obstáculo coincide con el inicio de una sección real.
+      positionsRef.current = SECTION_OBSTACLES.map(({ id }) => {
+        const section = document.getElementById(id);
+        const top = section ? section.getBoundingClientRect().top + window.scrollY : 0;
+        const at = max > 0 ? top / max : 0;
+        return Math.min(Math.max(at, 0.06), 0.94);
+      });
+      obstacleRefs.current.forEach((el, i) => {
+        if (el) el.style.left = `${positionsRef.current[i] * 100}%`;
+      });
+      schedule();
     };
 
     update();
-    window.addEventListener('scroll', scheduleUpdate, { passive: true });
-    window.addEventListener('resize', scheduleUpdate, { passive: true });
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    window.addEventListener('load', update);
 
     return () => {
-      if (raf) window.cancelAnimationFrame(raf);
+      if (frame) window.cancelAnimationFrame(frame);
       timeouts.forEach((id) => window.clearTimeout(id));
-      window.removeEventListener('scroll', scheduleUpdate);
-      window.removeEventListener('resize', scheduleUpdate);
+      window.removeEventListener('scroll', update);
+      window.removeEventListener('resize', update);
+      window.removeEventListener('load', update);
     };
   }, []);
 
   return (
-    <div
-      aria-hidden
-      className="pointer-events-none w-full"
-    >
-      <div className="flex w-full items-center gap-3">
+    <div aria-hidden className="pointer-events-none w-full">
+      <div className="flex w-full items-center gap-2">
         <div
           ref={railRef}
-          className="relative h-8 flex-1 rounded-full border border-studio-border/50 bg-studio-card/50 px-2"
+          className="relative h-7 flex-1 rounded-full border border-studio-border/45 bg-studio-card/40 px-1.5"
         >
-          {/* Línea punteada estilo Chrome Dino */}
-          <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 border-t-2 border-dotted border-studio-border" />
-          {/* Progreso recorrido en morado → verde */}
+          {/* Línea punteada y progreso morado */}
+          <div className="absolute inset-x-1.5 top-1/2 border-t border-dotted border-studio-border" />
           <div
             ref={fillRef}
-            className="absolute inset-x-0 top-1/2 h-[2px] -translate-y-1/2 origin-left bg-gradient-to-r from-studio-purple to-studio-green"
+            className="absolute inset-x-1.5 top-1/2 h-[2px] -translate-y-1/2 origin-left rounded-full bg-gradient-to-r from-studio-purple-deep via-studio-purple to-studio-green"
             style={{ transform: 'scaleX(0)' }}
           />
 
-          {/* Obstáculos: cactus y etiquetas HTML */}
-          {OBSTACLES.map((o, i) => (
+          {SECTION_OBSTACLES.map((o, i) => (
             <div
-              key={i}
-              className="absolute top-1/2 -translate-y-1/2"
-              style={{ left: `calc(${o.at * 100}% - 14px)` }}
+              key={o.id}
+              ref={(el) => {
+                obstacleRefs.current[i] = el;
+              }}
+              className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2"
+              style={{ left: `${((i + 1) / (SECTION_OBSTACLES.length + 1)) * 100}%` }}
             >
               {o.kind === 'cactus' ? (
                 <CactusSprite />
               ) : (
-                <span className="block rounded border border-studio-purple/40 bg-studio-card px-1.5 py-0.5 font-mono text-[8px] font-semibold tracking-tight text-studio-purple-deep shadow-sm">
+                <span className="block rounded border border-studio-purple/40 bg-studio-card px-1 py-0.5 font-mono text-[7px] font-semibold tracking-tight text-studio-purple-deep shadow-sm">
                   {o.kind === 'div' ? '<div>' : '</>'}
                 </span>
               )}
             </div>
           ))}
 
-          {/* Raptor pixel art: capas separadas para scroll, centrado y salto */}
+          {/* Capas separadas: avance horizontal, centrado y salto */}
           <div ref={raptorRef} className="absolute left-0 top-1/2 will-change-transform">
             <div className="-translate-y-1/2">
               <div ref={jumpRef}>
@@ -238,10 +278,9 @@ export default function PixelRaptor() {
           </div>
         </div>
 
-        {/* Porcentaje de scroll */}
         <span
           ref={pctRef}
-          className="w-9 shrink-0 rounded-md border border-studio-border bg-studio-card px-1.5 py-0.5 text-center font-mono text-[9px] font-semibold text-studio-purple-deep"
+          className="w-8 shrink-0 rounded-md border border-studio-border/60 bg-studio-card/60 px-1 py-0.5 text-center font-mono text-[8px] font-semibold text-studio-purple-deep"
         >
           0%
         </span>
