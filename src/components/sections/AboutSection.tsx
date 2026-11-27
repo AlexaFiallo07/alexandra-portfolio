@@ -73,8 +73,8 @@ export default function AboutSection() {
 
               <blockquote className="mt-7 rounded-2xl border-l-4 border-studio-gold bg-studio-pearl/70 px-5 py-4">
                 <p className="font-display text-base font-medium italic leading-relaxed text-studio-ink sm:text-lg">
-                  “Prefiero soluciones simples, mantenibles y útiles antes que tecnología por
-                  tecnología.”
+                  “El problema manda: lo simple se entiende, lo mantenible dura, lo útil se nota.
+                  La tecnología es medio, no meta.”
                 </p>
               </blockquote>
             </div>
